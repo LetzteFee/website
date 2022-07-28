@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="icon" href="../sources\logo.png">
+		<link rel="stylesheet" type="text/css" href="../css/main.css" />
+
+		<title>Lib testing pwd</title>
+
+		<script src="../lib/pwd-gen.lib.js"></script>
+		<script src="../lib/base.lib.js"></script>
+		<script src="../lib/otp.lib.js"></script>
+	</head>
+	
+	<body>
+		<header>
+		<div class="headerline">
+			<a href="../dev.html">Link 1</a>
+			<a href="../dev.html">Link 2</a>
+			<a href="../dev.html">Link 3</a>
+			<a href="../dev.html">Link 4</a>
+			<a style="float: right;" href="../dev.html">Link 5</a>
+			</div>
+		</header>
+		<p>The Generated Password is:</p>
+		<p id="1"></p>
+		<script>
+			var password_object = new password(true, true, true, true, 2, true);
+			document.getElementById("1").innerHTML = password_object.buildPassword();
+		</script>
+		<script>
+			var x = new oneTimePad("Hallo", "123");
+			doLog("html", x.getEncryption());
+		</script>
+	</body> 
+</html>

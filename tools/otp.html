@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="icon" href="../sources\logo.png">
+	<link rel="stylesheet" type="text/css" href="../css\main.css" />
+	<title>Jannesf - One Time Pad</title>
+
+  <script src="../lib/base.lib.js"></script>
+  <script src="../lib/pwd-gen.lib.js"></script>
+  <script src="../lib/otp.lib.js"></script>
+</head>
+<body>
+    <header>
+        <div class="headerline">
+            <a href="../index.html">Home</a>
+            <a href="../animations/index.html">Animations</a>
+            <a href="../games/index.html">Games</a>
+            <a href="../tools/index.html">Tools</a>
+            <a style="float: right;" href="../dev.html">Dev</a>
+        </div>
+    </header>
+        <main>
+            <div class="box">
+              <p>
+                <textarea id="content" rows="6" placeholder="Example text"style="width: 100%; margin: 0px; border: 0px; padding: 0px; resize: none;"></textarea>
+                <label for="content">Zu verschlüsselnden Text</label>
+              </p>
+              
+              <p>
+                <input id="key" type="text" size="48">
+                <label for="key">Schlüssel</label>
+              </p>
+              
+              <p>
+                <input id="output" type="text" size="48">
+                <label for="output">Verschlüsselter Text</label>
+              </p>
+              
+              <p>
+                <input id="generate_button" type="button" value="Encrypt" onclick="encrypt()">
+              </p>
+              <p>
+              <h3>Strategie:</h3>
+              <ol>
+                <li>Input Text in Binärcode umwandeln</li>
+                <li>Input Password in Binärcode umwandeln</li>
+                <li>Die beiden mit einander verrechnen</li>
+                <li>Berechneten Binärcode wieder in Text umwandeln und ausgeben</li>
+              </ol>
+              </p>
+            </div>
+        </main>
+        <script>
+          function encrypt(){
+            let x = new oneTimePad(document.getElementById("content").value, document.getElementById("key").value);
+			      document.getElementById("output").value = x.getEncryption();
+          }
+        </script>
+</body>
+</html>
