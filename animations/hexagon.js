@@ -1,5 +1,5 @@
 //noprotect
-var m = 20; //maßstab
+var m = 80; //maßstab
 var hz = m / 2; //hälfte von m
 
 
@@ -25,19 +25,19 @@ function setup() {
   createCanvas(windowWidth, windowHeight);
   background(0);
 
-  m = random(100); //Diese Zeile ist nur für die Web Edition
-  hz = m / 2; //Diese Zeile ist nur für die Web Edition
+  //m = random(100); //Diese Zeile ist nur für die Web Edition
+  //hz = m / 2; //Diese Zeile ist nur für die Web Edition
 
-  for (var i = 0; i < height; i = i + m * 3 + 1) { //vertikale
+  for (var i = 0; i < height; i = i + m * 3 + 2) { //vertikale
 
-    for (var j = m; j < width; j = j + m * 2 + 1) { //horizontale
+    for (var j = m; j < width; j = j + m * 2 + 2) { //horizontale
       Sechseck(j, i);
     }
   }
 
-  for (var k = m + hz; k < height; k = k + m * 3 + 1) { //vertikale
+  for (var k = m + hz + 2; k < height; k = k + m * 3 + 2) { //vertikale
 
-    for (var l = 0; l < width; l = l + m * 2 + 1) { //horizontale
+    for (var l = 0; l < width; l = l + m * 2 + 2) { //horizontale
       Sechseck(l, k);
     }
   }
