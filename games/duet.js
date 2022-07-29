@@ -1,5 +1,3 @@
-// Programm by Jannes Folkerts
-
 // Form Tabelle
 // Form 0: Statisches Viererck
 // Form 1: Viereck das sich gleichmäßig nach unten bewegt und sich mit sin horizontal bewegt
