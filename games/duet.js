@@ -1,11 +1,14 @@
 // Form Tabelle
 // Form 0: Statisches Viererck
-// Form 1: Viereck das sich gleichmäßig nach unten bewegt und sich mit sin horizontal bewegt
-// Form 2: Viereck das sich mit sin nach unten bewegt
-// Form 3: Viereck das sich mit sin nach unten und horizontal bewegt
-// Form 4: Ellipse die sich gleichmäßig nach unten bewegt unten leben gibt
+// Form 1: Viereck, das sich gleichmäßig nach unten bewegt und sich mit sin horizontal bewegt
+// Form 2: Viereck, das sich mit sin nach unten bewegt
+// Form 3: Viereck, das sich mit sin nach unten und mit sin horizontal bewegt; benutzt für beide Richtungen entgegengesetzte sin-werte
+// Form 4: Ellipse, die sich gleichmäßig nach unten bewegt und leben gibt; grün
 
 // Todo: übersichtlicher und mehr switch case statements
+//  doLog aus der base-lib einbinden
+//  checkCollision aufräumen und externe funktionen verwenden
+//  eigentlich muss der ganze Code mit OOP neu gemacht werden
 
 const ObjectsPer100px = 10;
 var speed = 1.5;
@@ -42,7 +45,7 @@ function calcDistance(playerX, playerY, circleX, circleY, objectID) {
   let disY = sqrt((playerY - circleY) * (playerY - circleY));
   let dis = sqrt(disX * disX + disY * disY);
 
-  doLog("calcDistance", "Distance of object[" + objectID + "] was " + dis);
+  //doLog("calcDistance", "Distance of object[" + objectID + "] was " + dis);
   return dis;
 }
 
@@ -200,7 +203,7 @@ function checkCollision() {
             playerYPos > object[i].yPos &&
             playerYPos < object[i].yPos + object[i].ySize
           ) {
-            doDamage();
+            doDamage(i);
             reDefine(i);
           }
 
@@ -211,7 +214,7 @@ function checkCollision() {
             playerYPos > object[i].yPos &&
             playerYPos < object[i].yPos + object[i].ySize
           ) {
-            doDamage();
+            doDamage(i);
             reDefine(i);
           }
 
@@ -222,7 +225,7 @@ function checkCollision() {
             playerYPos + playerYSize > object[i].yPos &&
             playerYPos + playerYSize < object[i].yPos + object[i].ySize
           ) {
-            doDamage();
+            doDamage(i);
             reDefine(i);
           }
 
@@ -263,6 +266,11 @@ function drawGame() {
         fill("#00ff00");
         ellipse(object[i].xPos, object[i].yPos, object[i].xSize * 2);
         break;
+      case 5:
+        rect(object[i].xPos, object[i].yPos, object[i].xSize, object[i].ySize);
+        break;
+      default:
+        doLog("drawGame()", "received object with unknown design");
     }
   }
 }
@@ -292,23 +300,23 @@ function moveObjects() {
         object[i].yPos = object[i].yPos + speed;
 
         if (
-          object[i].xPos + sin(object[i].mPos) > 0 &&
-          object[i].xPos + object[i].xSize + sin(object[i].mPos) < width
+          object[i].xPos + sin(object[i].mPosX) > 0 &&
+          object[i].xPos + object[i].xSize + sin(object[i].mPosX) < width
         ) {
-          object[i].xPos = object[i].xPos + sin(object[i].mPos);
+          object[i].xPos = object[i].xPos + sin(object[i].mPosX);
         }
         break;
       case 2: //sin down movement and no horizontal movement
-        object[i].yPos = object[i].yPos + sin(object[i].mPos) + 0.5;
+        object[i].yPos = object[i].yPos + sin(object[i].mPosY) + 0.5;
         break;
       case 3: //sin down movement and sin horizontal movement
-        object[i].yPos = object[i].yPos + sin(object[i].mPos) + 0.5;
+        object[i].yPos = object[i].yPos + sin(object[i].mPosY) + 0.5;
 
         if (
-          object[i].xPos + sin(object[i].mPos) > 0 &&
-          object[i].xPos + object[i].xSize + sin(object[i].mPos) < width
+          object[i].xPos + sin(object[i].mPosX) > 0 &&
+          object[i].xPos + object[i].xSize + sin(object[i].mPosX) < width
         ) {
-          object[i].xPos = object[i].xPos + sin(object[i].mPos);
+          object[i].xPos = object[i].xPos + sin(object[i].mPosX);
         }
         break;
       case 4:
@@ -316,7 +324,8 @@ function moveObjects() {
         break;
     }
     //changing the objects mPos so its sin values change
-    object[i].mPos = object[i].mPos + 0.1;
+    object[i].mPosX = object[i].mPosX + 0.1;
+    object[i].mPosY = object[i].mPosY + 0.1;
   }
 }
 
@@ -342,13 +351,14 @@ function drawGui() {
 }
 
 function reDefine(i) {
-  //erhält index von einem konkreten Objekt; Objekt wird erneut erschaffen
+  //erhält index von einem konkreten Objekt; Objekt wird nicht erneut erschaffen, sondern erhält nur neue Werte; ist irgendwie mehr effizient für RAM
 
   object[i].xSize = 30;
   object[i].ySize = 10;
   object[i].xPos = 0;
   object[i].yPos = 0;
-  object[i].mPos = random(2 * PI);
+  object[i].mPosX = random(2 * PI);
+  object[i].mPosY = random(2 * PI);
   object[i].form = getObjectType();
 
   if (object[i].form == 4) {
@@ -357,14 +367,14 @@ function reDefine(i) {
 
   object[i].xPos = int(random(width - object[i].xSize));
 
-  doLog("reDefine", "Object[" + i + "] has form " + object[i].form);
+  //doLog("reDefine", "Object[" + i + "] has form " + object[i].form);
 }
 
 function doDamage(a) {
   playerHealth = playerHealth - 25;
   backgroundIndicatorColor = color(255, 0, 0);
   backgroundCooldown = 10;
-  doLog("doDamage", "object[" + a + "] decreased playerHealth by 25");
+  //doLog("doDamage", "object[" + a + "] decreased playerHealth by 25");
 }
 
 function doHeal(a) {
@@ -382,10 +392,10 @@ function doHeal(a) {
 
 function getObjectType() {
   let a = 1;
-  let b = 5;
-  //Weil die Integer Funktion nicht rundet, sondern einfach nur die Nachkommastellen entfernt muss 'b' um 1 höher sein als das tatsächliche Spektrum von verschiedenen Objects; objects der Form 0 sind ein Objekt der Sonderklasse bzw statisch
+  let b = 4;
+  //Weil die Integer Funktion nicht rundet, sondern einfach nur die Nachkommastellen entfernt muss 'b' um 1 höher sein als das tatsächliche Spektrum von verschiedenen Objects; objects der Form 0 sind ein Objekt der Sonderklasse bzw. statisch
 
-  return int(random(a, b));
+  return getRandomInt(a, b);
 }
 function eventHandler() {
   if (keyIsDown(LEFT_ARROW) && keyIsDown(RIGHT_ARROW)) {
@@ -453,7 +463,8 @@ function newObjects() {
       ySize: 10,
       xPos: 0,
       yPos: 0,
-      mPos: random(2 * PI),
+      mPosX: random(2 * PI),
+      mPosY: random(2 * PI),
       form: getObjectType()
     };
 
@@ -464,7 +475,7 @@ function newObjects() {
     object[i].xPos = int(random(width - object[i].xSize));
     object[i].yPos = int(random(height - (height / 5 + object[i].ySize)));
 
-    doLog("newObjects", "Object[" + i + "] has form " + object[i].form);
+    //doLog("newObjects", "Object[" + i + "] has form " + object[i].form);
   }
 }
 
@@ -477,12 +488,6 @@ function keyReleased() {
       debugScreen = true;
     }
   }
-}
-
-function doLog(originFunction, content) {
-  let log = "[" + frameCount + "] " + "[" + originFunction + "] " + content;
-  print(log);
-  DebugGuiLog = log;
 }
 
 function setup() {
