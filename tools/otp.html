@@ -1,60 +1,75 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-	<link rel="icon" href="../sources\logo.png">
-	<link rel="stylesheet" type="text/css" href="../css\main.css" />
-	<title>One Time Pad</title>
+  <link rel="icon" href="../sources\logo.png">
+  <link rel="stylesheet" type="text/css" href="../css\main.css" />
+  <title>One Time Pad</title>
 
   <script src="../lib/base.lib.js"></script>
   <script src="../lib/pwd-gen.lib.js"></script>
   <script src="../lib/otp.lib.js"></script>
+
+  <script>
+    var password_object = null;
+    var createPasswordfromButton = () => {
+      password_object = new password(true, true, true, true, 16, false);
+
+      document.getElementById("key").value = password_object.buildPassword();
+    }
+    function encrypt() {
+      let x = new oneTimePad(document.getElementById("content").value, document.getElementById("key").value);
+      document.getElementById("output").value = x.getEncryption();
+    }
+  </script>
 </head>
+
 <body>
-    <header>
-        <div class="headerline">
-            <a href="../index.html">Home</a>
-            <a href="../animations/index.html">Animations</a>
-            <a href="../games/index.html">Games</a>
-            <a href="../tools/index.html">Tools</a>
-            <a style="float: right;" href="../dev.html">Dev</a>
-        </div>
-    </header>
-        <main>
-            <div class="box">
-              <p>
-                <textarea id="content" rows="6" placeholder="Example text"style="width: 100%; margin: 0px; border: 0px; padding: 0px; resize: none;"></textarea>
-                <label for="content">Zu verschlüsselnden Text</label>
-              </p>
-              
-              <p>
-                <input id="key" type="text" size="48">
-                <label for="key">Schlüssel</label>
-              </p>
-              
-              <p>
-                <input id="output" type="text" size="48">
-                <label for="output">Verschlüsselter Text</label>
-              </p>
-              
-              <p>
-                <input id="generate_button" type="button" value="Encrypt" onclick="encrypt()">
-              </p>
-              <p>
-              <h3>Strategie:</h3>
-              <ol>
-                <li>Input Text in Binärcode umwandeln</li>
-                <li>Input Password in Binärcode umwandeln</li>
-                <li>Die beiden mit einander verrechnen</li>
-                <li>Berechneten Binärcode wieder in Text umwandeln und ausgeben</li>
-              </ol>
-              </p>
-            </div>
-        </main>
-        <script>
-          function encrypt(){
-            let x = new oneTimePad(document.getElementById("content").value, document.getElementById("key").value);
-			      document.getElementById("output").value = x.getEncryption();
-          }
-        </script>
+  <header>
+    <div class="headerline">
+      <a href="../index.html">Home</a>
+      <a href="../animations/index.html">Animations</a>
+      <a href="../games/index.html">Games</a>
+      <a href="../tools/index.html">Tools</a>
+      <a style="float: right;" href="../dev.html">Dev</a>
+    </div>
+  </header>
+  <main>
+    <div class="box" style="padding: 30px;">
+      <h1 style="text-align: center;">One-Time-Pad</h1>
+      <p style="text-align: center;">
+        <label for="content">Zu verschlüsselnden Text</label>
+        <textarea id="content" rows="6" placeholder="Example text"
+          style="width: 90%; margin: 0px; border: 0px; padding: 5px; resize: none;"></textarea>
+      </p>
+
+      <p>
+        <label for="key">Schlüssel</label>
+        <input id="key" type="text" placeholder="password123" size="48">
+        <input id="generate_password_button" type="button" value="Generate" onclick="createPasswordfromButton()">
+      </p>
+
+      <p>
+        <label for="output">Verschlüsselter Text</label>
+        <input id="output" type="text" readonly size="48">
+      </p>
+
+      <p style="text-align: center;">
+        <input class="GenerateButton" style="float: none;" id="generate_button" type="button" value="Encrypt"
+          onclick="encrypt()">
+      </p>
+      <p>
+      <h3>How it works:</h3>
+      <ol>
+        <li>Input Text in Binärcode umwandeln</li>
+        <li>Input Password in Binärcode umwandeln</li>
+        <li>Länge des Passworts auf die Länge des Textes bringen</li>
+        <li>Die beiden mit einander verrechnen</li>
+        <li>Berechneten Binärcode wieder in Text umwandeln und ausgeben</li>
+      </ol>
+      </p>
+    </div>
+  </main>
 </body>
+
 </html>

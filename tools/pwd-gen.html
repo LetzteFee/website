@@ -24,6 +24,7 @@
         <p style="text-align: center;">
           <input
             id="GenerateButton"
+            class="GenerateButton"
             style="float: none;"
             type="button"
             value="Neues Passwort"
@@ -68,7 +69,7 @@
           <label for="length"> Länge </label>
         </p>
         <script>
-          var password_object;
+          let password_object;
 
           function createPassword() {
             password_object = new password(
