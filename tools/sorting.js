@@ -7,7 +7,7 @@ function start_sorting(){
 }
 
 function updateOutput(arr, i){
-    return
+    return;
     if(i % 100 != 0){return}
     document.getElementById("result").innerHTML = arr.join(" ");
     console.log(arr)
