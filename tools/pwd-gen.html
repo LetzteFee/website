@@ -68,6 +68,10 @@
           <input type="number" id="length" value="16" min="1" size="4" />
           <label for="length"> Länge </label>
         </p>
+        <p>
+          <input type="text" id="blacklist">
+          <label for="blacklist">Blacklist Characters</label>
+        </p>
         <script>
           let password_object;
 
@@ -78,7 +82,8 @@
               document.getElementById("doNumbers").checked,
               document.getElementById("doSpecialChars").checked,
               document.getElementById("length").value,
-              document.getElementById("includeAll").checked
+              document.getElementById("includeAll").checked,
+              document.getElementById("blacklist").value.split("")
             );
             document.getElementById("output").value = password_object.buildPassword();
             doLog("init(): createPassword()", "Has the password to include all types? " + document.getElementById("includeAll").checked);
