@@ -4,7 +4,7 @@
 
 # General Information
 
-This website is just a training ground. I programm this website alongside learning html, css, javascript and other IT related things. For example, I only created this __README.md__ file to learn and practice _Markdown_. I am german and sometimes my comments are in my native language because it is more precise. btw.
+This website is just a training ground. I programm this website alongside learning html, css, javascript and other IT related things. For example, I only created this __README.md__ file to learn and practice _Markdown_. I am german and sometimes my comments are in my native language because it is more precise. I use Arch, btw.
 
 ---
 
@@ -22,5 +22,4 @@ function getRandomBoolean(){
 ```
 
 ## TODO
-* Add Couting Sort Tool and Libs
-* Fix OTP UI and Button spamming
+* Finished Counting Sort Algorithms Site
