@@ -37,7 +37,15 @@ function setup() {
 
   halfWidth = width / 2;
   halfHeight = height / 2;
-}
+/*
+  if(window.localStorage.getItem("theme")){
+    if(Number(window.localStorage.getItem("theme")) == 1){
+      changeTheme();
+    }
+  }else {
+    window.localStorage.setItem("theme", 0);
+  }
+}*/
 
 function draw() {
   drawSpielfeld();
@@ -354,6 +362,8 @@ function changeTheme() {
       }
     }
   }
+
+  //window.localStorage.setItem("theme", theme);
 }
 
 function resetGame() {

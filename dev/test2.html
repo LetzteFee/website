@@ -1,24 +1,42 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<link rel="icon" href="sources\logo.png">
-		<link rel="stylesheet" type="text/css" href="../css/main-test.css" />
 
-		<title>New Design</title>
-	</head>
-	
-	<body>
-		<navigation>
-			<container>
-				<a href="../animations/animationen.html">Animations</a>
-			</container>
-		</navigation>
-		
-		
-		
-		
-		<div id="header">
-			<h1>New Design</h1>
+<head>
+	<link rel="icon" href="../sources\logo.png">
+	<link rel="stylesheet" type="text/css" href="../css/main.css" />
+
+	<title>Test 2</title>
+</head>
+
+<body>
+	<header>
+		<div class="headerline">
+			<a href="../index.html">Home</a>
+			<a href="../animations/index.html">Animations</a>
+			<a href="../games/index.html">Games</a>
+			<a href="../tools/index.html">Tools</a>
+			<a style="float: right;" href="../dev.html">Dev</a>
 		</div>
-	</body> 
+	</header>
+	<main style="text-align: center;">
+	<p id="01">Der Counter ist bei: </p>
+	<input class="GenerateButton" style="float: none;" type="button" value="counter" onClick="increaseCounter()">
+</main>
+
+	<script>
+		function increaseCounter(){
+			localStorage.setItem("counter", Number(localStorage.getItem("counter")) + 1);
+			updateCounter();
+		}
+		function updateCounter(){
+			document.getElementById("01").innerHTML = "Der Counter ist bei: " + Number(localStorage.getItem("counter"));
+		}
+		if(localStorage.getItem("counter") == null){
+			localStorage.setItem("counter", 0);
+		}
+
+		increaseCounter();
+	</script>
+</body>
+
 </html>
