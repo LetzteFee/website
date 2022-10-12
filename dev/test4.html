@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="icon" href="../sources/logo.png">
+    <link rel="stylesheet" type="text/css" href="../css/main.css" />
+    <title>Js Min</title>
+
+    <script src="../lib/base.lib.js"></script>
+    <script src="../lib/convert-min.lib.js"></script>
+</head>
+
+<body>
+    <header>
+        <div class="headerline">
+            <a href="../index.html">Home</a>
+            <a href="../animations/index.html">Animations</a>
+            <a href="../games/index.html">Games</a>
+            <a href="../dev.html">Tools</a>
+            <a style="float: right;" href="../dev.html">Dev</a>
+        </div>
+    </header>
+    <main>
+        <div class="box">
+            <p>This Project is currently paused. <a href="https://www.gnu.org/philosophy/javascript-trap.html">Reason</a></p>
+            <h1 style="text-align: center;">JS Min</h1>
+            <p style="text-align: center;">
+                <input type="button" class="GenerateButton" style="float: none;" value="Convert" onclick="initConvert()">
+            </p>
+            <p style="text-align: center;">
+                <label for="content">Input</label>
+                <textarea id="content" rows="6" placeholder="let a = 4; let b = 5; let c = 5;"
+                    style="width: 90%; margin: 0px; border: 0px; border-radius: 5px; padding: 5px; resize: none;"></textarea>
+            </p>
+            <p style="text-align: center;">
+                <label for="output">Output</label>
+                <textarea id="output" rows="6" readonly
+                    style="width: 90%; margin: 0px; border: 0px; border-radius: 5px; padding: 5px; resize: none;"></textarea>
+            </p>
+        </div>
+    </main>
+    <script>
+        function initConvert(){
+            throw "Critical Error: Access denied!";
+            //convertToMin(document.getElementById("content").value, "output");
+        }
+    </script>
+</body>
+
+</html>
