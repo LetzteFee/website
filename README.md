@@ -22,4 +22,4 @@ function getRandomBoolean(){
 ```
 
 ## TODO
-* Finished Counting Sort Algorithms Site
+* Finishe Counting Sort Algorithms Site
