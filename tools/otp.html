@@ -11,8 +11,8 @@
   <script src="../lib/otp.lib.js"></script>
 
   <script>
-    var password_object = null;
-    var createPasswordfromButton = () => {
+    let password_object = null;
+    let createPasswordfromButton = () => {
       password_object = new password(true, true, true, true, 16, false);
 
       document.getElementById("key").value = password_object.buildPassword();
