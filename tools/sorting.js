@@ -1,8 +1,8 @@
 function start_sorting(){
+    //gets called by button
     let arr = document.getElementById("content").innerHTML.split(" ").map(v => Number(v));
-    let str = bubble_sort(arr, updateOutput).join(" ");
+    bubble_sort(arr, updateOutput);
 
-    document.getElementById("result").innerHTML = str;
     doLog("start_sorting()", "finished")
 }
 
@@ -13,5 +13,5 @@ function updateOutput(arr, i){
     console.log(arr)
 }
 function getRandomInput(){
-    document.getElementById("content").innerHTML = getRandomArray(10000, 1000).join(" ");
+    document.getElementById("content").innerHTML = getRandomArray(100, 100).join(" ");
 }
