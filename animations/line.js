@@ -1,13 +1,12 @@
-var kreisG = 40;
 var t = 0;
 var ax;
 var ay;
 var r = 0;
 var g = 0;
 var b = 0;
-var w = 1;
 
 function setup() {
+/*
 	if(windowHeight > windowWidth){
 		//handy bildschirm
 		createCanvas(1080, 1400);
@@ -18,7 +17,11 @@ function setup() {
 		createCanvas(windowWidth,windowHeight);
 		background(0);
 	}
-	
+*/
+	createCanvas(windowWidth, windowHeight);
+	background(0);
+	ax = random(width);
+	ay = random(height);
 }
 
 function draw() {
@@ -33,6 +36,7 @@ function draw() {
 	b = noise(t + 15) * 255;
 	t += 0.015;
 }
+/*
 function mousePressed() {
   if (mouseX > 0 && mouseX < width && mouseY > 0 && mouseY < height) {
     let fs = fullscreen();
@@ -41,3 +45,4 @@ function mousePressed() {
 	background(0);
   }
 }
+*/
