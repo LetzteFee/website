@@ -1,4 +1,4 @@
-function start_sorting(){
+function start_sorting() {
     //gets called by button
     let input = document.getElementById("content").innerHTML;
     //doLog("start_sorting()", input);
@@ -10,13 +10,13 @@ function start_sorting(){
     doLog("start_sorting()", "finished");
 }
 
-function updateOutput(input){
+function updateOutput(input) {
     document.getElementById("result").innerHTML = input.join(" ");
 }
-function updateCounter(input){
+function updateCounter(input) {
     document.getElementById("counter").innerHTML = Number(input);
 }
-function getRandomInput(){
+function getRandomInput() {
     document.getElementById("content").innerHTML = getRandomArray(100, 100).join(" ");
     doLog("getRandomInput()", document.getElementById("content").innerHTML)
 }
