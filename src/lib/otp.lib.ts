@@ -1,10 +1,9 @@
 class oneTimePad {
-    private debug_log: boolean;
-    private content: string;
-    private key: string;
-    private content_bin: string[];
+    private readonly debug_log: boolean;
+    private readonly content: string;
+    private readonly key: string;
+    private readonly content_bin: string[];
     private key_bin: string[];
-    private key_bin_length: string[];
     private output_bin: string[];
     private output: string;
 
@@ -17,17 +16,16 @@ class oneTimePad {
         this.content_bin = this.toBin(this.content);
         this.key_bin = this.toBin(this.key);
 
-        this.key_bin = this.adaptKeyLength();
+        this.adaptKeyLength();
 
-        this.output_bin = this.calc();
+        this.calc();
         this.output = this.binToText(this.output_bin);
 
         if (this.debug_log) {
             doLog("oneTimePad: constructor()", "content: " + this.content);
             doLog("oneTimePad: constructor()", "key: " + this.key);
             doLog("oneTimePad: constructor()", "content bin: " + this.content_bin);
-            doLog("oneTimePad: constructor()", "key bin: " + this.key_bin);
-            doLog("oneTimePad: constructor()", "key bin adapted length: " + this.key_bin_length);
+            doLog("oneTimePad: constructor()", "key bin adapted length: " + this.key_bin);
             doLog("oneTimePad: constructor()", "output bin: " + this.output_bin);
             doLog("oneTimePad: constructor()", "output: " + this.output);
         }
@@ -42,7 +40,7 @@ class oneTimePad {
         }
         return output;
     }
-    private calc(): string[] {
+    private calc(): void {
         let output: string[] = [];
 
         for (let i = 0; i < this.content_bin.length; i++) {
@@ -56,27 +54,15 @@ class oneTimePad {
             }
         }
 
-        return output;
+        this.output_bin = output;
     }
-    private adaptKeyLength(): string[] {
-        let newKey: string[] = this.key_bin;
-
-        if (this.content_bin.length == newKey.length) {
-            return newKey;
+    private adaptKeyLength(): void {
+        while (this.content_bin.length > this.key_bin.length) {
+            this.key_bin = this.key_bin.concat(this.key_bin);
         }
-        if (this.content_bin.length > newKey.length) {
-            while (this.content_bin.length > newKey.length) {
-                newKey = newKey.concat(this.key_bin);
-            }
-            newKey.length = this.content_bin.length;
-            return newKey;
+        if (this.key_bin.length > this.content_bin.length) {
+            this.key_bin.length = this.content_bin.length;
         }
-        if (this.content_bin.length < newKey.length) {
-            newKey.length = this.content_bin.length;
-            return newKey;
-        }
-        doLog("otp.lib.js: oneTimePad: adaptKeyLength()", "FATAL ERROR! Reached bottom function", true);
-        return null;
     }
     private binToText(inp: string[]) {
         let output: string = "";
