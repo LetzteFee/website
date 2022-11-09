@@ -12,7 +12,6 @@ function get_link(path_prefix: string = ''): string {
 }
 
 function modify_a(path_prefix: string): void {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-expect-error
     document.getElementById("link_random").href = get_link(path_prefix);
 }

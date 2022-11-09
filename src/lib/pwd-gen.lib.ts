@@ -16,14 +16,26 @@
 //  var password01 = password_object.generatePassword();
 
 class password {
-  constructor(
-    doLowercase=true,
-    doUppercase=true,
-    doNumbers=true,
-    doSpecialChars=true,
-    length=32,
-    doIncludeEveryType=false,
-    blacklist_chars=[]
+  private readonly UppercaseLetters: string;
+  private readonly LowercaseLetters: string;
+  private readonly Numbers: string;
+  private readonly SpecialChars: string;
+  private readonly doLowercase: boolean;
+  private readonly doUppercase: boolean;
+  private readonly doSpecialChars: boolean;
+  private readonly doNumbers: boolean;
+  private pwdLength: number;
+  private doIncludeEveryType: boolean;
+  private readonly blacklist_chars: string;
+
+  public constructor(
+    doLowercase: boolean = true,
+    doUppercase: boolean = true,
+    doNumbers: boolean = true,
+    doSpecialChars: boolean = true,
+    length: number = 32,
+    doIncludeEveryType: boolean = false,
+    blacklist_chars: string = ''
   ) {
     this.UppercaseLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     this.LowercaseLetters = "abcdefghijklmnopqrstuvwxyz";
@@ -39,7 +51,7 @@ class password {
     this.doIncludeEveryType = doIncludeEveryType;
     this.blacklist_chars = blacklist_chars;
   }
-  buildPassword() {
+  public buildPassword(): string {
     //check if password long enough to include all types if doIncludeEveryType is enabled
     if (this.doIncludeEveryType) {
       this.checkPwdAchievability();
@@ -63,7 +75,7 @@ class password {
 
     //remove blacklist characters from possible letters variable
     for (let h = 0; h < this.blacklist_chars.length; h++) {
-      pl = removeCharsFromString(pl, this.blacklist_chars[h]);
+      pl = removeCharsFromString(pl, this.blacklist_chars.charAt(h));
     }
 
     //check if blacklist if compatible with doIncludeEveryType
@@ -87,8 +99,8 @@ class password {
     doLog("buildPassword()", psw + " is acceptable.");
     return psw;
   }
-  containsSelectedTypes(psw) {
-    let containsType;
+  private containsSelectedTypes(psw: string): boolean {
+    let containsType: boolean;
 
     if (this.doLowercase) {
       containsType = false;
@@ -148,8 +160,8 @@ class password {
 
     return true;
   }
-  checkPwdAchievability() {
-    let amount_of_types =
+  private checkPwdAchievability(): void {
+    let amount_of_types: number =
       Number(this.doLowercase) +
       Number(this.doUppercase) +
       Number(this.doSpecialChars) +
