@@ -64,11 +64,11 @@ class oneTimePad {
             this.key_bin.length = this.content_bin.length;
         }
     }
-    private binToText(inp: string[]) {
-        let output: string = "";
-        for (let i = 0; i < inp.length; i++) {
-            output = output + String.fromCharCode(parseInt(inp[i], 2));
-        }
-        return output;
+    private binToText(inp: string[]): string {
+        return inp.map(
+            function (str: string): string {
+                return String.fromCharCode(parseInt(str, 2))
+            }
+        ).join('')
     }
 }
