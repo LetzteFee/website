@@ -7,7 +7,7 @@ class oneTimePad {
     private output_bin: string[];
     private output: string;
 
-    public constructor(input: string, key: string, log: boolean = true) {
+    constructor(input: string, key: string, log: boolean = true) {
         this.debug_log = log;
 
         this.content = input;
@@ -34,27 +34,18 @@ class oneTimePad {
         return this.output;
     }
     private toBin(inp: string): string[] {
-        let output: string[] = [];
-        for (let i = 0; i < inp.length; i++) {
-            output[i] = inp.charCodeAt(i).toString(2);
-        }
-        return output;
+        return inp.split('').map(function (v: string): string {
+            return v.charCodeAt(0).toString(2)
+        })
     }
     private calc(): void {
-        let output: string[] = [];
-
+        this.output_bin = [];
         for (let i = 0; i < this.content_bin.length; i++) {
-            output[i] = "";
+            this.output_bin[i] = "";
             for (let j = 0; j < this.content_bin[i].length; j++) {
-                if (this.content_bin[i].charAt(j) == this.key_bin[i].charAt(j)) {
-                    output[i] = output[i] + "1";
-                } else {
-                    output[i] = output[i] + "0";
-                }
+                this.output_bin[i] += String(Number(this.content_bin[i].charAt(j) == this.key_bin[i].charAt(j)));
             }
         }
-
-        this.output_bin = output;
     }
     private adaptKeyLength(): void {
         while (this.content_bin.length > this.key_bin.length) {
