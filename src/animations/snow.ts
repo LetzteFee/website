@@ -4,7 +4,7 @@ class flake {
   private readonly targetY: number;
   private readonly width: number;
   private readonly height: number;
-  constructor(inp_target: number = null, inp_current: number = 0) {
+  constructor(inp_target: null|number = null, inp_current: number = 0) {
     this.width = getRandomInt(0, 20);
     this.height = getRandomInt(0, 20);
 
@@ -37,6 +37,7 @@ class flake {
 let objekt: flake[] = [];
 let DARKMODE: boolean = false;
 
+//@ts-ignore
 function setup(): void {
   // @ts-expect-error
   createCanvas(windowWidth, windowHeight);
@@ -50,7 +51,7 @@ function setup(): void {
     objekt[i] = new flake(h, getRandomInt(0, h));
   }
 }
-
+//@ts-ignore
 function draw() {
   // @ts-expect-error
   background(Number(!DARKMODE) * 255);

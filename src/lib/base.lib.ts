@@ -17,10 +17,10 @@ function getRandomArray(n: number, maxValue: number): number[] {
         maxValue = getRandomInt(0, 1000);
     }
 
-    let arr = [];
-    arr[n - 1] = null;
-    arr.fill(null);
-    return arr.map(() => Math.floor(Math.random() * (maxValue + 1)));
+    let arr: number[] = [];
+    arr[n - 1] = 0;
+    arr.fill(0);
+    return arr.map(function (): number { return Math.floor(Math.random() * (maxValue + 1)) });
 }
 
 function removeCharsFromString(str: string, char: string): string {
