@@ -8,10 +8,10 @@ class flake {
     this.width = getRandomInt(0, 20);
     this.height = getRandomInt(0, 20);
 
-    // @ts-expect-error
+    // @ts-ignore
     this.x = getRandomInt(0 + this.width / 2, width - this.width / 2);
     if (inp_target == null) {
-      // @ts-expect-error
+      // @ts-ignore
       this.targetY = getRandomInt(0 + this.height / 2, height - this.height / 2);
     }else{
       this.targetY = inp_target;
@@ -39,21 +39,21 @@ let DARKMODE: boolean = false;
 
 //@ts-ignore
 function setup(): void {
-  // @ts-expect-error
+  // @ts-ignore
   createCanvas(windowWidth, windowHeight);
   // @ts-expect-error
   fill(255);
   // @ts-expect-error
   noStroke();
   for (let i = 0; i < 256; i++) {
-    // @ts-expect-error
+    // @ts-ignore
     let h = getRandomInt(0, height);
     objekt[i] = new flake(h, getRandomInt(0, h));
   }
 }
 //@ts-ignore
 function draw() {
-  // @ts-expect-error
+  // @ts-ignore
   background(Number(!DARKMODE) * 255);
   for (let i = 0; i < objekt.length; i++) {
     objekt[i].move();

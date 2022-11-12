@@ -10,16 +10,16 @@ function tsNoise(inp: number): number{
 function tsStroke(r: number, g: null|number = null, b: null|number = null): void{
 	if(g == null){g = r}
 	if(b == null){b = r}
-	// @ts-expect-error
+	// @ts-ignore
 	stroke(r, g, b);
 }
 //@ts-ignore
 function setup() {
-	// @ts-expect-error
+	// @ts-ignore
 	createCanvas(windowWidth, windowHeight);
-	// @ts-expect-error
+	// @ts-ignore
 	background(0);
-	// @ts-expect-error
+	// @ts-ignore
 	ax = getRandomInt(width);
 	// @ts-expect-error
 	ay = random(height);
