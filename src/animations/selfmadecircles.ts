@@ -17,8 +17,7 @@ class Circle {
     this.color = inp_color;
   }
   public draw(inp_type: number = 2): void {
-    //@ts-ignore
-    stroke(this.color.r, this.color.g, this.color.b)
+    stroke(this.color.r, this.color.g, this.color.b);
 
     let deltaX: number;
     let deltaY: number;
@@ -31,12 +30,12 @@ class Circle {
       x = this.x + deltaX;
       if (inp_type == 1 || inp_type == 2) {
         deltaY = Math.sqrt(r * r - deltaX * deltaX);
-        //@ts-expect-error
+        //@ts-ignore
         point(x, y - deltaY);
       }
       if (inp_type == 0 || inp_type == 2) {
         deltaY = Math.sqrt(r * r - deltaX * deltaX);
-        //@ts-expect-error
+        //@ts-ignore
         point(x, y + deltaY);
       }
     }
@@ -48,12 +47,12 @@ class Circle {
       y = this.y + deltaY;
       if (inp_type == 1 || inp_type == 2) {
         deltaX = Math.sqrt(r * r - deltaY * deltaY);
-        //@ts-expect-error
+        //@ts-ignore
         point(x - deltaX, y);
       }
       if (inp_type == 0 || inp_type == 2) {
         deltaX = Math.sqrt(r * r - deltaY * deltaY);
-        //@ts-expect-error
+        //@ts-ignore
         point(x + deltaX, y);
       }
     }
@@ -63,15 +62,15 @@ class Circle {
 let circles01: Circle[] = [];
 //@ts-ignore
 function setup(): void {
-  //@ts-expect-error
+  //@ts-ignore
   createCanvas(windowWidth, windowHeight);
-  //@ts-expect-error
-  background(255);
+  //@ts-ignore
+  background(0);
+  fps(5);
 
-
-  //@ts-expect-error
+  //@ts-ignore
   let w: number = width;
-  //@ts-expect-error
+  //@ts-ignore
   let h: number = height;
   for (let i = 0; i < 20; i++) {
     let color: Color = { r: getRandomInt(0, 255), g: getRandomInt(0, 255), b: getRandomInt(0, 255) };
@@ -85,3 +84,4 @@ function draw(): void {
     circles01[i].size += getRandomInt(-10, 10);
   }
 }
+initCanvasLib();
