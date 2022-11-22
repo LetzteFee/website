@@ -9,11 +9,12 @@
 //  doUppercase: boolean,
 //  doNumbers: boolean,
 //  doSpecialChars: boolean,
-//  length: int,
+//  length: integer,
 //  doIncludeEveryType: boolean
 //  );
-// 2. Call the function to generate the password
-//  var password01 = password_object.generatePassword();
+// 2. Call the function to obtain a password
+// password_object.getPassword();
+// 3. password_object.rebuild() to obtain a new random password
 
 class password {
   private readonly UppercaseLetters: string;
@@ -27,6 +28,7 @@ class password {
   private pwdLength: number;
   private doIncludeEveryType: boolean;
   private readonly blacklist_chars: string;
+  private passwd: string;
 
   public constructor(
     doLowercase: boolean = true,
@@ -50,8 +52,15 @@ class password {
     this.pwdLength = length;
     this.doIncludeEveryType = doIncludeEveryType;
     this.blacklist_chars = blacklist_chars;
+    this.passwd = "";
   }
-  public buildPassword(): string {
+  public getPassword(alwaysRebuild: boolean = false): string {
+    return this.passwd == "" || alwaysRebuild ?  this.buildPassword() : this.passwd;
+  }
+  public rebuild(): void {
+    this.passwd = this.buildPassword();
+  }
+  private buildPassword(): string {
     //check if password long enough to include all types if doIncludeEveryType is enabled
     if (this.doIncludeEveryType) {
       this.checkPwdAchievability();
@@ -97,6 +106,7 @@ class password {
     }
 
     doLog("buildPassword()", psw + " is acceptable.");
+    this.passwd = psw;
     return psw;
   }
   private containsSelectedTypes(psw: string): boolean {

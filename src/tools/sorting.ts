@@ -4,10 +4,8 @@ function start_sorting() {
     //doLog("start_sorting()", input);
     input = input.split(" ").map(function (v: string) { return Number(v) });
     //doLog("start_sorting()", input);
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-expect-error
     let algo: any = document.getElementById("select_algorithm").value;
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-expect-error
     initSorting(input, updateOutput, updateCounter, algo);
 

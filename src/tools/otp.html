@@ -11,11 +11,9 @@
   <script src="../lib/otp.lib.js"></script>
 
   <script>
-    let password_object = null;
+    let password_object = new password(true, true, true, true, 16, false);
     let createPasswordfromButton = () => {
-      password_object = new password(true, true, true, true, 16, false);
-
-      document.getElementById("key").value = password_object.buildPassword();
+      document.getElementById("key").value = password_object.getPassword(true);
     }
     function encrypt() {
       let x = new oneTimePad(document.getElementById("content").value, document.getElementById("key").value);
