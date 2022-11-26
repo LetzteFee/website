@@ -14,7 +14,7 @@ class Canvas {
     private readonly windowHeight: number;
     private width: number;
     private height: number;
-    private frameCount: number;
+    static frameCount: number = 0;
     constructor() {
         this.id = null;
         this.windowWidth = window.innerWidth;
@@ -52,18 +52,15 @@ class Canvas {
     }
     public draw(): void {
         if (this.id == null) this.createCanvas();
-        this.frameCount = 0;
         setInterval(function (): void {
             Draw();
+            Canvas.frameCount++;
 
         }, this.FPS);
     }
     public getFrameCount(): number {
-        if (typeof this.frameCount != "number") throw "Error: framecount not defined yet";
-        return this.frameCount;
-    }
-    public increaseFrameCount(): void {
-        this.frameCount++;
+        if (typeof Canvas.frameCount != "number") throw "Error: framecount not defined yet";
+        return Canvas.frameCount;
     }
     public stroke(
         r: number,
@@ -89,7 +86,6 @@ class Canvas {
         width: number = (this.getWidth() > this.getHeight() ? this.getHeight() : this.getWidth()) * 0.1,
         height: number = width
     ): void {
-        //if(this.getFrameCount() <= 1) doLog("rect()", `X: ${inp_x} Y: ${inp_y} Width: ${width} Height: ${height}`)
         this.drawObject.fillRect(inp_x, inp_y, width, height);
     }
 }
