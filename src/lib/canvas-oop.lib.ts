@@ -36,7 +36,7 @@ class Canvas {
         this.id.style.height = `${inp_height}px`;
         this.drawObject = this.id.getContext("2d");
         this.width = inp_width;
-        this.height = inp_width;
+        this.height = inp_height;
     }
     public getWidth(): number {
         if (typeof this.width != "number") {
@@ -59,7 +59,7 @@ class Canvas {
         }, this.FPS);
     }
     public getFrameCount(): number {
-        if (typeof this.frameCount != "number") throw "Fatal Error: framecount not defined yet";
+        if (typeof this.frameCount != "number") throw "Error: framecount not defined yet";
         return this.frameCount;
     }
     public increaseFrameCount(): void {
@@ -89,6 +89,7 @@ class Canvas {
         width: number = (this.getWidth() > this.getHeight() ? this.getHeight() : this.getWidth()) * 0.1,
         height: number = width
     ): void {
+        //if(this.getFrameCount() <= 1) doLog("rect()", `X: ${inp_x} Y: ${inp_y} Width: ${width} Height: ${height}`)
         this.drawObject.fillRect(inp_x, inp_y, width, height);
     }
 }
