@@ -40,11 +40,17 @@ function doLog(origin = "unknown origin", content: any = "", throw_error: boolea
 }
 
 function sumTrueBools(args: boolean[]): number {
-    let a = 0;
+    return args.filter(v => v).length;
+    /*let a = 0;
     for (let i = 0; i < args.length; i++) {
         a = a + Number(args[i]);
     }
-    return a;
+    return a;*/
+}
+function convertTo8bitRange(inp: number): number{
+    if(inp <= 0) return 0;
+    if(inp >= 255) return 255;
+    return Math.round(inp);
 }
 function activateStrictMode(): void {
     "use strict";
