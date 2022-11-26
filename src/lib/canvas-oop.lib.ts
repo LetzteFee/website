@@ -88,4 +88,19 @@ class Canvas {
     ): void {
         this.drawObject.fillRect(inp_x, inp_y, width, height);
     }
+    public selfmadeCircle(inp_x: number, inp_y: number, d: number): void{
+        let r: number = d * 0.5;
+        for(let i: number = inp_x - r; i < inp_x + r;i++){
+            let dx: number = inp_x - i;
+            let y: number = Math.sqrt(r*r - dx*dx);
+            this.point(i, inp_y + y);
+            this.point(i, inp_y - y);
+        }
+        for(let i: number = inp_y - r; i < inp_y + r;i++){
+            let dy: number = inp_y - i;
+            let x: number = Math.sqrt(r*r - dy*dy);
+            this.point(inp_x + x, i);
+            this.point(inp_x - x, i);
+        }
+    }
 }

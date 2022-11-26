@@ -7,6 +7,8 @@ const Draw = function(): void {
         50,
         50
     );
+    canvas.stroke(255);
+    canvas.selfmadeCircle(canvas.getWidth() / 2, canvas.getHeight() / 2, 100);
 };
 let canvas = new Canvas();
 canvas.fps(60);
