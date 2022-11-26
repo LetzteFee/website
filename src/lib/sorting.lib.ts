@@ -7,8 +7,16 @@ let callback_counter: any = () => { throw "Error: Callback function undefined" }
 let doOneCycle: any = () => { throw "Error: doOneCycle function undefined" };
 let counter: number = 0;
 let time_between_step: number = null;
+let completed: boolean = true;
 
-function initSorting(input_arr: number[], input_callback: cb, input_callback_counter: cb, algo: string = "bubble", duration: number = 50) {
+function initSorting(
+  input_arr: number[],
+  input_callback: cb,
+  input_callback_counter: cb,
+  algo: string = "bubble",
+  duration: number = 50
+): void {
+  if (!completed) return;
   arr.originalArray = input_arr;
   callback = input_callback;
   callback_counter = input_callback_counter;
@@ -37,6 +45,7 @@ function initSorting(input_arr: number[], input_callback: cb, input_callback_cou
     default:
       throw "Error: Unknown Algo";
   }
+  completed = false;
   step_by_step_sort();
 }
 
@@ -99,6 +108,7 @@ function noob_sort_doOneCycle() {
 }
 function step_by_step_sort() {
   if (isSorted() && arr.originalArray.length === arr.targetArray.length) {
+    completed = true;
     return;
   }
   //doLog("step_by_step_sort()", "still running");
