@@ -1,13 +1,15 @@
 ﻿<!DOCTYPE html>
 <html>
+
 <head>
-	<link rel="icon" href="sources\logo.png">
-	<link rel="stylesheet" type="text/css" href="css\main.css" />
-	<title>Home</title>
+    <link rel="icon" href="sources\logo.png">
+    <link rel="stylesheet" type="text/css" href="css\main.css" />
+    <title>Home</title>
 
     <script src="lib/base.lib.js"></script>
     <script src="lib/randomSite.js"></script>
 </head>
+
 <body>
     <header>
         <div class="headerline">
@@ -18,17 +20,27 @@
             <a style="float: right;" href="dev.html">Dev</a>
         </div>
     </header>
-	<main>
-		<div class="box">
-			<h1 style="text-align: center;">Explore</h1>
-			<div class="zeile">Random Site
-                <input
-                    type="button"
-                    value="open"
-                    onclick="go_to_random_link('')"
-                />
+    <main>
+        <div class="box">
+            <h1 style="text-align: center;">Explore</h1>
+            <div class="zeile">
+                Random Site
+                <input type="button" value="open" onclick="go_to_random_link('')" />
             </div>
-		</div>
-	</main>
+        </div>
+        <div class="box">
+            <h1 style="text-align: center;">Used Libraries</h1>
+            <div class="zeile">
+                p5.js
+                <a href="https://p5js.org/">GitHub</a>
+                <a href="https://p5js.org/">Website</a>
+            </div>
+            <div class="zeile">
+                My own library
+                <a href="https://github.com/LetzteFee/website">GitHub</a>
+            </div>
+        </div>
+    </main>
 </body>
+
 </html>
