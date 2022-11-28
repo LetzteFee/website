@@ -1,7 +1,5 @@
 function getRandomInt(min: number = 0, max: number = 100): number {
-    if (min >= max) {
-        return min;
-    }
+    if (min >= max) return min;
     return Math.floor(min + Math.random() * (max - min + 1));
 }
 
@@ -10,12 +8,8 @@ function getRandomBoolean(): boolean {
 }
 
 function getRandomArray(n: number, maxValue: number): number[] {
-    if (typeof n != "number") {
-        n = getRandomInt(2, 100);
-    }
-    if (typeof maxValue != "number") {
-        maxValue = getRandomInt(0, 1000);
-    }
+    if (typeof n != "number") n = getRandomInt(2, 100);
+    if (typeof maxValue != "number") maxValue = getRandomInt(0, 1000);
 
     let arr: number[] = [];
     arr[n - 1] = 0;
@@ -33,9 +27,7 @@ function removeCharsFromString(str: string, char: string): string {
 function doLog(origin = "unknown origin", content: any = "", throw_error: boolean = false): void {
     let time = new Date();
     let str: string = "[" + time.getMinutes() + ":" + time.getSeconds() + "]" + "[" + origin + "] " + content;
-    if (throw_error) {
-        throw str;
-    }
+    if (throw_error) throw str;
     console.log(str);
 }
 
