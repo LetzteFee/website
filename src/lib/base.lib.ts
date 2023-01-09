@@ -24,7 +24,7 @@ function removeCharsFromString(str: string, char: string): string {
     return str;
 }
 
-function doLog(origin = "unknown origin", content: any = "", throw_error: boolean = false): void {
+function doLog(origin: any = "unknown origin", content: any = "", throw_error: boolean = false): void {
     let time = new Date();
     let str: string = "[" + time.getMinutes() + ":" + time.getSeconds() + "]" + "[" + origin + "] " + content;
     if (throw_error) throw str;

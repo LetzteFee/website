@@ -7,7 +7,7 @@ Object01.draw: Funktion wird übergeben, die dann Intervallmäßig ausgeführt w
 Dependencies: base.lib.ts
 */
 class Canvas {
-    private FPS: number;
+    private frameTime: number;
     private id: any;
     private drawObject: any;
     private readonly windowWidth: number;
@@ -22,7 +22,7 @@ class Canvas {
         this.fps(24);
     }
     public fps(inp_fps: number): void {
-        this.FPS = 1000 / inp_fps;
+        this.frameTime = 1000 / inp_fps;
     }
     public createCanvas(
         inp_width: number = this.windowWidth,
@@ -50,13 +50,19 @@ class Canvas {
         }
         return this.height;
     }
+    public getWindowWidth(): number {
+	return this.windowWidth;
+    }
+    public getWindowHeight(): number {
+	return this.windowHeight;
+    }
     public draw(): void {
         if (this.id == null) this.createCanvas();
         setInterval(function (): void {
             Draw();
             Canvas.frameCount++;
 
-        }, this.FPS);
+        }, this.frameTime);
     }
     public getFrameCount(): number {
         if (typeof Canvas.frameCount != "number") throw "Error: framecount not defined yet";
