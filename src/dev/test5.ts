@@ -1,20 +1,18 @@
-const Draw = function(): void {
+const Draw = function (): void {
     canvas.background(0);
-    function animator(max: number = 1, acc: number = 0.05): number {
-	return Math.round((Math.sin(canvas.getFrameCount() * acc) * 0.5 + 0.5) * max);
-    }
-    canvas.stroke(animator(255), 0, 0);
+    canvas.stroke(
+        canvas.getAnimator(255, 120),
+        canvas.getAnimator(255, 180),
+        canvas.getAnimator(255, 300)
+    );
     canvas.rect(
-        animator(canvas.getWidth()- 50),
-        animator(canvas.getHeight() - 50, 0.02),
+        canvas.getAnimator(canvas.getWidth() - 50),
+        canvas.getAnimator(canvas.getHeight() - 50, 360),
         50,
         50
     );
-    console.log(animator());
-    //canvas.stroke(255);
-    //canvas.selfmadeCircle(canvas.getWidth() / 2, canvas.getHeight() / 2, 100);
 };
 let canvas = new Canvas();
-console.log({with: canvas.getWindowWidth(), height: canvas.getWindowHeight()});
+console.log({ with: canvas.getWindowWidth(), height: canvas.getWindowHeight() });
 canvas.fps(60);
 canvas.draw();

@@ -51,10 +51,10 @@ class Canvas {
         return this.height;
     }
     public getWindowWidth(): number {
-	return this.windowWidth;
+        return this.windowWidth;
     }
     public getWindowHeight(): number {
-	return this.windowHeight;
+        return this.windowHeight;
     }
     public draw(): void {
         if (this.id == null) this.createCanvas();
@@ -67,6 +67,11 @@ class Canvas {
     public getFrameCount(): number {
         if (typeof Canvas.frameCount != "number") throw "Error: framecount not defined yet";
         return Canvas.frameCount;
+    }
+    public getAnimator(max: number = 1, perioden_laenge_frames: number = 240): number {
+        return Math.round((Math.sin(
+            this.getFrameCount() / perioden_laenge_frames * 2 * Math.PI
+        ) * 0.5 + 0.5) * max);
     }
     public stroke(
         r: number,
@@ -94,17 +99,17 @@ class Canvas {
     ): void {
         this.drawObject.fillRect(inp_x, inp_y, width, height);
     }
-    public selfmadeCircle(inp_x: number, inp_y: number, d: number): void{
+    public selfmadeCircle(inp_x: number, inp_y: number, d: number): void {
         let r: number = d * 0.5;
-        for(let i: number = inp_x - r; i < inp_x + r;i++){
+        for (let i: number = inp_x - r; i < inp_x + r; i++) {
             let dx: number = inp_x - i;
-            let y: number = Math.sqrt(r*r - dx*dx);
+            let y: number = Math.sqrt(r * r - dx * dx);
             this.point(i, inp_y + y);
             this.point(i, inp_y - y);
         }
-        for(let i: number = inp_y - r; i < inp_y + r;i++){
+        for (let i: number = inp_y - r; i < inp_y + r; i++) {
             let dy: number = inp_y - i;
-            let x: number = Math.sqrt(r*r - dy*dy);
+            let x: number = Math.sqrt(r * r - dy * dy);
             this.point(inp_x + x, i);
             this.point(inp_x - x, i);
         }
