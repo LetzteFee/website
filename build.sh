@@ -10,6 +10,6 @@ echo "copying from src to build"
 cp -r src/* build/
 
 echo "compiling typescript"
-npx tsc
+tsc
 
 #remove .ts files from build dir
