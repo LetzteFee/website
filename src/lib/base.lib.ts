@@ -1,6 +1,6 @@
 function getRandomInt(min: number = 0, max: number = 100): number {
     if (min >= max) return min;
-    return Math.floor(min + Math.random() * (max - min + 1));
+    return Math.round(min + Math.random() * (max - min));
 }
 
 function getRandomBoolean(): boolean {
