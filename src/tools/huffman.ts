@@ -62,7 +62,7 @@ class binaryTree {
     );
     //@ts-ignore
     text(
-      `Huf Bit länge ${encoded_arr.join("").length}`,
+      `Huf Bit länge: ${encoded_arr.join("").length}`,
       width - 10,
       height - 80,
     );
