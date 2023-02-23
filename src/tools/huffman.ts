@@ -12,12 +12,12 @@ class binaryTree {
     this.rechts = nodeB;
   }
   private calcCodes(bisherigerCode: string = ""): string[] {
-    if (this.value.v != null) return [this.value.v + ": " + bisherigerCode];
-    let a: string[] = this.links.calcCodes(bisherigerCode + "0");
-    let b: string[] = this.rechts.calcCodes(bisherigerCode + "1");
+    if (this.value.v != null) return [`${this.value.v}: ${bisherigerCode}`];
+    let a: string[] = this.links.calcCodes(`${bisherigerCode}0`);
+    let b: string[] = this.rechts.calcCodes(`${bisherigerCode}1`);
     let c: string[] = a.concat(b);
     c.sort();
-    c.sort((a1: string, b2: string) => a1.length - b2.length);
+    c.sort((a1: string, b2: string): number => a1.length - b2.length);
     return c;
   }
 
@@ -106,7 +106,7 @@ function draw() {
   background(0);
 
   let inp = inp_field.value();
-  if (inp == null) return;
+  if (inp == null || inp == "" || typeof inp != "string") return;
 
   let main = huffman(String(inp));
 
