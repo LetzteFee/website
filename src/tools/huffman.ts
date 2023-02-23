@@ -1,7 +1,7 @@
 class binaryTree {
   public value: Buchstabe;
-  public links: binaryTree | null;
-  public rechts: binaryTree | null;
+  public links: binaryTree;
+  public rechts: binaryTree;
   constructor(
     value: Buchstabe,
     nodeA: binaryTree = null,
@@ -11,21 +11,67 @@ class binaryTree {
     this.links = nodeA;
     this.rechts = nodeB;
   }
-  private calcCodes(bisherigerCode: string = ""): string[] {
-    if (this.value.v != null) return [`${this.value.v}: ${bisherigerCode}`];
-    let a: string[] = this.links.calcCodes(`${bisherigerCode}0`);
-    let b: string[] = this.rechts.calcCodes(`${bisherigerCode}1`);
-    let c: string[] = a.concat(b);
+  public calcCodesStr(): string[] {
+    let c: string[] = this.calcCodesArr().map(function (v: string[]): string {
+      return v[0] + ": " + v[1];
+    });
+
     c.sort();
     c.sort((a1: string, b2: string): number => a1.length - b2.length);
     return c;
   }
+  public calcCodesArr(bisherigerCode: string = ""): string[][] {
+    if (this.value.v != null) return [[this.value.v, bisherigerCode]];
+    let a: string[][] = this.links.calcCodesArr(bisherigerCode + "0");
+    let b: string[][] = this.rechts.calcCodesArr(bisherigerCode + "1");
+    let c: string[][] = a.concat(b);
+    return c;
+  }
+  public calcCodesMap(): Map<string, string> {
+    let m: Map<string, string> = new Map();
+    let arr: string[][] = this.calcCodesArr();
+    for (let i: number = 0; i < arr.length; i++) {
+      m.set(arr[i][0], arr[i][1]);
+    }
+    return m;
+  }
+  public origToCodedArr(original_string: string): string[] {
+    let encoded_map: Map<string, string> = this.calcCodesMap();
+    return original_string.split("").map(
+      function (v: string): string {
+        return encoded_map.get(v);
+      },
+    );
+  }
+  public displayOverlay(original_string: string): void {
+    this.displayCodecs();
 
+    let encoded_arr: string[] = this.origToCodedArr(original_string);
+    //@ts-ignore
+    textAlign(LEFT);
+    //@ts-ignore
+    text(`Huf: ${encoded_arr.join("|")}`, width / 2 + 50, 20);
+
+    //@ts-ignore
+    textAlign(RIGHT);
+    //@ts-ignore
+    text(
+      `Orig Bit länge (ASCII): ${original_string.length * 8}`,
+      width - 10,
+      height - 40,
+    );
+    //@ts-ignore
+    text(
+      `Huf Bit länge ${encoded_arr.join("").length}`,
+      width - 10,
+      height - 80,
+    );
+  }
   public displayCodecs(): void {
     //@ts-expect-error
     textAlign(LEFT);
 
-    let arr: string[] = this.calcCodes();
+    let arr: string[] = this.calcCodesStr();
 
     for (let i = 0; i < arr.length; i++) {
       //@ts-ignore
@@ -64,7 +110,7 @@ class binaryTree {
     //@ts-ignore
     fill("white");
     //@ts-ignore
-    ellipse(x, y, 25);
+    ellipse(x, y, 30);
     //@ts-ignore
     fill("black");
     //@ts-ignore
@@ -74,13 +120,13 @@ class binaryTree {
 
 class Buchstabe {
   public n: number;
-  public v: string | null;
+  public v: string;
   constructor(anzahl = 1, zeichen: string = null) {
     this.n = anzahl;
     this.v = zeichen;
   }
   public display(): string {
-    if (this.v != null && this.n > 1) return `${this.v} (${this.n})`;
+    if (this.v != null && this.n > 1) return `${this.v}(${this.n})`;
     if (this.v != null) return this.v;
     if (this.n != null) return this.n.toString();
     return "Node has no valid values";
@@ -93,7 +139,7 @@ let inp_field: any;
 function setup() {
   createCanvas(windowWidth, windowHeight);
   //@ts-expect-error
-  textSize(10);
+  textFont("monospace", 10);
   //@ts-expect-error
   frameRate(2);
 
@@ -111,7 +157,7 @@ function draw() {
   let main = huffman(String(inp));
 
   main.render(width / 2, 20);
-  main.displayCodecs();
+  main.displayOverlay(inp);
 }
 
 function countLetters(str: string): Buchstabe[] {
