@@ -140,31 +140,14 @@ function huffman(str: string): binaryTree {
 function createTree(inp: binaryTree[]): binaryTree {
   if (inp.length <= 1) return inp[0];
 
-  //niedrigsten Node raussuchen, in Variable speichern und Eintrag löschen
-  //wieder niedrigsten Node raussuchen, in Varable speichern und index speichern
-  //Nodes kombinieren und im index speichern
+  inp.sort(function(a1: binaryTree, b1: binaryTree): number{
+    return a1.value.n - b1.value.n;
+  });
 
-  let index;
-
-  let a = inp[0];
-  index = 0;
-  for (let i = 1; i < inp.length; i++) {
-    if (inp[i].value.n < a.value.n) {
-      a = inp[i];
-      index = i;
-    }
-  }
-  inp.splice(index, 1);
-
-  let b = inp[0];
-  index = 0;
-  for (let i = 1; i < inp.length; i++) {
-    if (inp[i].value.n < b.value.n) {
-      b = inp[i];
-      index = i;
-    }
-  }
-  inp[index] = new binaryTree(new Buchstabe(a.value.n + b.value.n), a, b);
+  let a: binaryTree = inp[0];
+  let b: binaryTree = inp[1];
+  inp.splice(0, 1);
+  inp[0] = new binaryTree(new Buchstabe(a.value.n + b.value.n), a, b);
 
   return createTree(inp);
 }
