@@ -140,7 +140,7 @@ function huffman(str: string): binaryTree {
 function createTree(inp: binaryTree[]): binaryTree {
   if (inp.length <= 1) return inp[0];
 
-  inp.sort(function(a1: binaryTree, b1: binaryTree): number{
+  inp.sort(function (a1: binaryTree, b1: binaryTree): number {
     return a1.value.n - b1.value.n;
   });
 
