@@ -182,7 +182,7 @@ function setup(): void {
   //@ts-ignore
   inp_field = createInput("abcdefghijklmnopqrstuvwxyz");
   inp_field.position(2, 2);
-  inp_field.size(100);
+  inp_field.size(300);
   inp_field.input(renderNewFrame);
 
   renderNewFrame();
