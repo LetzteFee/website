@@ -4,7 +4,7 @@ class flake {
   private readonly targetY: number;
   private readonly width: number;
   private readonly height: number;
-  constructor(inp_target: null|number = null, inp_current: number = 0) {
+  constructor(inp_target: null | number = null, inp_current: number = 0) {
     this.width = getRandomInt(0, 20);
     this.height = getRandomInt(0, 20);
 
@@ -12,8 +12,11 @@ class flake {
     this.x = getRandomInt(0 + this.width / 2, width - this.width / 2);
     if (inp_target == null) {
       // @ts-ignore
-      this.targetY = getRandomInt(0 + this.height / 2, height - this.height / 2);
-    }else{
+      this.targetY = getRandomInt(
+        0 + this.height / 2,
+        height - this.height / 2
+      );
+    } else {
       this.targetY = inp_target;
     }
     this.currentY = inp_current;
@@ -22,7 +25,8 @@ class flake {
     this.currentY++;
   }
   private color(): number {
-    return Number(DARKMODE) * 255 - this.currentY / this.targetY * 255 * (1 - Number(!DARKMODE) * 2);
+    return Number(DARKMODE) * 255 -
+      this.currentY / this.targetY * 255 * (1 - Number(!DARKMODE) * 2);
   }
   public check(): boolean {
     return this.currentY > this.targetY;

@@ -1,7 +1,7 @@
 interface Color {
-  r: number,
-  g: number,
-  b: number,
+  r: number;
+  g: number;
+  b: number;
 }
 class Circle {
   public x: number;
@@ -9,7 +9,13 @@ class Circle {
   public size: number;
   private readonly quality: number;
   private color: Color;
-  constructor(inp_x: number, inp_y: number, inp_size: number, inp_quality: number = 5, inp_color: Color = { r: 0, g: 0, b: 0 }) {
+  constructor(
+    inp_x: number,
+    inp_y: number,
+    inp_size: number,
+    inp_quality: number = 5,
+    inp_color: Color = { r: 0, g: 0, b: 0 }
+  ) {
     this.x = inp_x;
     this.y = inp_y;
     this.size = inp_size;
@@ -73,8 +79,18 @@ function setup(): void {
   //@ts-ignore
   let h: number = height;
   for (let i = 0; i < 20; i++) {
-    let color: Color = { r: getRandomInt(0, 255), g: getRandomInt(0, 255), b: getRandomInt(0, 255) };
-    circles01[i] = new Circle(getRandomInt(0, w), getRandomInt(0, h), getRandomInt(0, 100), 5, color)
+    let color: Color = {
+      r: getRandomInt(0, 255),
+      g: getRandomInt(0, 255),
+      b: getRandomInt(0, 255)
+    };
+    circles01[i] = new Circle(
+      getRandomInt(0, w),
+      getRandomInt(0, h),
+      getRandomInt(0, 100),
+      5,
+      color
+    );
   }
 }
 //@ts-ignore

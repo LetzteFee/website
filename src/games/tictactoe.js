@@ -14,14 +14,13 @@ var g = 95;
 var b = 205;
 
 //hintergrundfarben
-var hr = 161;     
+var hr = 161;
 var hg = 161;
 var hb = 161;
 var hf;
 var t1 = 0;
 var t2 = 0;
 var t3 = 0;
-
 
 var zns = 0;
 var ergebnis = 0;
@@ -57,22 +56,17 @@ function setup() {
   }
 }
 
-
-
-
 function draw() {
-  t1 = t1 +0.015;
-  t2 = t2 +0.01;
-  t3 = t3 +0.01324333233232323;
+  t1 = t1 + 0.015;
+  t2 = t2 + 0.01;
+  t3 = t3 + 0.01324333233232323;
   hr = noise(t1) * 255;
   hg = noise(t2) * 255;
   hb = noise(t3) * 255;
-  
-  
+
   //falls nur grau
   //hf = random(100);
-  background(hr,hg,hb);
-
+  background(hr, hg, hb);
 
   spielfeldBauen();
   textSize(20);
@@ -82,14 +76,15 @@ function draw() {
   //text(yKlick, 10, 50);
   //text(numKlick, 10, 80);
   if (kreuz == 1 || kreis == 1) {
-zns = 1;
+    zns = 1;
   }
-  
 
-  
-  if(sFBelegung[0] && sFBelegung[1] && sFBelegung[2] && sFBelegung[3] && sFBelegung[4] && sFBelegung[5] && sFBelegung[6] && sFBelegung[7] && sFBelegung[8]){
-    
-   zns = 1;
+  if (
+    sFBelegung[0] && sFBelegung[1] && sFBelegung[2] && sFBelegung[3] &&
+    sFBelegung[4] && sFBelegung[5] && sFBelegung[6] && sFBelegung[7] &&
+    sFBelegung[8]
+  ) {
+    zns = 1;
   }
   gewinnen();
 
@@ -105,10 +100,10 @@ zns = 1;
 
   if (zns == 1) {
     textSize(30);
-	fill(0);
-	strokeWeight(2);
-	stroke(0);
-    text("Zum nächsten Spiel klicken", width / 2 - 150, height / 2 );  
+    fill(0);
+    strokeWeight(2);
+    stroke(0);
+    text("Zum nächsten Spiel klicken", width / 2 - 150, height / 2);
     ergebnis = 1;
   }
 
@@ -124,12 +119,9 @@ zns = 1;
     kreisg = 169;
     kreisb = 64;
   }
-
-
 }
 
 function mousePressed() {
-
   if (ergebnis == 0) {
     xKlick = mouseX;
     yKlick = mouseY;
@@ -155,7 +147,9 @@ function mousePressed() {
         boolKreuzKreis = !boolKreuzKreis;
       }
     }
-    if (xKlick > vL2X && xKlick < hL1X + linienL && yKlick > vL1Y && yKlick < hL1Y) {
+    if (
+      xKlick > vL2X && xKlick < hL1X + linienL && yKlick > vL1Y && yKlick < hL1Y
+    ) {
       numKlick = 3;
       if (sFBelegung[2] == 0) {
         if (boolKreuzKreis) {
@@ -188,7 +182,9 @@ function mousePressed() {
         boolKreuzKreis = !boolKreuzKreis;
       }
     }
-    if (xKlick > vL2X && xKlick < hL1X + linienL && yKlick > hL1Y && yKlick < hL2Y) {
+    if (
+      xKlick > vL2X && xKlick < hL1X + linienL && yKlick > hL1Y && yKlick < hL2Y
+    ) {
       numKlick = 6;
       if (sFBelegung[5] == 0) {
         if (boolKreuzKreis) {
@@ -199,7 +195,9 @@ function mousePressed() {
         boolKreuzKreis = !boolKreuzKreis;
       }
     }
-    if (xKlick > hL1X && xKlick < vL1X && yKlick > hL2Y && yKlick < vL1X + linienL) {
+    if (
+      xKlick > hL1X && xKlick < vL1X && yKlick > hL2Y && yKlick < vL1X + linienL
+    ) {
       numKlick = 7;
       if (sFBelegung[6] == 0) {
         if (boolKreuzKreis) {
@@ -210,7 +208,9 @@ function mousePressed() {
         boolKreuzKreis = !boolKreuzKreis;
       }
     }
-    if (xKlick > vL1X && xKlick < vL2X && yKlick > hL2Y && yKlick < vL1X + linienL) {
+    if (
+      xKlick > vL1X && xKlick < vL2X && yKlick > hL2Y && yKlick < vL1X + linienL
+    ) {
       numKlick = 8;
       if (sFBelegung[7] == 0) {
         if (boolKreuzKreis) {
@@ -221,7 +221,10 @@ function mousePressed() {
         boolKreuzKreis = !boolKreuzKreis;
       }
     }
-    if (xKlick > vL2X && xKlick < hL1X + linienL && yKlick > hL2Y && yKlick < vL1X + linienL) {
+    if (
+      xKlick > vL2X && xKlick < hL1X + linienL && yKlick > hL2Y &&
+      yKlick < vL1X + linienL
+    ) {
       numKlick = 9;
       if (sFBelegung[8] == 0) {
         if (boolKreuzKreis) {
@@ -232,8 +235,6 @@ function mousePressed() {
         boolKreuzKreis = !boolKreuzKreis;
       }
     }
-
-
   }
 
   if (ergebnis == 1) {
@@ -260,12 +261,8 @@ function mousePressed() {
     kreuzg = 95;
     kreuzb = 205;
     zns = 0;
-
   }
 }
-
-
-
 
 function spielfeldBerechnen() {
   relLinienL = 0.7;
@@ -359,11 +356,9 @@ function gewinnen() {
   if (sFBelegung[2] == 2 && sFBelegung[5] == 2 && sFBelegung[8] == 2) {
     kreis = 1;
   }
-
 }
 
 function zeichneSymbol(xKoord, yKoord, symbolTyp) {
-
   if (symbolTyp == 1) {
     push();
     translate(xKoord, yKoord);
@@ -377,5 +372,4 @@ function zeichneSymbol(xKoord, yKoord, symbolTyp) {
     stroke(kreisr, kreisg, kreisb);
     ellipse(xKoord, yKoord, kD, kD);
   }
- 
-  }
+}

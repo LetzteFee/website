@@ -1,10 +1,17 @@
 type cb = (input: string) => void;
 type doc = () => void;
 
-let arr: { originalArray: number[], targetArray?: number[], counter?: number } = { originalArray: null, targetArray: null };
-let callback: any = () => { throw "Error: Callback function undefined" };
-let callback_counter: any = () => { throw "Error: Callback function undefined" };
-let doOneCycle: any = () => { throw "Error: doOneCycle function undefined" };
+let arr: { originalArray: number[]; targetArray?: number[]; counter?: number } =
+  { originalArray: null, targetArray: null };
+let callback: any = () => {
+  throw "Error: Callback function undefined";
+};
+let callback_counter: any = () => {
+  throw "Error: Callback function undefined";
+};
+let doOneCycle: any = () => {
+  throw "Error: doOneCycle function undefined";
+};
 let counter: number = 0;
 let time_between_step: number = null;
 let completed: boolean = true;
@@ -76,7 +83,7 @@ function selection_sort_doOneCycle() {
   }
   if (index_low == arr.counter) {
     arr.counter++;
-    return
+    return;
   }
   let tmp = arr.targetArray[arr.counter];
   arr.targetArray[arr.counter] = arr.targetArray[index_low];

@@ -99,6 +99,9 @@ function checkIfEnded() {
     print("[" + frameCount + "] " + "Programm ist fertig und wurde gestoppt");
     noLoop();
   } else {
-    print("[" + frameCount + "] " + "Programm ist noch nicht fertig und wird nicht gestoppt.");
+    print(
+      "[" + frameCount + "] " +
+        "Programm ist noch nicht fertig und wird nicht gestoppt."
+    );
   }
 }

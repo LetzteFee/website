@@ -95,7 +95,7 @@ function moveObjects() {
     } else if (object[i].form == 2) {
       object[i].yPos = object[i].yPos + sin(object[i].mPos) + 0.5;
       object[i].mPos = object[i].mPos + 0.1;
-    }else if (object[i].form == 3){
+    } else if (object[i].form == 3) {
       object[i].yPos = object[i].yPos + sin(object[i].mPos) + 0.5;
     }
   }
@@ -127,7 +127,7 @@ function drawGui() {
     text("[playerSpeed] " + playerSpeed, 10, 30);
     text("[playerXPos] " + int(playerXPos), 10, 40);
     text("[playerYPos] " + int(playerYPos), 10, 50);
-	text("[n] " + n, 10, 60);
+    text("[n] " + n, 10, 60);
   }
 }
 
@@ -157,41 +157,41 @@ function eventHandler() {
       "[" + frameCount + "] [EventHandler] Both Buttons pressed -> no movement"
     );*/
   } else if (keyIsDown(LEFT_ARROW) || mouseIsPressedLeft()) {
-    movePlayerLeft()
+    movePlayerLeft();
   } else if (keyIsDown(RIGHT_ARROW) || mouseIsPressedRight()) {
     movePlayerRight();
   } else {
     playerSpeed = 1;
   }
 }
-function mouseIsPressedRight(){
-  if(mouseIsPressed && mouseX > width / 2){
+function mouseIsPressedRight() {
+  if (mouseIsPressed && mouseX > width / 2) {
     return true;
-  }else{
+  } else {
     return false;
   }
 }
 
-function mouseIsPressedLeft(){
-    if(mouseIsPressed && mouseX < width / 2){
+function mouseIsPressedLeft() {
+  if (mouseIsPressed && mouseX < width / 2) {
     return true;
-  }else{
+  } else {
     return false;
   }
 }
 
-function movePlayerRight(){
+function movePlayerRight() {
   if (playerXPos + playerXSize + playerSpeed < width) {
-      playerXPos = playerXPos + playerSpeed;
-      increasePlayerSpeed();
+    playerXPos = playerXPos + playerSpeed;
+    increasePlayerSpeed();
   }
 }
 
-function movePlayerLeft(){
+function movePlayerLeft() {
   if (playerXPos - playerSpeed > 0) {
-      playerXPos = playerXPos - playerSpeed;
-      increasePlayerSpeed();
-    }
+    playerXPos = playerXPos - playerSpeed;
+    increasePlayerSpeed();
+  }
 }
 
 function increasePlayerSpeed() {
@@ -248,7 +248,6 @@ function setup() {
 
   playerXPos = width / 2 - playerXSize / 2;
   playerYPos = height - height / 20;
-
 
   n = width / 20;
   newObjects();

@@ -49,10 +49,9 @@ function newMatrix(i, yMin) {
   for (let k = 0; k < length; k++) {
     c[k] = {
       c: String.fromCharCode(random(rangeMin, rangeMax)),
-          alpha: random(32, 255)
+      alpha: random(32, 255)
     };
   }
-
 
   //at programmstart strings should be able to spawn at every y value
   if (yMin == 0) {
@@ -68,11 +67,11 @@ function newMatrix(i, yMin) {
     c: c,
   };
 }
-function newLetter(a1, a2){
+function newLetter(a1, a2) {
   var a0 = int(random(0, ChanceLetterChange));
-  if(a0 == 0 && hx == 0){
+  if (a0 == 0 && hx == 0) {
     matrix[a1].c[a2].c = String.fromCharCode(random(rangeMin, rangeMax));
-  }else if(a0 < ChanceLetterChange / 2 && hx == 1){
-      matrix[a1].c[a2].c = missingLetter;
+  } else if (a0 < ChanceLetterChange / 2 && hx == 1) {
+    matrix[a1].c[a2].c = missingLetter;
   }
 }

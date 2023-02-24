@@ -37,7 +37,7 @@ class password {
     doSpecialChars: boolean = true,
     length: number = 32,
     doIncludeEveryType: boolean = false,
-    blacklist_chars: string = ''
+    blacklist_chars: string = ""
   ) {
     this.UppercaseLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     this.LowercaseLetters = "abcdefghijklmnopqrstuvwxyz";
@@ -55,7 +55,9 @@ class password {
     this.passwd = "";
   }
   public getPassword(alwaysRebuild: boolean = false): string {
-    return this.passwd == "" || alwaysRebuild ?  this.buildPassword() : this.passwd;
+    return this.passwd == "" || alwaysRebuild
+      ? this.buildPassword()
+      : this.passwd;
   }
   public rebuild(): void {
     this.passwd = this.buildPassword();
@@ -89,7 +91,11 @@ class password {
 
     //check if blacklist if compatible with doIncludeEveryType
     if (this.doIncludeEveryType && !this.containsSelectedTypes(pl)) {
-      doLog("buildPassword()", "blacklist not compatible with doIncludeEveryType", false);
+      doLog(
+        "buildPassword()",
+        "blacklist not compatible with doIncludeEveryType",
+        false
+      );
       this.doIncludeEveryType = false;
       doLog("buildPassword()", "disabled this.doIncludeEveryType");
     }
@@ -171,8 +177,7 @@ class password {
     return true;
   }
   private checkPwdAchievability(): void {
-    let amount_of_types: number =
-      Number(this.doLowercase) +
+    let amount_of_types: number = Number(this.doLowercase) +
       Number(this.doUppercase) +
       Number(this.doSpecialChars) +
       Number(this.doNumbers);
@@ -180,9 +185,9 @@ class password {
       doLog(
         "pwd-gen.lib.js: checkPwdAchievability()",
         "Password length had to be increased from " +
-        this.pwdLength +
-        " to " +
-        amount_of_types
+          this.pwdLength +
+          " to " +
+          amount_of_types
       );
       this.pwdLength = amount_of_types;
     }

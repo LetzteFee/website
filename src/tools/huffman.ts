@@ -137,7 +137,7 @@ class binaryTree {
     console.log(`Max Depth: ${this.maxDepth()}`);
     console.log(`Encoded String: ${this.origToCodedArr(inp).join("|")}`);
     console.log(`Originale Bitanzahl (ASCII): ${inp.length * 8}`);
-    console.log(`Huf Bitanzahl: ${this.origToCodedArr(inp).join('').length}`);
+    console.log(`Huf Bitanzahl: ${this.origToCodedArr(inp).join("").length}`);
   }
 }
 
