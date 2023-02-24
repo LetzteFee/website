@@ -11,6 +11,13 @@ class binaryTree {
     this.links = nodeA;
     this.rechts = nodeB;
   }
+  public maxDepth(): number {
+    if (this.links == null && this.links == null) return 0;
+    let a: number = this.links.maxDepth();
+    let b: number = this.rechts.maxDepth();
+    let c = a > b ? a : b;
+    return c + 1;
+  }
   public calcCodesStr(): string[] {
     let c: string[] = this.calcCodesArr().map(function (v: string[]): string {
       return v[0] + ": " + v[1];
@@ -44,7 +51,7 @@ class binaryTree {
     );
   }
   public displayOverlay(original_string: string): void {
-    this.displayCodecs();
+    this.displayCodecTable();
 
     let encoded_arr: string[] = this.origToCodedArr(original_string);
     //@ts-ignore
@@ -66,8 +73,14 @@ class binaryTree {
       width - 10,
       height - 80,
     );
+    //@ts-ignore
+    text(
+      `Max Depth: ${this.maxDepth()}`,
+      width - 10,
+      height - 120,
+    );
   }
-  public displayCodecs(): void {
+  public displayCodecTable(): void {
     //@ts-expect-error
     textAlign(LEFT);
 
@@ -85,25 +98,29 @@ class binaryTree {
     textAlign(CENTER);
 
     let new_scale = scale * 0.5;
-    let new_y = y + 80;
-    //@ts-ignore
-    let new_x_links = x - (width / 4) * scale;
-    //@ts-ignore
-    let new_x_rechts = x + (width / 4) * scale;
 
     if (this.links != null) {
       //@ts-ignore
+      let new_x_links = x - (width / 4) * scale;
+      //@ts-ignore
+      let new_y_links = y + (height - 20 - y) / (this.links.maxDepth() + 1);
+
+      //@ts-ignore
       stroke(255);
       //@ts-ignore
-      line(x, y, new_x_links, new_y);
-      this.links.render(new_x_links, new_y, new_scale);
+      line(x, y, new_x_links, new_y_links);
+      this.links.render(new_x_links, new_y_links, new_scale);
     }
     if (this.rechts != null) {
       //@ts-ignore
+      let new_y_rechts = y + (height - 20 - y) / (this.rechts.maxDepth() + 1);
+      //@ts-ignore
+      let new_x_rechts = x + (width / 4) * scale;
+      //@ts-ignore
       stroke(255);
       //@ts-ignore
-      line(x, y, new_x_rechts, new_y);
-      this.rechts.render(new_x_rechts, new_y, new_scale);
+      line(x, y, new_x_rechts, new_y_rechts);
+      this.rechts.render(new_x_rechts, new_y_rechts, new_scale);
     }
     //@ts-ignore
     noStroke();
