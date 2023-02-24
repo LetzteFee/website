@@ -189,6 +189,12 @@ function setup(): void {
   renderNewFrame();
 }
 
+function windowResized() {
+  //@ts-ignore
+  resizeCanvas(windowWidth, windowHeight);
+  renderNewFrame();
+}
+
 function countLetters(str: string): Buchstabe[] {
   let arr: string[] = str.split("");
   arr.sort();
@@ -222,8 +228,8 @@ function createTree(inp: binaryTree[]): binaryTree {
 
   let a: binaryTree = inp[0];
   let b: binaryTree = inp[1];
-  inp.splice(0, 1);
-  inp[0] = new binaryTree(new Buchstabe(a.value.n + b.value.n), a, b);
+  inp.splice(0, 2);
+  inp.push(new binaryTree(new Buchstabe(a.value.n + b.value.n), a, b));
 
   return createTree(inp);
 }
