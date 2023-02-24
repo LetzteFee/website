@@ -133,6 +133,7 @@ class binaryTree {
     text(this.value.display(), x, y + 2);
   }
   public print(inp: string): void {
+    console.log(`\nData for ${inp}:`);
     console.log(this.calcCodesMap());
     console.log(`Max Depth: ${this.maxDepth()}`);
     console.log(`Encoded String: ${this.origToCodedArr(inp).join("|")}`);
