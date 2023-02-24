@@ -81,7 +81,7 @@ class binaryTree {
     );
   }
   public displayCodecTable(): void {
-    //@ts-expect-error
+    //@ts-ignore
     textAlign(LEFT);
 
     let arr: string[] = this.calcCodesStr();
@@ -89,12 +89,12 @@ class binaryTree {
     for (let i = 0; i < arr.length; i++) {
       //@ts-ignore
       fill(255);
-      //@ts-expect-error
+      //@ts-ignore
       text(arr[arr.length - 1 - i], 10, height - 15 - 15 * i);
     }
   }
   public render(x: number, y: number, scale: number = 1): void {
-    //@ts-expect-error
+    //@ts-ignore
     textAlign(CENTER);
 
     let new_scale = scale * 0.5;
@@ -104,7 +104,6 @@ class binaryTree {
       let new_x_links = x - (width / 4) * scale;
       //@ts-ignore
       let new_y_links = y + (height - 20 - y) / (this.links.maxDepth() + 1);
-
       //@ts-ignore
       stroke(255);
       //@ts-ignore
@@ -125,13 +124,20 @@ class binaryTree {
     //@ts-ignore
     noStroke();
     //@ts-ignore
-    fill("white");
+    fill(255);
     //@ts-ignore
     ellipse(x, y, 30);
     //@ts-ignore
-    fill("black");
+    fill(0);
     //@ts-ignore
     text(this.value.display(), x, y + 2);
+  }
+  public print(inp: string): void {
+    console.log(this.calcCodesMap());
+    console.log(`Max Depth: ${this.maxDepth()}`);
+    console.log(`Encoded String: ${this.origToCodedArr(inp).join("|")}`);
+    console.log(`Originale Bitanzahl (ASCII): ${inp.length * 8}`);
+    console.log(`Huf Bitanzahl: ${this.origToCodedArr(inp).length}`);
   }
 }
 
@@ -152,20 +158,8 @@ class Buchstabe {
 
 let inp_field: any;
 
-//@ts-ignore
-function setup() {
-  createCanvas(windowWidth, windowHeight);
-  //@ts-expect-error
-  textFont("monospace", 10);
-  //@ts-expect-error
-  frameRate(2);
-
-  //@ts-expect-error
-  inp_field = createInput("abcdefghijklmnopqrstuvwxyz");
-  inp_field.position(1, 1);
-}
-//@ts-ignore
-function draw() {
+function renderNewFrame(): void {
+  //@ts-ignore
   background(0);
 
   let inp = inp_field.value();
@@ -174,7 +168,24 @@ function draw() {
   let main = huffman(String(inp));
 
   main.render(width / 2, 20);
-  main.displayOverlay(inp);
+  //main.displayOverlay(inp);
+  main.print(inp);
+}
+
+//@ts-ignore
+function setup(): void {
+  //@ts-ignore
+  createCanvas(windowWidth, windowHeight);
+  //@ts-ignore
+  textFont("monospace", 10);
+
+  //@ts-ignore
+  inp_field = createInput("abcdefghijklmnopqrstuvwxyz");
+  inp_field.position(2, 2);
+  inp_field.size(100);
+  inp_field.input(renderNewFrame);
+
+  renderNewFrame();
 }
 
 function countLetters(str: string): Buchstabe[] {
@@ -200,6 +211,7 @@ function huffman(str: string): binaryTree {
   }
   return createTree(arr);
 }
+
 function createTree(inp: binaryTree[]): binaryTree {
   if (inp.length <= 1) return inp[0];
 
