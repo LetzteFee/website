@@ -166,11 +166,11 @@ function renderNewFrame(): void {
   let inp = inp_field.value();
   if (inp == null || inp == "" || typeof inp != "string") return;
 
-  let main = createTree(createNodes(String(inp)));
+  let baum = createTree(createNodes(String(inp)));
 
-  main.render(width / 2, 20);
+  baum.render(width / 2, 20);
   //main.displayOverlay(inp);
-  main.print(inp);
+  baum.print(inp);
 }
 
 //@ts-ignore
@@ -186,12 +186,6 @@ function setup(): void {
   inp_field.size(300);
   inp_field.input(renderNewFrame);
 
-  renderNewFrame();
-}
-
-function windowResized() {
-  //@ts-ignore
-  resizeCanvas(windowWidth, windowHeight);
   renderNewFrame();
 }
 
@@ -226,4 +220,10 @@ function createTree(inp: binaryTree[]): binaryTree {
   inp.push(new binaryTree(new Buchstabe(a.value.n + b.value.n), a, b));
 
   return createTree(inp);
+}
+
+function windowResized() {
+  //@ts-ignore
+  resizeCanvas(windowWidth, windowHeight);
+  renderNewFrame();
 }
