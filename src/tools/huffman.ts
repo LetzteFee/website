@@ -5,7 +5,7 @@ class binaryTree {
   constructor(
     value: Buchstabe,
     nodeA: binaryTree = null,
-    nodeB: binaryTree = null,
+    nodeB: binaryTree = null
   ) {
     this.value = value;
     this.links = nodeA;
@@ -167,7 +167,7 @@ function renderNewFrame(): void {
   if (inp == null || inp == "" || typeof inp != "string") return;
 
   let baum = createTree(
-    createNodes(String(inp)),
+    createNodes(String(inp))
   );
 
   baum.render(width / 2, 20);
