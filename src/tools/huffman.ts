@@ -166,7 +166,9 @@ function renderNewFrame(): void {
   let inp = inp_field.value();
   if (inp == null || inp == "" || typeof inp != "string") return;
 
-  let baum = createTree(createNodes(String(inp)));
+  let baum = createTree(
+    createNodes(String(inp)),
+  );
 
   baum.render(width / 2, 20);
   //main.displayOverlay(inp);
