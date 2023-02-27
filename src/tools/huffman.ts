@@ -166,7 +166,7 @@ function renderNewFrame(): void {
   let inp = inp_field.value();
   if (inp == null || inp == "" || typeof inp != "string") return;
 
-  let main = huffman(String(inp));
+  let main = createTree(createNodes(String(inp)));
 
   main.render(width / 2, 20);
   //main.displayOverlay(inp);
@@ -195,28 +195,22 @@ function windowResized() {
   renderNewFrame();
 }
 
-function countLetters(str: string): Buchstabe[] {
+function createNodes(str: string): binaryTree[] {
   let arr: string[] = str.split("");
   arr.sort();
 
-  let output: Buchstabe[] = [new Buchstabe(1, arr[0])];
+  let buchstaben: Buchstabe[] = [new Buchstabe(1, arr[0])];
   for (let i: number = 1; i < arr.length; i++) {
-    if (arr[i] === output[output.length - 1].v) {
-      output[output.length - 1].n++;
+    if (arr[i] === buchstaben[buchstaben.length - 1].v) {
+      buchstaben[buchstaben.length - 1].n++;
     } else {
-      output[output.length] = new Buchstabe(1, arr[i]);
+      buchstaben[buchstaben.length] = new Buchstabe(1, arr[i]);
     }
   }
-  return output;
-}
 
-function huffman(str: string): binaryTree {
-  let buchstaben_arr: Buchstabe[] = countLetters(str);
-  let arr: binaryTree[] = [];
-  for (let i: number = 0; i < buchstaben_arr.length; i++) {
-    arr[i] = new binaryTree(buchstaben_arr[i]);
-  }
-  return createTree(arr);
+  return buchstaben.map(function (v: Buchstabe): binaryTree {
+    return new binaryTree(v);
+  });
 }
 
 function createTree(inp: binaryTree[]): binaryTree {
