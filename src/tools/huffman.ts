@@ -19,7 +19,7 @@ class binaryTree {
     return c + 1;
   }
   public calcCodesStr(): string[] {
-    let c: string[] = this.calcCodesArr().map(function (v: string[]): string {
+    let c: string[] = this.calcCodesArr().map(function(v: string[]): string {
       return v[0] + ": " + v[1];
     });
 
@@ -27,7 +27,7 @@ class binaryTree {
     c.sort((a1: string, b2: string): number => a1.length - b2.length);
     return c;
   }
-  public calcCodesArr(bisherigerCode: string = ""): string[][] {
+  private calcCodesArr(bisherigerCode: string = ""): string[][] {
     if (this.value.v != null) return [[this.value.v, bisherigerCode]];
     let a: string[][] = this.links.calcCodesArr(bisherigerCode + "0");
     let b: string[][] = this.rechts.calcCodesArr(bisherigerCode + "1");
@@ -45,9 +45,9 @@ class binaryTree {
   public origToCodedArr(original_string: string): string[] {
     let encoded_map: Map<string, string> = this.calcCodesMap();
     return original_string.split("").map(
-      function (v: string): string {
+      function(v: string): string {
         return encoded_map.get(v);
-      },
+      }
     );
   }
   public displayOverlay(original_string: string): void {
@@ -204,7 +204,7 @@ function createNodes(str: string): binaryTree[] {
     }
   }
 
-  return buchstaben.map(function (v: Buchstabe): binaryTree {
+  return buchstaben.map(function(v: Buchstabe): binaryTree {
     return new binaryTree(v);
   });
 }
@@ -212,7 +212,7 @@ function createNodes(str: string): binaryTree[] {
 function createTree(inp: binaryTree[]): binaryTree {
   if (inp.length <= 1) return inp[0];
 
-  inp.sort(function (a1: binaryTree, b1: binaryTree): number {
+  inp.sort(function(a1: binaryTree, b1: binaryTree): number {
     return a1.value.n - b1.value.n;
   });
 
