@@ -20,9 +20,48 @@
     <main>
         <div class="box">
             <h1 style="text-align: center;">Abi Rechner</h1>
-            <p style="text-align: center;"><input class="GenerateButton" style="float: none; margin: 4px;" type="button" value="Berechne" onclick="calc()"></p>
-            <p style="text-align: center;"><input id="text_input" type="text"></p>
             <p id="output"></p>
+            <p style="text-align: center;"><input class="GenerateButton" style="float: none; margin: 4px;" type="button" value="Berechne" onclick="calc()"></p>
+            <p style="text-align: center;">
+            <label for="p1">P1 <span style="color: grey;">x2</span></label>
+                <input id="p1" type="number" min=0 max=15>
+            </p>
+             <p style="text-align: center;">
+                <label for="p2">P2 <span style="color: grey;">x2</span></label>
+                <input id="p2" type="number" min=0 max=15>
+            </p>
+            <p style="text-align: center;">
+                <label for="p3">P3</label>
+                <input id="p3" type="number" min=0 max=15>
+            </p>
+             <p style="text-align: center;">
+                <label for="p4">P4</label>
+                <input id="p4" type="number" min=0 max=15>
+            </p>
+             <p style="text-align: center;">
+                <label for="p5">P5</label>
+                <input id="p5" type="number" min=0 max=15>
+            </p>
+            <p style="text-align: center;">
+                <label for="a1">Absitzer 1</label>
+                <input id="a1" type="number" min=0 max=15>
+            </p>
+            <p style="text-align: center;">
+                <label for="a2">Absitzer 2</label>
+                <input id="a2" type="number" min=0 max=15>
+            </p>
+            <p style="text-align: center;">
+            <label for="a3">Absitzer 3</label>
+            <input id="a3" type="number" min=0 max=15>
+            </p>
+            <p style="text-align: center;">
+            <label for="sf">SF</label>
+            <input id="sf" type="number" min=0 max=15>
+            </p>
+            <p style="text-align: center;">
+            <label for="sp">Sport</label>
+            <input id="sp" type="number" min=0 max=15>
+            </p>
         </div>
     </main>
     <script src="test6.js">document.getElementById("text_input").value = "13 12 10 09 11 5 7 08"</script>

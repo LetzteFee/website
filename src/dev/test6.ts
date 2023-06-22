@@ -1,31 +1,47 @@
 function calc() {
-  let inp: string;
-  // @ts-ignore
-  inp = document.getElementById("text_input").value;
-  let out: string = "";
+    function calc(id: string, x2: boolean) {
+        //@ts-ignore
+        let str: string = document.getElementById(id).value;
+        if (str == "") return;
+        let n: number = Number(str);
+        Summe += n;
+        SummeGewichtung += n;
+        Count++;
+        CountGewichtet++;
+        if (x2) {
+            CountGewichtet++;
+            SummeGewichtung += n;
+        }
+    }
+    function note(p: number) : number{
+        return 6 - (p + 1) * (1/3);
+    }
 
-  inp = inp.replace(/,/g, " ");
-  //console.log(inp);
-  let arr: number[] = inp.split(" ").map(function (v: string): number {
-    return Number(v);
-  });
-  //console.log(arr);
-  let SummeGewichtung: number = 0;
-  let Summe: number = 0;
-  for (let i: number = 0; i < arr.length; i++) {
-    SummeGewichtung += arr[i];
-    Summe += arr[i];
-    if (i < 2) SummeGewichtung += arr[i];
-  }
-  let durchschnittGewichtung: number = SummeGewichtung / (arr.length + 2);
-  let durchschnitt: number = Summe / arr.length;
-  out = `Summe: ${Summe}<br>`;
-  out += `Summe mit Gewichtung: ${SummeGewichtung}<br>`;
-  out += `Anzahl Fächer: ${arr.length}<br>`;
-  out += `Anzahl mit Gewichtung: ${arr.length + 2}<br>`;
-  out += `Durchschnitt: ${durchschnitt}<br>`;
-  out += `Durchschnitt mit Gewichtung: ${durchschnittGewichtung}`;
-  //console.log(out);
-  // @ts-ignore
-  document.getElementById("output").innerHTML = out;
+
+    let SummeGewichtung: number = 0;
+    let Summe: number = 0;
+    let Count: number = 0;
+    let CountGewichtet: number = 0;
+
+    calc("p1", true);
+    calc("p2", true);
+    calc("p3", false);
+    calc("p4", false);
+    calc("p5", false);
+    calc("a1", false);
+    calc("a2", false);
+    calc("a3", false);
+    calc("sf", false);
+    calc("sp", false);
+
+
+
+    let durchschnittGewichtung: number = SummeGewichtung / CountGewichtet;
+    let durchschnitt: number = Summe / Count;
+    let out = `Summe: ${Summe}<br>`;
+    out += `Summe mit Gewichtung: ${SummeGewichtung}<br>`;
+    out += `Durchschnitt: ${durchschnitt}P = ${note(durchschnitt)}<br>`;
+    out += `Durchschnitt mit Gewichtung: ${durchschnittGewichtung}P = ${note(durchschnittGewichtung)}`;
+    // @ts-ignore
+    document.getElementById("output").innerHTML = out;
 }
