@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="icon" href="../sources\logo.png" />
+  <link rel="stylesheet" type="text/css" href="../css\main.css" />
+  <link rel="stylesheet" type="text/css" href="../p5/style.css" />
+  <title>Jannes - Calculator</title>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+  <script src="../lib/base.lib.js"></script>
+  <script src="../p5/p5.js"></script>
+</head>
+
+<body>
+  <header>
+    <div class="headerline">
+      <a href="../index.html">Home</a>
+      <a href="../animations/index.html">Animations</a>
+      <a href="../games/index.html">Games</a>
+      <a href="../tools/index.html">Tools</a>
+      <a href="../projects/index.html">Projects</a>
+      <a style="float: right;" href="../dev.html">Dev</a>
+    </div>
+  </header>
+  <main>
+    <div class="box" style="padding: 30px;">
+      <h1 style="text-align: center;">Calculator</h1>
+      <h2>Input</h2>
+      <input type="text" id="input-string" size="48" />
+      <p style="text-align: center;">
+        <input id="CalculateButton" class="GenerateButton" style="float: none;" type="button" value="calculate"
+          onclick="calculate()" />
+      </p>
+      <h2>Interpretation</h2>
+      <h3 id="sketch-holder">Operator Binary Tree</h2>
+        <script src="calc.js"></script>
+        <h3>Equation</h3>
+        <p id="interpretation-equation" style="text-align: center; font-size: 12px;"></p>
+        <h2>Result</h2>
+        <p id="result-equation" style="text-align: center;"></p>
+    </div>
+  </main>
+</body>
+
+</html>
