@@ -176,7 +176,7 @@ function renderNewFrame(): void {
 }
 
 //@ts-ignore
-function setup(): void {
+var setup = function(): void {
   //@ts-ignore
   createCanvas(windowWidth, windowHeight);
   //@ts-ignore

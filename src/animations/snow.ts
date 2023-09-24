@@ -32,9 +32,7 @@ class flake {
     return this.currentY > this.targetY;
   }
   public draw(): void {
-    // @ts-expect-error
     fill(this.color());
-    // @ts-expect-error
     ellipse(this.x, this.currentY, this.width, this.height);
   }
 }
@@ -45,9 +43,7 @@ let DARKMODE: boolean = false;
 function setup(): void {
   // @ts-ignore
   createCanvas(windowWidth, windowHeight);
-  // @ts-expect-error
   fill(255);
-  // @ts-expect-error
   noStroke();
   for (let i = 0; i < 256; i++) {
     // @ts-ignore

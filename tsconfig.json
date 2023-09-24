@@ -1,13 +1,21 @@
 {
-  "include": ["src"],
+  "include": [
+    "src"
+  ],
   "compilerOptions": {
     "target": "es2016",
     "module": "commonjs",
     "outDir": "./build",
-    //"esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
-    "strictNullChecks": false
-    //"rootDir": "."
+    "strictNullChecks": false,
+    "allowUnreachableCode": false,
+    "noImplicitAny": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noPropertyAccessFromIndexSignature": true
   }
 }

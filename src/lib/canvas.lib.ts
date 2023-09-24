@@ -23,14 +23,14 @@ function createCanvas(inp_width: number, inp_height: number): void {
   width = inp_width;
   height = inp_height;
 }
-function background(inp_color: number) {
+var background = (inp_color: number) => {
   stroke(inp_color);
   drawObject.fillRect(0, 0, width, height);
 }
 function fps(inp: number): void {
   FPS = inp;
 }
-function initCanvasLib() {
+var initCanvasLib = () => {
   windowWidth = window.innerWidth;
   windowHeight = window.innerHeight;
   doLog(undefined, windowWidth);
@@ -39,8 +39,8 @@ function initCanvasLib() {
   setInterval(draw, 1000 / FPS);
 }
 let drawObject: any;
-let width: number;
-let height: number;
-let windowWidth: number;
-let windowHeight: number;
+var width: number;
+var height: number;
+var windowWidth: number;
+var windowHeight: number;
 let FPS = 60;
