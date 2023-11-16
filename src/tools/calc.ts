@@ -12,11 +12,6 @@ enum OperatorToken {
 abstract class Value {
   constructor() { }
   public abstract calc(): number;
-  public abstract renderNodesRecursively(
-    x: number,
-    y: number,
-    scale: number,
-  ): void;
   public abstract getNodeInfo(
     depth: number,
     parentId: string,
@@ -55,9 +50,6 @@ class CalcValue extends Value {
   }
   public calc(): number {
     return this.value;
-  }
-  public renderNodesRecursively(x: number, y: number): void {
-    text(this.value, x, y);
   }
   public getNodeInfo(
     depth: number,
@@ -106,20 +98,6 @@ class CalcNode extends Value {
         console.log(this.tokenType);
         throw "Critical Error: Unkown Operator";
     }
-  }
-  public renderNodesRecursively(x: number, y: number, scale: number) {
-    scale /= 2;
-    let lx: number = x - width / 4 * scale;
-    let rx: number = x + width / 4 * scale;
-    let ny: number = y + 100;
-
-    line(x, y + 10, lx, ny - 20);
-    this.left.renderNodesRecursively(lx, ny, scale);
-
-    line(x, y + 10, rx, ny - 20);
-    this.right.renderNodesRecursively(rx, ny, scale);
-
-    text(<string>this.tokenType, x, y);
   }
   public getNodeInfo(
     depth: number,
