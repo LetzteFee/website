@@ -99,7 +99,7 @@ class CalcNode extends Value {
       case OperatorToken.Divide:
         return left / right;
       case OperatorToken.Power:
-        return left ^ right;
+        return left ** right;
       case OperatorToken.Modulo:
         return left % right;
       default:
@@ -204,11 +204,18 @@ function OperatorToLaTeX(
   }
 }
 function buildTree(tokenStream: TokenStream): Value {
+
+  if (tokenStream[0] === OperatorToken.Minus) {
+    tokenStream[0] = OperatorToken.Multiply;
+    tokenStream.splice(0, 0, new CalcValue(-1));
+  }
+
+
   // Klammern finden und Inhalt in neuen Node packen
   while (tokenStream.some(e => e === OperatorToken.OpPar)) {
     // Klammer finden und die dazugehörige Klammerzu
     let start: number = -1;
-    let stop: number = 0;
+    let stop: number = -1;
     let count: number = 0;
     for (let i: number = 0; i < tokenStream.length; i++) {
       if (tokenStream[i] === OperatorToken.OpPar) {
@@ -224,13 +231,19 @@ function buildTree(tokenStream: TokenStream): Value {
         }
       }
     }
+
+    if (stop < 1) {
+      throw "Wrong Parenthesis";
+    }
+
     let removed_token_stream: TokenStream = tokenStream.splice(
       start,
       stop - start + 1,
     );
     removed_token_stream.pop();
     removed_token_stream.shift();
-    tokenStream.splice(start, 0, buildTree(removed_token_stream));
+    let new_node: Value = buildTree(removed_token_stream);
+    tokenStream.splice(start, 0, new_node);
   }
 
   // Potenz Operatoren einbinden
@@ -285,12 +298,17 @@ function buildTree(tokenStream: TokenStream): Value {
     }
   }
 
+  if (tokenStream.length == 0) {
+    return new CalcValue(0);
+  }
+
   if (tokenStream.length !== 1) {
+    console.warn(tokenStream);
     throw "TokenStream was not summarized to exactly one element";
   }
   return <Value>tokenStream[0];
 }
-function genTokenStream(inp_string: string) {
+function genTokenStream(inp_string: string): TokenStream {
   let tokenStream: TokenStream = [];
   let inp: string[] = inp_string.split("");
   let tmp_value_string = "";
@@ -446,7 +464,7 @@ function calculate(): void {
 
   background(255);
   flatRenderNodes = root.calculateNodesFlatly();
-  console.log(tokenStream.length);
+  // console.log(tokenStream.length);
 
   document.getElementById("interpretation-equation").innerHTML = `\\( ${root.getLaTeX()} \\)`;
   document.getElementById("result-equation").innerHTML = /*`\\( ${tokenStreamToLaTeX(genTokenStream(input_string))} = ${*/result.toString()/*} \\)`*/;
