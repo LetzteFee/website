@@ -224,7 +224,7 @@ function createTree(inp: binaryTree[]): binaryTree {
   return createTree(inp);
 }
 
-function windowResized() {
+var windowResized = function () {
   //@ts-ignore
   resizeCanvas(windowWidth, windowHeight);
   renderNewFrame();

@@ -10,7 +10,7 @@ enum OperatorToken {
   ClPar = "ClosedParenthesis",
 }
 abstract class Value {
-  constructor() {}
+  constructor() { }
   public abstract calc(): number;
   public abstract renderNodesRecursively(
     x: number,
@@ -23,8 +23,8 @@ abstract class Value {
     position: string,
   ): RenderNode[];
   public abstract getLaTeX(): string;
-  public renderNodesFlatly(): void {
-    let n = this.getNodeInfo(0, "", "0");
+  public calculateNodesFlatly(): RenderNode[] {
+    let n: RenderNode[] = this.getNodeInfo(0, "", "0");
     let depth: number = n[0].depth;
     for (let i = 1; i < n.length; i++) {
       if (n[i].depth > depth) depth = n[i].depth;
@@ -33,32 +33,20 @@ abstract class Value {
     let unit_y: number = height / (depth + 1);
 
     // Calculating coordinates
-    for (let i = 0; i <= depth; i++) {
+    for (let i: number = 0; i <= depth; i++) {
       let elements_with_current_depth: number[] = [];
-      for (let j = 0; j < n.length; j++) {
+      for (let j: number = 0; j < n.length; j++) {
         if (n[j].depth === i) {
           elements_with_current_depth.push(j);
         }
       }
 
       let unit_x: number = width / elements_with_current_depth.length;
-      for (let j = 0; j < elements_with_current_depth.length; j++) {
-        n[elements_with_current_depth[j]].x = unit_x * j + unit_x / 2;
-        n[elements_with_current_depth[j]].y = unit_y * i + unit_y / 2;
+      for (let j: number = 0; j < elements_with_current_depth.length; j++) {
+        n[elements_with_current_depth[j]].setTarget(unit_x * j + unit_x / 2, unit_y * i + unit_y / 2);
       }
     }
-
-    // Rendering
-    for (let i = 0; i < n.length; i++) {
-      n[i].render();
-      if (n[i].parentId === "") continue;
-      for (let j = 0; j < n.length; j++) {
-        if (n[j].id === n[i].parentId) {
-          line(n[i].x, n[i].y - 15, n[j].x, n[j].y + 15);
-          break;
-        }
-      }
-    }
+    return n;
   }
 }
 class CalcValue extends Value {
@@ -131,7 +119,7 @@ class CalcNode extends Value {
     line(x, y + 10, rx, ny - 20);
     this.right.renderNodesRecursively(rx, ny, scale);
 
-    text(<string> this.tokenType, x, y);
+    text(<string>this.tokenType, x, y);
   }
   public getNodeInfo(
     depth: number,
@@ -139,7 +127,7 @@ class CalcNode extends Value {
     position: string,
   ): RenderNode[] {
     let id: string = parentId + position;
-    return [new RenderNode(id, depth, parentId, <string> this.tokenType)]
+    return [new RenderNode(id, depth, parentId, <string>this.tokenType)]
       .concat(this.left.getNodeInfo(depth + 1, id, "l"))
       .concat(this.right.getNodeInfo(depth + 1, id, "r"));
   }
@@ -152,21 +140,42 @@ class CalcNode extends Value {
   }
 }
 class RenderNode {
-  public x: number;
-  public y: number;
+  private target_x: number = 0;
+  private target_y: number = 0;
+  private current_x: number = random(width);
+  private current_y: number = random(height);
   constructor(
     public id: string,
     public depth: number,
     public parentId: string,
     private value: string,
-  ) {
-    this.x = width / 2;
-    this.y = height / 2;
-  }
+  ) { }
   public render(): void {
-    text(this.value, this.x, this.y);
+    text(this.value, this.current_x, this.current_y);
     // text(this.id, this.x, this.y + 20);
     // text(this.depth, this.x, this.y + 40);
+  }
+  public line(parentX: number, parentY: number): void {
+    line(
+      this.current_x,
+      this.current_y - 15,
+      parentX,
+      parentY + 15
+    );
+  }
+  public setTarget(x: number, y: number): void {
+    this.target_x = x;
+    this.target_y = y;
+  }
+  public getCurrentX(): number {
+    return this.current_x;
+  }
+  public getCurrentY(): number {
+    return this.current_y;
+  }
+  public run(): void {
+    this.current_x = (2 * this.current_x + this.target_x) / 3;
+    this.current_y = (2 * this.current_y + this.target_y) / 3;
   }
 }
 function addPars(inp: string): string {
@@ -231,9 +240,9 @@ function buildTree(tokenStream: TokenStream): Value {
         i - 1,
         3,
         new CalcNode(
-          <OperatorToken> tokenStream[i],
-          <Value> tokenStream[i - 1],
-          <Value> tokenStream[i + 1],
+          <OperatorToken>tokenStream[i],
+          <Value>tokenStream[i - 1],
+          <Value>tokenStream[i + 1],
         ),
       );
       i--;
@@ -251,9 +260,9 @@ function buildTree(tokenStream: TokenStream): Value {
         i - 1,
         3,
         new CalcNode(
-          <OperatorToken> tokenStream[i],
-          <Value> tokenStream[i - 1],
-          <Value> tokenStream[i + 1],
+          <OperatorToken>tokenStream[i],
+          <Value>tokenStream[i - 1],
+          <Value>tokenStream[i + 1],
         ),
       );
       i--;
@@ -267,9 +276,9 @@ function buildTree(tokenStream: TokenStream): Value {
       tokenStream[i] === OperatorToken.Minus
     ) {
       let newNode = new CalcNode(
-        <OperatorToken> tokenStream[i],
-        <Value> tokenStream[i - 1],
-        <Value> tokenStream[i + 1],
+        <OperatorToken>tokenStream[i],
+        <Value>tokenStream[i - 1],
+        <Value>tokenStream[i + 1],
       );
       tokenStream.splice(i - 1, 3, newNode);
       i--;
@@ -279,7 +288,7 @@ function buildTree(tokenStream: TokenStream): Value {
   if (tokenStream.length !== 1) {
     throw "TokenStream was not summarized to exactly one element";
   }
-  return <Value> tokenStream[0];
+  return <Value>tokenStream[0];
 }
 function genTokenStream(inp_string: string) {
   let tokenStream: TokenStream = [];
@@ -362,7 +371,7 @@ function genTokenStream(inp_string: string) {
 function tokenStreamToLaTeX(stream: TokenStream): string {
   let out: string = "";
   for (let i: number = 0; i < stream.length; i++) {
-    switch(stream[i]) {
+    switch (stream[i]) {
       case OperatorToken.Plus:
         out += " + ";
         break;
@@ -370,7 +379,7 @@ function tokenStreamToLaTeX(stream: TokenStream): string {
         out += " - ";
         break;
       case OperatorToken.OpPar:
-        out += " \\left(" ;
+        out += " \\left(";
         break;
       case OperatorToken.ClPar:
         out += " \\right)";
@@ -393,6 +402,7 @@ function tokenStreamToLaTeX(stream: TokenStream): string {
   }
   return out;
 }
+let flatRenderNodes: RenderNode[] = [];
 var setup = function () {
   // @ts-ignore
   createCanvas(800, 600).parent("sketch-holder");
@@ -400,7 +410,24 @@ var setup = function () {
   // @ts-ignore
   textAlign(CENTER);
 };
-function run(inp: string) {
+var draw = function (): void {
+  background(255);
+  for (let i: number = 0; i < flatRenderNodes.length; i++) {
+    flatRenderNodes[i].render();
+    flatRenderNodes[i].run();
+    if (flatRenderNodes[i].parentId === "") continue;
+    for (let j = 0; j < flatRenderNodes.length; j++) {
+      if (flatRenderNodes[j].id === flatRenderNodes[i].parentId) {
+        flatRenderNodes[i].line(
+          flatRenderNodes[j].getCurrentX(),
+          flatRenderNodes[j].getCurrentY()
+        );
+        break;
+      }
+    }
+  }
+};
+/*function run(inp: string) {
   let tokenStream: TokenStream = genTokenStream(inp);
   console.log(tokenStream);
 
@@ -409,7 +436,7 @@ function run(inp: string) {
 
   let result: number = root.calc();
   console.log(result);
-}
+}*/
 function calculate(): void {
   // @ts-ignore
   let input_string = document.getElementById("input-string").value ?? "0";
@@ -418,14 +445,20 @@ function calculate(): void {
   let result: number = root.calc();
 
   background(255);
-  root.renderNodesFlatly();
+  flatRenderNodes = root.calculateNodesFlatly();
   console.log(tokenStream.length);
 
   document.getElementById("interpretation-equation").innerHTML = `\\( ${root.getLaTeX()} \\)`;
-  document.getElementById("result-equation").innerHTML = `\\( ${tokenStreamToLaTeX(genTokenStream(input_string))} = ${result.toString()} \\)`;
+  document.getElementById("result-equation").innerHTML = /*`\\( ${tokenStreamToLaTeX(genTokenStream(input_string))} = ${*/result.toString()/*} \\)`*/;
 
   // @ts-ignore
   MathJax.typeset();
 }
+
+/*var windowResized = function() {
+    resizeCanvas(windowWidth, windowHeight);
+    // calculate new target node coordinates
+}*/
+
 // Deno test
 // run("(55 * 5 + 6(5 / 8)) % 2 ^ 8");

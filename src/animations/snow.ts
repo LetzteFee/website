@@ -39,21 +39,18 @@ class flake {
 let objekt: flake[] = [];
 let DARKMODE: boolean = false;
 
-//@ts-ignore
-function setup(): void {
-  // @ts-ignore
+
+var setup = function(): void {
   createCanvas(windowWidth, windowHeight);
   fill(255);
   noStroke();
   for (let i = 0; i < 256; i++) {
-    // @ts-ignore
     let h = getRandomInt(0, height);
     objekt[i] = new flake(h, getRandomInt(0, h));
   }
-}
-//@ts-ignore
-function draw() {
-  // @ts-ignore
+};
+
+var draw = function () {
   background(Number(!DARKMODE) * 255);
   for (let i = 0; i < objekt.length; i++) {
     objekt[i].move();
@@ -62,4 +59,4 @@ function draw() {
       objekt[i] = new flake();
     }
   }
-}
+};
