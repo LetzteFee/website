@@ -10,7 +10,7 @@ enum OperatorToken {
   ClPar = "ClosedParenthesis",
 }
 abstract class Value {
-  constructor() { }
+  constructor() {}
   public abstract calc(): number;
   public abstract getNodeInfo(
     depth: number,
@@ -38,7 +38,10 @@ abstract class Value {
 
       let unit_x: number = width / elements_with_current_depth.length;
       for (let j: number = 0; j < elements_with_current_depth.length; j++) {
-        n[elements_with_current_depth[j]].setTarget(unit_x * j + unit_x / 2, unit_y * i + unit_y / 2);
+        n[elements_with_current_depth[j]].setTarget(
+          unit_x * j + unit_x / 2,
+          unit_y * i + unit_y / 2,
+        );
       }
     }
     return n;
@@ -78,26 +81,7 @@ class CalcNode extends Value {
     super();
   }
   public calc(): number {
-    let left: number = this.left.calc();
-    let right: number = this.right.calc();
-
-    switch (this.tokenType) {
-      case OperatorToken.Plus:
-        return left + right;
-      case OperatorToken.Minus:
-        return left - right;
-      case OperatorToken.Multiply:
-        return left * right;
-      case OperatorToken.Divide:
-        return left / right;
-      case OperatorToken.Power:
-        return left ** right;
-      case OperatorToken.Modulo:
-        return left % right;
-      default:
-        console.log(this.tokenType);
-        throw "Critical Error: Unkown Operator";
-    }
+    return calc_by_token(this.left.calc(), this.right.calc(), this.tokenType);
   }
   public getNodeInfo(
     depth: number,
@@ -105,7 +89,7 @@ class CalcNode extends Value {
     position: string,
   ): RenderNode[] {
     let id: string = parentId + position;
-    return [new RenderNode(id, depth, parentId, <string>this.tokenType)]
+    return [new RenderNode(id, depth, parentId, <string> this.tokenType)]
       .concat(this.left.getNodeInfo(depth + 1, id, "l"))
       .concat(this.right.getNodeInfo(depth + 1, id, "r"));
   }
@@ -115,6 +99,25 @@ class CalcNode extends Value {
       this.left.getLaTeX(),
       this.right.getLaTeX(),
     );
+  }
+}
+function calc_by_token(a: number, b: number, token: OperatorToken): number {
+  switch (token) {
+    case OperatorToken.Plus:
+      return a + b;
+    case OperatorToken.Minus:
+      return a - b;
+    case OperatorToken.Multiply:
+      return a * b;
+    case OperatorToken.Divide:
+      return a / b;
+    case OperatorToken.Power:
+      return a ** b;
+    case OperatorToken.Modulo:
+      return a % b;
+    default:
+      console.log(token);
+      throw "Critical Error: Unkown Operator";
   }
 }
 class RenderNode {
@@ -127,7 +130,7 @@ class RenderNode {
     public depth: number,
     public parentId: string,
     private value: string,
-  ) { }
+  ) {}
   public render(): void {
     text(this.value, this.current_x, this.current_y);
     // text(this.id, this.x, this.y + 20);
@@ -138,7 +141,7 @@ class RenderNode {
       this.current_x,
       this.current_y - 15,
       parentX,
-      parentY + 15
+      parentY + 15,
     );
   }
   public setTarget(x: number, y: number): void {
@@ -182,15 +185,14 @@ function OperatorToLaTeX(
   }
 }
 function buildTree(tokenStream: TokenStream): Value {
-
+  // Vorzeichen und nicht Operator
   if (tokenStream[0] === OperatorToken.Minus) {
     tokenStream[0] = OperatorToken.Multiply;
     tokenStream.splice(0, 0, new CalcValue(-1));
   }
 
-
   // Klammern finden und Inhalt in neuen Node packen
-  while (tokenStream.some(e => e === OperatorToken.OpPar)) {
+  while (tokenStream.some((e) => e === OperatorToken.OpPar)) {
     // Klammer finden und die dazugehörige Klammerzu
     let start: number = -1;
     let stop: number = -1;
@@ -231,9 +233,9 @@ function buildTree(tokenStream: TokenStream): Value {
         i - 1,
         3,
         new CalcNode(
-          <OperatorToken>tokenStream[i],
-          <Value>tokenStream[i - 1],
-          <Value>tokenStream[i + 1],
+          <OperatorToken> tokenStream[i],
+          <Value> tokenStream[i - 1],
+          <Value> tokenStream[i + 1],
         ),
       );
       i--;
@@ -251,9 +253,9 @@ function buildTree(tokenStream: TokenStream): Value {
         i - 1,
         3,
         new CalcNode(
-          <OperatorToken>tokenStream[i],
-          <Value>tokenStream[i - 1],
-          <Value>tokenStream[i + 1],
+          <OperatorToken> tokenStream[i],
+          <Value> tokenStream[i - 1],
+          <Value> tokenStream[i + 1],
         ),
       );
       i--;
@@ -267,9 +269,9 @@ function buildTree(tokenStream: TokenStream): Value {
       tokenStream[i] === OperatorToken.Minus
     ) {
       let newNode = new CalcNode(
-        <OperatorToken>tokenStream[i],
-        <Value>tokenStream[i - 1],
-        <Value>tokenStream[i + 1],
+        <OperatorToken> tokenStream[i],
+        <Value> tokenStream[i - 1],
+        <Value> tokenStream[i + 1],
       );
       tokenStream.splice(i - 1, 3, newNode);
       i--;
@@ -284,7 +286,7 @@ function buildTree(tokenStream: TokenStream): Value {
     console.warn(tokenStream);
     throw "TokenStream was not summarized to exactly one element";
   }
-  return <Value>tokenStream[0];
+  return <Value> tokenStream[0];
 }
 function genTokenStream(inp_string: string): TokenStream {
   let tokenStream: TokenStream = [];
@@ -393,7 +395,7 @@ function tokenStreamToLaTeX(stream: TokenStream): string {
         out += "^";
         break;
       default:
-        out += (<Value>stream[i]).getLaTeX();
+        out += (<Value> stream[i]).getLaTeX();
     }
   }
   return out;
@@ -416,23 +418,16 @@ var draw = function (): void {
       if (flatRenderNodes[j].id === flatRenderNodes[i].parentId) {
         flatRenderNodes[i].line(
           flatRenderNodes[j].getCurrentX(),
-          flatRenderNodes[j].getCurrentY()
+          flatRenderNodes[j].getCurrentY(),
         );
         break;
       }
     }
   }
 };
-/*function run(inp: string) {
-  let tokenStream: TokenStream = genTokenStream(inp);
-  console.log(tokenStream);
-
-  let root = buildTree(tokenStream);
-  console.log(root);
-
-  let result: number = root.calc();
-  console.log(result);
-}*/
+function mark_tex(i: string): string {
+  return `\\( ${i} \\)`;
+}
 function calculate(): void {
   // @ts-ignore
   let input_string = document.getElementById("input-string").value ?? "0";
@@ -442,19 +437,13 @@ function calculate(): void {
 
   background(255);
   flatRenderNodes = root.calculateNodesFlatly();
-  // console.log(tokenStream.length);
 
-  document.getElementById("interpretation-equation").innerHTML = `\\( ${root.getLaTeX()} \\)`;
-  document.getElementById("result-equation").innerHTML = /*`\\( ${tokenStreamToLaTeX(genTokenStream(input_string))} = ${*/result.toString()/*} \\)`*/;
+  document.getElementById("interpretation-equation").innerHTML = mark_tex(
+    root.getLaTeX(),
+  );
+  document.getElementById("result-equation").innerHTML = mark_tex(result
+    .toString());
 
   // @ts-ignore
   MathJax.typeset();
 }
-
-/*var windowResized = function() {
-    resizeCanvas(windowWidth, windowHeight);
-    // calculate new target node coordinates
-}*/
-
-// Deno test
-// run("(55 * 5 + 6(5 / 8)) % 2 ^ 8");
