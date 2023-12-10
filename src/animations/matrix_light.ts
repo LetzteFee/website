@@ -1,11 +1,11 @@
-class MatrixString {
+class MatrixLightString {
   private x: number;
   private y: number;
   private chance: number;
   constructor() {
     this.x = random(width);
     this.y = random(height);
-    this.chance = MatrixString.genChance();
+    this.chance = MatrixLightString.genChance();
   }
   private static genChance(): number {
     return Math.floor(random(0, 5));
@@ -27,17 +27,17 @@ class MatrixString {
     text(
       String.fromCharCode(random(0x3400, 0x4dbf)),
       this.x,
-      this.y
+      this.y,
     );
   }
   private reset(): void {
     this.y = 0;
     this.x = random(width);
-    this.chance = MatrixString.genChance();
+    this.chance = MatrixLightString.genChance();
   }
 }
 
-let matrix: MatrixString[];
+let matrixLight: MatrixLightString[];
 
 var setup = function () {
   createCanvas(windowWidth, windowHeight);
@@ -47,15 +47,15 @@ var setup = function () {
 
   let numberOfStrings = width / 8;
 
-  matrix = [];
+  matrixLight = [];
   for (let i = 0; i < numberOfStrings; i++) {
-    matrix.push(new MatrixString());
+    matrixLight.push(new MatrixLightString());
   }
-}
+};
 
 var draw = function () {
   background(0, 0, 0, 16);
-  for (let i = 0; i < matrix.length; i++) {
-    matrix[i].run();
+  for (let i = 0; i < matrixLight.length; i++) {
+    matrixLight[i].run();
   }
-}
+};

@@ -5,7 +5,7 @@ class binaryTree {
   constructor(
     value: Buchstabe,
     nodeA: binaryTree = null,
-    nodeB: binaryTree = null
+    nodeB: binaryTree = null,
   ) {
     this.value = value;
     this.links = nodeA;
@@ -19,7 +19,7 @@ class binaryTree {
     return c + 1;
   }
   public calcCodesStr(): string[] {
-    let c: string[] = this.calcCodesArr().map(function(v: string[]): string {
+    let c: string[] = this.calcCodesArr().map(function (v: string[]): string {
       return v[0] + ": " + v[1];
     });
 
@@ -45,9 +45,9 @@ class binaryTree {
   public origToCodedArr(original_string: string): string[] {
     let encoded_map: Map<string, string> = this.calcCodesMap();
     return original_string.split("").map(
-      function(v: string): string {
+      function (v: string): string {
         return encoded_map.get(v);
-      }
+      },
     );
   }
   public displayOverlay(original_string: string): void {
@@ -167,7 +167,7 @@ function renderNewFrame(): void {
   if (inp == null || inp == "" || typeof inp != "string") return;
 
   let baum = createTree(
-    createNodes(String(inp))
+    createNodes(String(inp)),
   );
 
   baum.render(width / 2, 20);
@@ -176,7 +176,7 @@ function renderNewFrame(): void {
 }
 
 //@ts-ignore
-var setup = function(): void {
+var setup = function (): void {
   //@ts-ignore
   createCanvas(windowWidth, windowHeight);
   //@ts-ignore
@@ -189,7 +189,7 @@ var setup = function(): void {
   inp_field.input(renderNewFrame);
 
   renderNewFrame();
-}
+};
 
 function createNodes(str: string): binaryTree[] {
   let arr: string[] = str.split("");
@@ -204,7 +204,7 @@ function createNodes(str: string): binaryTree[] {
     }
   }
 
-  return buchstaben.map(function(v: Buchstabe): binaryTree {
+  return buchstaben.map(function (v: Buchstabe): binaryTree {
     return new binaryTree(v);
   });
 }
@@ -212,7 +212,7 @@ function createNodes(str: string): binaryTree[] {
 function createTree(inp: binaryTree[]): binaryTree {
   if (inp.length <= 1) return inp[0];
 
-  inp.sort(function(a1: binaryTree, b1: binaryTree): number {
+  inp.sort(function (a1: binaryTree, b1: binaryTree): number {
     return a1.value.n - b1.value.n;
   });
 
@@ -228,4 +228,4 @@ var windowResized = function () {
   //@ts-ignore
   resizeCanvas(windowWidth, windowHeight);
   renderNewFrame();
-}
+};

@@ -37,7 +37,7 @@ class password {
     doSpecialChars: boolean = true,
     length: number = 32,
     doIncludeEveryType: boolean = false,
-    blacklist_chars: string = ""
+    blacklist_chars: string = "",
   ) {
     this.UppercaseLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     this.LowercaseLetters = "abcdefghijklmnopqrstuvwxyz";
@@ -94,7 +94,7 @@ class password {
       doLog(
         "buildPassword()",
         "blacklist not compatible with doIncludeEveryType",
-        false
+        false,
       );
       this.doIncludeEveryType = false;
       doLog("buildPassword()", "disabled this.doIncludeEveryType");
@@ -187,7 +187,7 @@ class password {
         "Password length had to be increased from " +
           this.pwdLength +
           " to " +
-          amount_of_types
+          amount_of_types,
       );
       this.pwdLength = amount_of_types;
     }

@@ -62,7 +62,6 @@ function checkCollision() {
           //var DifY = sqrt((playerYPos - object[i].yPos) * (playerYPos - object[i].yPos));
           //var DifA = sqrt((DifX * DifX)+(DifY * DifY));
 
-
           //oben links
           if (
             calcDistance(
@@ -70,7 +69,7 @@ function checkCollision() {
               playerYPos,
               object[i].xPos,
               object[i].yPos,
-              i
+              i,
             ) <= object[i].xSize
           ) {
             doLog(
@@ -79,7 +78,7 @@ function checkCollision() {
                 i +
                 "] with radius " +
                 object[i].xSize +
-                " touched Player oben links"
+                " touched Player oben links",
             );
             doHeal(i);
             reDefine(i);
@@ -92,7 +91,7 @@ function checkCollision() {
               playerYPos,
               object[i].xPos,
               object[i].yPos,
-              i
+              i,
             ) <= object[i].xSize
           ) {
             doLog(
@@ -101,7 +100,7 @@ function checkCollision() {
                 i +
                 "] with radius " +
                 object[i].xSize +
-                " touched Player oben mitte"
+                " touched Player oben mitte",
             );
             doHeal(i);
             reDefine(i);
@@ -114,7 +113,7 @@ function checkCollision() {
               playerYPos,
               object[i].xPos,
               object[i].yPos,
-              i
+              i,
             ) <= object[i].xSize
           ) {
             doLog(
@@ -123,7 +122,7 @@ function checkCollision() {
                 i +
                 "] with radius " +
                 object[i].xSize +
-                " touched Player oben rechts"
+                " touched Player oben rechts",
             );
             doHeal(i);
             reDefine(i);
@@ -136,7 +135,7 @@ function checkCollision() {
               playerYPos + playerYSize,
               object[i].xPos,
               object[i].yPos,
-              i
+              i,
             ) <= object[i].xSize
           ) {
             doLog(
@@ -145,7 +144,7 @@ function checkCollision() {
                 i +
                 "] with radius " +
                 object[i].xSize +
-                " touched Player unten links"
+                " touched Player unten links",
             );
             doHeal(i);
             reDefine(i);
@@ -158,7 +157,7 @@ function checkCollision() {
               playerYPos + playerYSize,
               object[i].xPos,
               object[i].yPos,
-              i
+              i,
             ) <= object[i].xSize
           ) {
             doLog(
@@ -167,7 +166,7 @@ function checkCollision() {
                 i +
                 "] with radius " +
                 object[i].xSize +
-                " touched Player unten mitte"
+                " touched Player unten mitte",
             );
             doHeal(i);
             reDefine(i);
@@ -180,7 +179,7 @@ function checkCollision() {
               playerYPos + playerYSize,
               object[i].xPos,
               object[i].yPos,
-              i
+              i,
             ) <= object[i].xSize
           ) {
             doLog(
@@ -189,7 +188,7 @@ function checkCollision() {
                 i +
                 "] with radius " +
                 object[i].xSize +
-                " touched Player unten rechts"
+                " touched Player unten rechts",
             );
             doDamage(i);
             reDefine(i);
@@ -346,7 +345,6 @@ function drawGui() {
     text("[frameCount] " + frameCount, 10, 90);
     text("[objects] " + n, 10, 105);
     //text("[object] " + object[0], 10, 120);
-
   }
 }
 
@@ -378,10 +376,10 @@ function doDamage(a) {
 }
 
 function doHeal(a) {
-  if(playerHealth < 400){
+  if (playerHealth < 400) {
     playerHealth = playerHealth + 25;
     doLog("doHeal", "object[" + a + "] increased playerHealth by 25");
-  }else{
+  } else {
     playerScore = playerScore + 25;
     doLog("doHeal", "object[" + a + "] increased playerScore by 25");
   }
@@ -458,14 +456,14 @@ function doGameOver() {
 
 function newObjects() {
   for (let i = 0; i < n; i++) {
-    object[i]  = {
+    object[i] = {
       xSize: 30,
       ySize: 10,
       xPos: 0,
       yPos: 0,
       mPosX: random(2 * PI),
       mPosY: random(2 * PI),
-      form: getObjectType()
+      form: getObjectType(),
     };
 
     if (object[i].form == 4) {

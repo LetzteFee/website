@@ -6,18 +6,18 @@ function get_link(path_prefix: string = ""): string {
     "matrix.html",
     "matrix_light.html",
     "selfmadecircles.html",
-    "index.html"
+    "index.html",
   ];
   let possible_Sites_Games: string[] = [
     "duet.html",
     "tictactoe.html",
-    "index.html"
+    "index.html",
   ];
   let possible_Sites_Tools: string[] = [
     "index.html",
     "otp.html",
     "pwd-gen.html",
-    "sorting.html"
+    "sorting.html",
   ];
   let possible_Sites_dev: string[] = [
     "error404.html",
@@ -26,13 +26,13 @@ function get_link(path_prefix: string = ""): string {
     "test2.html",
     "test3.html",
     "test4.html",
-    "test5.html"
+    "test5.html",
   ];
 
   possible_Sites_Animations = possible_Sites_Animations.map(
     function (v: string): string {
       return "animations/" + v;
-    }
+    },
   );
   possible_Sites_Games = possible_Sites_Games.map(function (v: string): string {
     return "games/" + v;
@@ -46,7 +46,7 @@ function get_link(path_prefix: string = ""): string {
   let possible_Sites: string[] = possible_Sites_Animations.concat(
     possible_Sites_Games,
     possible_Sites_Tools,
-    possible_Sites_dev
+    possible_Sites_dev,
   );
 
   return path_prefix +

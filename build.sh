@@ -1,7 +1,7 @@
 #!/bin/env bash
 
-echo "removing build directory"
-rm -rf build
+#echo "removing build directory"
+#rm -rf build
 
 echo "creating build directory"
 mkdir build

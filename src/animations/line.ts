@@ -9,9 +9,9 @@ var setup = () => {
   background(0);
   ax = getRandomInt(width);
   ay = random(height);
-}
+};
 
-var draw = function() {
+var draw = function () {
   stroke(noise(t) * 256, noise(t + 5) * 256, noise(t + 10) * 256);
   x = random(width);
   y = random(height);
@@ -20,4 +20,4 @@ var draw = function() {
   ax = x;
   ay = y;
   t += 0.015;
-}
+};

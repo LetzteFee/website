@@ -25,6 +25,6 @@ function getRandomInput(): void {
   document.getElementById("content").innerHTML = str;
   doLog(
     "getRandomInput()",
-    document.getElementById("content").innerHTML
+    document.getElementById("content").innerHTML,
   );
 }

@@ -21,7 +21,7 @@ function initSorting(
   input_callback: cb,
   input_callback_counter: cb,
   algo: string = "bubble",
-  duration: number = 50
+  duration: number = 50,
 ): void {
   if (!completed) return;
   arr.originalArray = input_arr;

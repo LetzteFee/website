@@ -30,8 +30,8 @@ function setup() {
       state: 0,
       r: 255,
       g: 255,
-      b: 255
-    }
+      b: 255,
+    };
   }
   noFill();
 
@@ -59,39 +59,75 @@ function mousePressed() {
   if (winner) {
     resetGame();
   } else {
-    if (mouseX > halfWidth - 270 && mouseX < halfWidth - 90 && mouseY > halfHeight - 270 && mouseY < halfHeight - 90 && !SpielfeldBelegung[0].state) {
+    if (
+      mouseX > halfWidth - 270 && mouseX < halfWidth - 90 &&
+      mouseY > halfHeight - 270 && mouseY < halfHeight - 90 &&
+      !SpielfeldBelegung[0].state
+    ) {
       SpielfeldBelegung[0].state = aktuellerSpieler;
       changePlayer();
     }
-    if (mouseX > halfWidth - 90 && mouseX < halfWidth + 90 && mouseY > halfHeight - 270 && mouseY < halfHeight - 90 && !SpielfeldBelegung[1].state) {
+    if (
+      mouseX > halfWidth - 90 && mouseX < halfWidth + 90 &&
+      mouseY > halfHeight - 270 && mouseY < halfHeight - 90 &&
+      !SpielfeldBelegung[1].state
+    ) {
       SpielfeldBelegung[1].state = aktuellerSpieler;
       changePlayer();
     }
-    if (mouseX > halfWidth + 90 && mouseX < halfWidth + 270 && mouseY > halfHeight - 270 && mouseY < halfHeight - 90 && !SpielfeldBelegung[2].state) {
+    if (
+      mouseX > halfWidth + 90 && mouseX < halfWidth + 270 &&
+      mouseY > halfHeight - 270 && mouseY < halfHeight - 90 &&
+      !SpielfeldBelegung[2].state
+    ) {
       SpielfeldBelegung[2].state = aktuellerSpieler;
       changePlayer();
     }
-    if (mouseX > halfWidth - 270 && mouseX < halfWidth - 90 && mouseY > halfHeight - 90 && mouseY < halfHeight + 90 && !SpielfeldBelegung[3].state) {
+    if (
+      mouseX > halfWidth - 270 && mouseX < halfWidth - 90 &&
+      mouseY > halfHeight - 90 && mouseY < halfHeight + 90 &&
+      !SpielfeldBelegung[3].state
+    ) {
       SpielfeldBelegung[3].state = aktuellerSpieler;
       changePlayer();
     }
-    if (mouseX > halfWidth - 90 && mouseX < halfWidth + 90 && mouseY > halfHeight - 90 && mouseY < halfHeight + 90 && !SpielfeldBelegung[4].state) {
+    if (
+      mouseX > halfWidth - 90 && mouseX < halfWidth + 90 &&
+      mouseY > halfHeight - 90 && mouseY < halfHeight + 90 &&
+      !SpielfeldBelegung[4].state
+    ) {
       SpielfeldBelegung[4].state = aktuellerSpieler;
       changePlayer();
     }
-    if (mouseX > halfWidth + 90 && mouseX < halfWidth + 270 && mouseY > halfHeight - 90 && mouseY < halfHeight + 90 && !SpielfeldBelegung[5].state) {
+    if (
+      mouseX > halfWidth + 90 && mouseX < halfWidth + 270 &&
+      mouseY > halfHeight - 90 && mouseY < halfHeight + 90 &&
+      !SpielfeldBelegung[5].state
+    ) {
       SpielfeldBelegung[5].state = aktuellerSpieler;
       changePlayer();
     }
-    if (mouseX > halfWidth - 270 && mouseX < halfWidth - 90 && mouseY > halfHeight + 90 && mouseY < halfHeight + 270 && !SpielfeldBelegung[6].state) {
+    if (
+      mouseX > halfWidth - 270 && mouseX < halfWidth - 90 &&
+      mouseY > halfHeight + 90 && mouseY < halfHeight + 270 &&
+      !SpielfeldBelegung[6].state
+    ) {
       SpielfeldBelegung[6].state = aktuellerSpieler;
       changePlayer();
     }
-    if (mouseX > halfWidth - 90 && mouseX < halfWidth + 90 && mouseY > halfHeight + 90 && mouseY < halfHeight + 270 && !SpielfeldBelegung[7].state) {
+    if (
+      mouseX > halfWidth - 90 && mouseX < halfWidth + 90 &&
+      mouseY > halfHeight + 90 && mouseY < halfHeight + 270 &&
+      !SpielfeldBelegung[7].state
+    ) {
       SpielfeldBelegung[7].state = aktuellerSpieler;
       changePlayer();
     }
-    if (mouseX > halfWidth + 90 && mouseX < halfWidth + 270 && mouseY > halfHeight + 90 && mouseY < halfHeight + 270 && !SpielfeldBelegung[8].state) {
+    if (
+      mouseX > halfWidth + 90 && mouseX < halfWidth + 270 &&
+      mouseY > halfHeight + 90 && mouseY < halfHeight + 270 &&
+      !SpielfeldBelegung[8].state
+    ) {
       SpielfeldBelegung[8].state = aktuellerSpieler;
       changePlayer();
     }
@@ -114,80 +150,147 @@ function changePlayer() {
 function checkResult() {
   AnzahlDerBelegtenFelder = 0;
   for (var k = 0; k < 9; k++) {
-    if (SpielfeldBelegung[k].state == "kreuz" || SpielfeldBelegung[k].state == "kreis") {
+    if (
+      SpielfeldBelegung[k].state == "kreuz" ||
+      SpielfeldBelegung[k].state == "kreis"
+    ) {
       AnzahlDerBelegtenFelder = AnzahlDerBelegtenFelder + 1;
     }
   }
 
   //waagerecht für kreis
-  if (SpielfeldBelegung[0].state == "kreis" && SpielfeldBelegung[1].state == "kreis" && SpielfeldBelegung[2].state == "kreis") {
+  if (
+    SpielfeldBelegung[0].state == "kreis" &&
+    SpielfeldBelegung[1].state == "kreis" &&
+    SpielfeldBelegung[2].state == "kreis"
+  ) {
     winner = "kreis";
     changeColorToGreen(0, 1, 2);
   }
-  if (SpielfeldBelegung[3].state == "kreis" && SpielfeldBelegung[4].state == "kreis" && SpielfeldBelegung[5].state == "kreis") {
+  if (
+    SpielfeldBelegung[3].state == "kreis" &&
+    SpielfeldBelegung[4].state == "kreis" &&
+    SpielfeldBelegung[5].state == "kreis"
+  ) {
     winner = "kreis";
     changeColorToGreen(3, 4, 5);
   }
-  if (SpielfeldBelegung[6].state == "kreis" && SpielfeldBelegung[7].state == "kreis" && SpielfeldBelegung[8].state == "kreis") {
+  if (
+    SpielfeldBelegung[6].state == "kreis" &&
+    SpielfeldBelegung[7].state == "kreis" &&
+    SpielfeldBelegung[8].state == "kreis"
+  ) {
     winner = "kreis";
     changeColorToGreen(6, 7, 8);
   }
 
   //waagerecht für kreuz
-  if (SpielfeldBelegung[0].state == "kreuz" && SpielfeldBelegung[1].state == "kreuz" && SpielfeldBelegung[2].state == "kreuz") {
+  if (
+    SpielfeldBelegung[0].state == "kreuz" &&
+    SpielfeldBelegung[1].state == "kreuz" &&
+    SpielfeldBelegung[2].state == "kreuz"
+  ) {
     winner = "kreuz";
     changeColorToGreen(0, 1, 2);
   }
-  if (SpielfeldBelegung[3].state == "kreuz" && SpielfeldBelegung[4].state == "kreuz" && SpielfeldBelegung[5].state == "kreuz") {
+  if (
+    SpielfeldBelegung[3].state == "kreuz" &&
+    SpielfeldBelegung[4].state == "kreuz" &&
+    SpielfeldBelegung[5].state == "kreuz"
+  ) {
     winner = "kreuz";
     changeColorToGreen(3, 4, 5);
   }
-  if (SpielfeldBelegung[6].state == "kreuz" && SpielfeldBelegung[7].state == "kreuz" && SpielfeldBelegung[8].state == "kreuz") {
+  if (
+    SpielfeldBelegung[6].state == "kreuz" &&
+    SpielfeldBelegung[7].state == "kreuz" &&
+    SpielfeldBelegung[8].state == "kreuz"
+  ) {
     winner = "kreuz";
     changeColorToGreen(6, 7, 8);
   }
 
   //senkrecht für kreis
-  if (SpielfeldBelegung[0].state == "kreis" && SpielfeldBelegung[3].state == "kreis" && SpielfeldBelegung[6].state == "kreis") {
+  if (
+    SpielfeldBelegung[0].state == "kreis" &&
+    SpielfeldBelegung[3].state == "kreis" &&
+    SpielfeldBelegung[6].state == "kreis"
+  ) {
     winner = "kreis";
     changeColorToGreen(0, 3, 6);
   }
-  if (SpielfeldBelegung[1].state == "kreis" && SpielfeldBelegung[4].state == "kreis" && SpielfeldBelegung[7].state == "kreis") {
+  if (
+    SpielfeldBelegung[1].state == "kreis" &&
+    SpielfeldBelegung[4].state == "kreis" &&
+    SpielfeldBelegung[7].state == "kreis"
+  ) {
     winner = "kreis";
     changeColorToGreen(1, 4, 7);
   }
-  if (SpielfeldBelegung[2].state == "kreis" && SpielfeldBelegung[5].state == "kreis" && SpielfeldBelegung[8].state == "kreis") {
+  if (
+    SpielfeldBelegung[2].state == "kreis" &&
+    SpielfeldBelegung[5].state == "kreis" &&
+    SpielfeldBelegung[8].state == "kreis"
+  ) {
     winner = "kreis";
     changeColorToGreen(2, 5, 8);
   }
   //senkrecht für kreuz
-  if (SpielfeldBelegung[0].state == "kreuz" && SpielfeldBelegung[3].state == "kreuz" && SpielfeldBelegung[6].state == "kreuz") {
+  if (
+    SpielfeldBelegung[0].state == "kreuz" &&
+    SpielfeldBelegung[3].state == "kreuz" &&
+    SpielfeldBelegung[6].state == "kreuz"
+  ) {
     winner = "kreuz";
     changeColorToGreen(0, 3, 6);
   }
-  if (SpielfeldBelegung[1].state == "kreuz" && SpielfeldBelegung[4].state == "kreuz" && SpielfeldBelegung[7].state == "kreuz") {
+  if (
+    SpielfeldBelegung[1].state == "kreuz" &&
+    SpielfeldBelegung[4].state == "kreuz" &&
+    SpielfeldBelegung[7].state == "kreuz"
+  ) {
     winner = "kreuz";
     changeColorToGreen(1, 4, 7);
   }
-  if (SpielfeldBelegung[2].state == "kreuz" && SpielfeldBelegung[5].state == "kreuz" && SpielfeldBelegung[8].state == "kreuz") {
+  if (
+    SpielfeldBelegung[2].state == "kreuz" &&
+    SpielfeldBelegung[5].state == "kreuz" &&
+    SpielfeldBelegung[8].state == "kreuz"
+  ) {
     winner = "kreuz";
     changeColorToGreen(2, 5, 8);
   }
   //diagonal für kreis
-  if (SpielfeldBelegung[0].state == "kreis" && SpielfeldBelegung[4].state == "kreis" && SpielfeldBelegung[8].state == "kreis") {
+  if (
+    SpielfeldBelegung[0].state == "kreis" &&
+    SpielfeldBelegung[4].state == "kreis" &&
+    SpielfeldBelegung[8].state == "kreis"
+  ) {
     winner = "kreis";
     changeColorToGreen(0, 4, 8);
   }
-  if (SpielfeldBelegung[2].state == "kreis" && SpielfeldBelegung[4].state == "kreis" && SpielfeldBelegung[6].state == "kreis") {
+  if (
+    SpielfeldBelegung[2].state == "kreis" &&
+    SpielfeldBelegung[4].state == "kreis" &&
+    SpielfeldBelegung[6].state == "kreis"
+  ) {
     winner = "kreis";
     changeColorToGreen(2, 4, 6);
   }
   //diagonal für kreuz
-  if (SpielfeldBelegung[0].state == "kreuz" && SpielfeldBelegung[4].state == "kreuz" && SpielfeldBelegung[8].state == "kreuz") {
+  if (
+    SpielfeldBelegung[0].state == "kreuz" &&
+    SpielfeldBelegung[4].state == "kreuz" &&
+    SpielfeldBelegung[8].state == "kreuz"
+  ) {
     winner = "kreuz";
     changeColorToGreen(0, 4, 8);
   }
-  if (SpielfeldBelegung[2].state == "kreuz" && SpielfeldBelegung[4].state == "kreuz" && SpielfeldBelegung[6].state == "kreuz") {
+  if (
+    SpielfeldBelegung[2].state == "kreuz" &&
+    SpielfeldBelegung[4].state == "kreuz" &&
+    SpielfeldBelegung[6].state == "kreuz"
+  ) {
     winner = "kreuz";
     changeColorToGreen(2, 4, 6);
   }
@@ -229,84 +332,156 @@ function drawSpielfeld() {
   line(halfWidth + 90, halfHeight - 270, halfWidth + 90, halfHeight + 270);
 
   if (SpielfeldBelegung[0].state == "kreuz") {
-    stroke(SpielfeldBelegung[0].r, SpielfeldBelegung[0].g, SpielfeldBelegung[0].b);
+    stroke(
+      SpielfeldBelegung[0].r,
+      SpielfeldBelegung[0].g,
+      SpielfeldBelegung[0].b,
+    );
     line(halfWidth - 100, halfHeight - 100, halfWidth - 260, halfHeight - 260);
     line(halfWidth - 260, halfHeight - 100, halfWidth - 100, halfHeight - 260);
   }
   if (SpielfeldBelegung[0].state == "kreis") {
-    stroke(SpielfeldBelegung[0].r, SpielfeldBelegung[0].g, SpielfeldBelegung[0].b);
+    stroke(
+      SpielfeldBelegung[0].r,
+      SpielfeldBelegung[0].g,
+      SpielfeldBelegung[0].b,
+    );
     ellipse(halfWidth - 180, halfHeight - 180, 150);
   }
   if (SpielfeldBelegung[1].state == "kreuz") {
-    stroke(SpielfeldBelegung[1].r, SpielfeldBelegung[1].g, SpielfeldBelegung[1].b);
+    stroke(
+      SpielfeldBelegung[1].r,
+      SpielfeldBelegung[1].g,
+      SpielfeldBelegung[1].b,
+    );
     line(halfWidth - 80, halfHeight - 100, halfWidth + 80, halfHeight - 260);
     line(halfWidth + 80, halfHeight - 100, halfWidth - 80, halfHeight - 260);
   }
   if (SpielfeldBelegung[1].state == "kreis") {
-    stroke(SpielfeldBelegung[1].r, SpielfeldBelegung[1].g, SpielfeldBelegung[1].b);
+    stroke(
+      SpielfeldBelegung[1].r,
+      SpielfeldBelegung[1].g,
+      SpielfeldBelegung[1].b,
+    );
     ellipse(halfWidth, halfHeight - 180, 150);
   }
   if (SpielfeldBelegung[2].state == "kreuz") {
-    stroke(SpielfeldBelegung[2].r, SpielfeldBelegung[2].g, SpielfeldBelegung[2].b);
+    stroke(
+      SpielfeldBelegung[2].r,
+      SpielfeldBelegung[2].g,
+      SpielfeldBelegung[2].b,
+    );
     line(halfWidth + 100, halfHeight - 100, halfWidth + 260, halfHeight - 260);
     line(halfWidth + 100, halfHeight - 260, halfWidth + 260, halfHeight - 100);
   }
   if (SpielfeldBelegung[2].state == "kreis") {
-    stroke(SpielfeldBelegung[2].r, SpielfeldBelegung[2].g, SpielfeldBelegung[2].b);
+    stroke(
+      SpielfeldBelegung[2].r,
+      SpielfeldBelegung[2].g,
+      SpielfeldBelegung[2].b,
+    );
     ellipse(halfWidth + 180, halfHeight - 180, 150);
   }
   if (SpielfeldBelegung[3].state == "kreuz") {
-    stroke(SpielfeldBelegung[3].r, SpielfeldBelegung[3].g, SpielfeldBelegung[3].b);
+    stroke(
+      SpielfeldBelegung[3].r,
+      SpielfeldBelegung[3].g,
+      SpielfeldBelegung[3].b,
+    );
     line(halfWidth - 100, halfHeight + 80, halfWidth - 260, halfHeight - 80);
     line(halfWidth - 100, halfHeight - 80, halfWidth - 260, halfHeight + 80);
   }
   if (SpielfeldBelegung[3].state == "kreis") {
-    stroke(SpielfeldBelegung[3].r, SpielfeldBelegung[3].g, SpielfeldBelegung[3].b);
+    stroke(
+      SpielfeldBelegung[3].r,
+      SpielfeldBelegung[3].g,
+      SpielfeldBelegung[3].b,
+    );
     ellipse(halfWidth - 180, halfHeight, 150);
   }
   if (SpielfeldBelegung[4].state == "kreuz") {
-    stroke(SpielfeldBelegung[4].r, SpielfeldBelegung[4].g, SpielfeldBelegung[4].b);
+    stroke(
+      SpielfeldBelegung[4].r,
+      SpielfeldBelegung[4].g,
+      SpielfeldBelegung[4].b,
+    );
     line(halfWidth + 80, halfHeight + 80, halfWidth - 80, halfHeight - 80);
     line(halfWidth - 80, halfHeight + 80, halfWidth + 80, halfHeight - 80);
   }
   if (SpielfeldBelegung[4].state == "kreis") {
-    stroke(SpielfeldBelegung[4].r, SpielfeldBelegung[4].g, SpielfeldBelegung[4].b);
+    stroke(
+      SpielfeldBelegung[4].r,
+      SpielfeldBelegung[4].g,
+      SpielfeldBelegung[4].b,
+    );
     ellipse(halfWidth, halfHeight, 150);
   }
   if (SpielfeldBelegung[5].state == "kreuz") {
-    stroke(SpielfeldBelegung[5].r, SpielfeldBelegung[5].g, SpielfeldBelegung[5].b);
+    stroke(
+      SpielfeldBelegung[5].r,
+      SpielfeldBelegung[5].g,
+      SpielfeldBelegung[5].b,
+    );
     line(halfWidth + 260, halfHeight + 80, halfWidth + 100, halfHeight - 80);
     line(halfWidth + 100, halfHeight + 80, halfWidth + 260, halfHeight - 80);
   }
   if (SpielfeldBelegung[5].state == "kreis") {
-    stroke(SpielfeldBelegung[5].r, SpielfeldBelegung[5].g, SpielfeldBelegung[5].b);
+    stroke(
+      SpielfeldBelegung[5].r,
+      SpielfeldBelegung[5].g,
+      SpielfeldBelegung[5].b,
+    );
     ellipse(halfWidth + 180, halfHeight, 150);
   }
   if (SpielfeldBelegung[6].state == "kreuz") {
-    stroke(SpielfeldBelegung[6].r, SpielfeldBelegung[6].g, SpielfeldBelegung[6].b);
+    stroke(
+      SpielfeldBelegung[6].r,
+      SpielfeldBelegung[6].g,
+      SpielfeldBelegung[6].b,
+    );
     line(halfWidth - 100, halfHeight + 260, halfWidth - 260, halfHeight + 100);
     line(halfWidth - 260, halfHeight + 260, halfWidth - 100, halfHeight + 100);
   }
   if (SpielfeldBelegung[6].state == "kreis") {
-    stroke(SpielfeldBelegung[6].r, SpielfeldBelegung[6].g, SpielfeldBelegung[6].b);
+    stroke(
+      SpielfeldBelegung[6].r,
+      SpielfeldBelegung[6].g,
+      SpielfeldBelegung[6].b,
+    );
     ellipse(halfWidth - 180, halfHeight + 180, 150);
   }
   if (SpielfeldBelegung[7].state == "kreuz") {
-    stroke(SpielfeldBelegung[7].r, SpielfeldBelegung[7].g, SpielfeldBelegung[7].b);
+    stroke(
+      SpielfeldBelegung[7].r,
+      SpielfeldBelegung[7].g,
+      SpielfeldBelegung[7].b,
+    );
     line(halfWidth + 80, halfHeight + 260, halfWidth - 80, halfHeight + 100);
     line(halfWidth - 80, halfHeight + 260, halfWidth + 80, halfHeight + 100);
   }
   if (SpielfeldBelegung[7].state == "kreis") {
-    stroke(SpielfeldBelegung[7].r, SpielfeldBelegung[7].g, SpielfeldBelegung[7].b);
+    stroke(
+      SpielfeldBelegung[7].r,
+      SpielfeldBelegung[7].g,
+      SpielfeldBelegung[7].b,
+    );
     ellipse(halfWidth, halfHeight + 180, 150);
   }
   if (SpielfeldBelegung[8].state == "kreuz") {
-    stroke(SpielfeldBelegung[8].r, SpielfeldBelegung[8].g, SpielfeldBelegung[8].b);
+    stroke(
+      SpielfeldBelegung[8].r,
+      SpielfeldBelegung[8].g,
+      SpielfeldBelegung[8].b,
+    );
     line(halfWidth + 260, halfHeight + 260, halfWidth + 100, halfHeight + 100);
     line(halfWidth + 100, halfHeight + 260, halfWidth + 260, halfHeight + 100);
   }
   if (SpielfeldBelegung[8].state == "kreis") {
-    stroke(SpielfeldBelegung[8].r, SpielfeldBelegung[8].g, SpielfeldBelegung[8].b);
+    stroke(
+      SpielfeldBelegung[8].r,
+      SpielfeldBelegung[8].g,
+      SpielfeldBelegung[8].b,
+    );
     ellipse(halfWidth + 180, halfHeight + 180, 150);
   }
 }

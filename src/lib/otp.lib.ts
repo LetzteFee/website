@@ -27,7 +27,7 @@ class oneTimePad {
       doLog("oneTimePad: constructor()", "content bin: " + this.content_bin);
       doLog(
         "oneTimePad: constructor()",
-        "key bin adapted length: " + this.key_bin
+        "key bin adapted length: " + this.key_bin,
       );
       doLog("oneTimePad: constructor()", "output bin: " + this.output_bin);
       doLog("oneTimePad: constructor()", "output: " + this.output);
@@ -47,7 +47,7 @@ class oneTimePad {
       this.output_bin[i] = "";
       for (let j = 0; j < this.content_bin[i].length; j++) {
         this.output_bin[i] += String(
-          Number(this.content_bin[i].charAt(j) == this.key_bin[i].charAt(j))
+          Number(this.content_bin[i].charAt(j) == this.key_bin[i].charAt(j)),
         );
       }
     }
@@ -64,7 +64,7 @@ class oneTimePad {
     return inp.map(
       function (str: string): string {
         return String.fromCharCode(parseInt(str, 2));
-      }
+      },
     ).join("");
   }
 }

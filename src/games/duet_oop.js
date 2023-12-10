@@ -71,7 +71,7 @@ function setup() {
       getRandomInt(0, width - 30),
       getRandomInt(0, height),
       30,
-      10
+      10,
     );
   }
 }

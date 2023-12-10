@@ -39,7 +39,7 @@ function doLog(
 }
 
 function sumTrueBools(args: boolean[]): number {
-  return args.filter(v => v).length;
+  return args.filter((v) => v).length;
 }
 function convertTo8bitRange(inp: number): number {
   if (inp <= 0) return 0;
