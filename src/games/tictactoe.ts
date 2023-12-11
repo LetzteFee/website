@@ -1,375 +1,566 @@
-//farben für kreis
-var kreisr = 58;
-var kreisg = 95;
-var kreisb = 205;
-
-//farben für kreuz
-var kreuzr = 58;
-var kreuzg = 95;
-var kreuzb = 205;
-
-//farben für das spielfeld
-var r = 58;
-var g = 95;
-var b = 205;
-
-//hintergrundfarben
-var hr = 161;
-var hg = 161;
-var hb = 161;
-var hf;
-var t1 = 0;
-var t2 = 0;
-var t3 = 0;
-
-var zns = 0;
-var ergebnis = 0;
-var dL: number;
-var kD: number;
-var relLinienL;
-var linienL: number;
-var boolKreuzKreis = false;
-var kreuz = 0;
-var kreis = 0;
-var hL1X: number;
-var hL1Y: number;
-var hL2X;
-var hL2Y: number;
-var vL1X: number;
-var vL1Y: number;
-var vL2X: number;
-var vL2Y;
-
-var xKlick = 0;
-var yKlick = 0;
-var numKlick = 0;
-
-var sFBelegung: number[] = [];
-var sFKlick = [];
-
-var setup = function () {
-    createCanvas(windowWidth, windowHeight);
-    spielfeldBerechnen();
-    //noprotect
-    for (var i = 0; i < 9; i++) {
-        sFBelegung[i] = 0;
+enum Spieler {
+    Kreuz,
+    Kreis,
+    null
+}
+class Spielfeld {
+    public state: Spieler = Spieler.null;
+    public r: number = 255;
+    public g: number = 255;
+    public b: number = 255;
+    public alreadyInUse(): boolean {
+        return this.state != Spieler.null;
     }
 }
 
+//TODO: anzahl der siege für jedes team anzeigen; smooth animation fürs ändern des theme
+var winner: Spieler = Spieler.null;
+var AnzahlDerBelegtenFelder;
+var SpielfeldBelegung: Spielfeld[] = [];
+
+var halfWidth: number;
+var halfHeight: number;
+var theme = 0;
+var backgroundColor = 0;
+var strokeColor = 255;
+
+var aktuellerSpieler = Spieler.Kreis;
+var bereitsGespielteSpiele = 0;
+
+var setup = function () {
+    createCanvas(Math.max(700, windowWidth), Math.max(700, windowHeight));
+    noFill();
+
+    for (var i = 0; i < 9; i++) {
+        SpielfeldBelegung.push(new Spielfeld);
+    }
+
+    halfWidth = width / 2;
+    halfHeight = height / 2;
+}
+
 var draw = function () {
-    t1 = t1 + 0.015;
-    t2 = t2 + 0.01;
-    t3 = t3 + 0.01324333233232323;
-    hr = noise(t1) * 255;
-    hg = noise(t2) * 255;
-    hb = noise(t3) * 255;
+    drawSpielfeld();
 
-    //falls nur grau
-    //hf = random(100);
-    background(hr, hg, hb);
-
-    spielfeldBauen();
-    textSize(20);
-    noStroke();
-    fill(0);
-    //text(xKlick, 10, 20);
-    //text(yKlick, 10, 50);
-    //text(numKlick, 10, 80);
-    if (kreuz == 1 || kreis == 1) {
-        zns = 1;
-    }
-
-    if (
-        sFBelegung[0] && sFBelegung[1] && sFBelegung[2] && sFBelegung[3] &&
-        sFBelegung[4] && sFBelegung[5] && sFBelegung[6] && sFBelegung[7] &&
-        sFBelegung[8]
-    ) {
-        zns = 1;
-    }
-    gewinnen();
-
-    zeichneSymbol(vL1X - dL / 2, hL1Y - dL / 2, sFBelegung[0]);
-    zeichneSymbol(vL1X + dL / 2, hL1Y - dL / 2, sFBelegung[1]);
-    zeichneSymbol(vL2X + dL / 2, hL1Y - dL / 2, sFBelegung[2]);
-    zeichneSymbol(vL1X - dL / 2, hL1Y + dL / 2, sFBelegung[3]);
-    zeichneSymbol(vL1X + dL / 2, hL1Y + dL / 2, sFBelegung[4]);
-    zeichneSymbol(vL2X + dL / 2, hL1Y + dL / 2, sFBelegung[5]);
-    zeichneSymbol(vL1X - dL / 2, hL2Y + dL / 2, sFBelegung[6]);
-    zeichneSymbol(vL1X + dL / 2, hL2Y + dL / 2, sFBelegung[7]);
-    zeichneSymbol(vL2X + dL / 2, hL2Y + dL / 2, sFBelegung[8]);
-
-    if (zns == 1) {
-        textSize(30);
-        fill(0);
-        strokeWeight(2);
-        stroke(0);
-        text("Zum nächsten Spiel klicken", width / 2 - 150, height / 2);
-        ergebnis = 1;
-    }
-
-    // wenn kreuz gewinnt
-    if (kreuz == 1) {
-        kreuzr = 64;
-        kreuzg = 169;
-        kreuzb = 64;
-    }
-    //wenn kreis gewinnt
-    if (kreis == 1) {
-        kreisr = 64;
-        kreisg = 169;
-        kreisb = 64;
+    if (winner !== Spieler.null) {
+        drawEndScreen();
     }
 }
 
 function mousePressed() {
-    if (ergebnis == 0) {
-        xKlick = mouseX;
-        yKlick = mouseY;
-        if (xKlick > hL1X && xKlick < vL1X && yKlick > vL1Y && yKlick < hL1Y) {
-            numKlick = 1;
-            if (sFBelegung[0] == 0) {
-                if (boolKreuzKreis) {
-                    sFBelegung[0] = 1;
-                } else {
-                    sFBelegung[0] = 2;
-                }
-                boolKreuzKreis = !boolKreuzKreis;
-            }
-        }
-        if (xKlick > vL1X && xKlick < vL2X && yKlick > vL1Y && yKlick < hL1Y) {
-            numKlick = 2;
-            if (sFBelegung[1] == 0) {
-                if (boolKreuzKreis) {
-                    sFBelegung[1] = 1;
-                } else {
-                    sFBelegung[1] = 2;
-                }
-                boolKreuzKreis = !boolKreuzKreis;
-            }
-        }
-        if (
-            xKlick > vL2X && xKlick < hL1X + linienL && yKlick > vL1Y && yKlick < hL1Y
-        ) {
-            numKlick = 3;
-            if (sFBelegung[2] == 0) {
-                if (boolKreuzKreis) {
-                    sFBelegung[2] = 1;
-                } else {
-                    sFBelegung[2] = 2;
-                }
-                boolKreuzKreis = !boolKreuzKreis;
-            }
-        }
-        if (xKlick > hL1X && xKlick < vL1X && yKlick > hL1Y && yKlick < hL2Y) {
-            numKlick = 4;
-            if (sFBelegung[3] == 0) {
-                if (boolKreuzKreis) {
-                    sFBelegung[3] = 1;
-                } else {
-                    sFBelegung[3] = 2;
-                }
-                boolKreuzKreis = !boolKreuzKreis;
-            }
-        }
-        if (xKlick > vL1X && xKlick < vL2X && yKlick > hL1Y && yKlick < hL2Y) {
-            numKlick = 5;
-            if (sFBelegung[4] == 0) {
-                if (boolKreuzKreis) {
-                    sFBelegung[4] = 1;
-                } else {
-                    sFBelegung[4] = 2;
-                }
-                boolKreuzKreis = !boolKreuzKreis;
-            }
-        }
-        if (
-            xKlick > vL2X && xKlick < hL1X + linienL && yKlick > hL1Y && yKlick < hL2Y
-        ) {
-            numKlick = 6;
-            if (sFBelegung[5] == 0) {
-                if (boolKreuzKreis) {
-                    sFBelegung[5] = 1;
-                } else {
-                    sFBelegung[5] = 2;
-                }
-                boolKreuzKreis = !boolKreuzKreis;
-            }
-        }
-        if (
-            xKlick > hL1X && xKlick < vL1X && yKlick > hL2Y && yKlick < vL1X + linienL
-        ) {
-            numKlick = 7;
-            if (sFBelegung[6] == 0) {
-                if (boolKreuzKreis) {
-                    sFBelegung[6] = 1;
-                } else {
-                    sFBelegung[6] = 2;
-                }
-                boolKreuzKreis = !boolKreuzKreis;
-            }
-        }
-        if (
-            xKlick > vL1X && xKlick < vL2X && yKlick > hL2Y && yKlick < vL1X + linienL
-        ) {
-            numKlick = 8;
-            if (sFBelegung[7] == 0) {
-                if (boolKreuzKreis) {
-                    sFBelegung[7] = 1;
-                } else {
-                    sFBelegung[7] = 2;
-                }
-                boolKreuzKreis = !boolKreuzKreis;
-            }
-        }
-        if (
-            xKlick > vL2X && xKlick < hL1X + linienL && yKlick > hL2Y &&
-            yKlick < vL1X + linienL
-        ) {
-            numKlick = 9;
-            if (sFBelegung[8] == 0) {
-                if (boolKreuzKreis) {
-                    sFBelegung[8] = 1;
-                } else {
-                    sFBelegung[8] = 2;
-                }
-                boolKreuzKreis = !boolKreuzKreis;
-            }
-        }
+    if (winner != Spieler.null) {
+        resetGame();
+        return;
     }
+    if (
+        mouseX > halfWidth - 270 && mouseX < halfWidth - 90 &&
+        mouseY > halfHeight - 270 && mouseY < halfHeight - 90 &&
+        !SpielfeldBelegung[0].alreadyInUse()
+    ) {
+        SpielfeldBelegung[0].state = aktuellerSpieler;
+        changePlayer();
+    }
+    if (
+        mouseX > halfWidth - 90 && mouseX < halfWidth + 90 &&
+        mouseY > halfHeight - 270 && mouseY < halfHeight - 90 &&
+        !SpielfeldBelegung[1].alreadyInUse()
+    ) {
+        SpielfeldBelegung[1].state = aktuellerSpieler;
+        changePlayer();
+    }
+    if (
+        mouseX > halfWidth + 90 && mouseX < halfWidth + 270 &&
+        mouseY > halfHeight - 270 && mouseY < halfHeight - 90 &&
+        !SpielfeldBelegung[2].alreadyInUse()
+    ) {
+        SpielfeldBelegung[2].state = aktuellerSpieler;
+        changePlayer();
+    }
+    if (
+        mouseX > halfWidth - 270 && mouseX < halfWidth - 90 &&
+        mouseY > halfHeight - 90 && mouseY < halfHeight + 90 &&
+        !SpielfeldBelegung[3].alreadyInUse()
+    ) {
+        SpielfeldBelegung[3].state = aktuellerSpieler;
+        changePlayer();
+    }
+    if (
+        mouseX > halfWidth - 90 && mouseX < halfWidth + 90 &&
+        mouseY > halfHeight - 90 && mouseY < halfHeight + 90 &&
+        !SpielfeldBelegung[4].alreadyInUse()
+    ) {
+        SpielfeldBelegung[4].state = aktuellerSpieler;
+        changePlayer();
+    }
+    if (
+        mouseX > halfWidth + 90 && mouseX < halfWidth + 270 &&
+        mouseY > halfHeight - 90 && mouseY < halfHeight + 90 &&
+        !SpielfeldBelegung[5].alreadyInUse()
+    ) {
+        SpielfeldBelegung[5].state = aktuellerSpieler;
+        changePlayer();
+    }
+    if (
+        mouseX > halfWidth - 270 && mouseX < halfWidth - 90 &&
+        mouseY > halfHeight + 90 && mouseY < halfHeight + 270 &&
+        !SpielfeldBelegung[6].alreadyInUse()
+    ) {
+        SpielfeldBelegung[6].state = aktuellerSpieler;
+        changePlayer();
+    }
+    if (
+        mouseX > halfWidth - 90 && mouseX < halfWidth + 90 &&
+        mouseY > halfHeight + 90 && mouseY < halfHeight + 270 &&
+        !SpielfeldBelegung[7].alreadyInUse()
+    ) {
+        SpielfeldBelegung[7].state = aktuellerSpieler;
+        changePlayer();
+    }
+    if (
+        mouseX > halfWidth + 90 && mouseX < halfWidth + 270 &&
+        mouseY > halfHeight + 90 && mouseY < halfHeight + 270 &&
+        !SpielfeldBelegung[8].alreadyInUse()
+    ) {
+        SpielfeldBelegung[8].state = aktuellerSpieler;
+        changePlayer();
+    }
+    checkResult();
+}
 
-    if (ergebnis == 1) {
-        sFBelegung[0] = 0;
-        sFBelegung[1] = 0;
-        sFBelegung[2] = 0;
-        sFBelegung[3] = 0;
-        sFBelegung[4] = 0;
-        sFBelegung[5] = 0;
-        sFBelegung[6] = 0;
-        sFBelegung[7] = 0;
-        sFBelegung[8] = 0;
-        ergebnis = 0;
-        kreuz = 0;
-        kreis = 0;
+function keyReleased() {
+    changeTheme();
+}
 
-        //farben für kreis
-        kreisr = 58;
-        kreisg = 95;
-        kreisb = 205;
-
-        //farben für kreuz
-        kreuzr = 58;
-        kreuzg = 95;
-        kreuzb = 205;
-        zns = 0;
+function changePlayer() {
+    if (aktuellerSpieler == Spieler.Kreis) {
+        aktuellerSpieler = Spieler.Kreuz;
+    } else if (aktuellerSpieler == Spieler.Kreuz) {
+        aktuellerSpieler = Spieler.Kreis;
     }
 }
 
-function spielfeldBerechnen() {
-    relLinienL = 0.7;
-    if (windowHeight >= windowWidth) {
-        linienL = windowWidth * relLinienL;
+function checkResult() {
+    AnzahlDerBelegtenFelder = 0;
+    for (var k = 0; k < 9; k++) {
+        if (
+            SpielfeldBelegung[k].state == Spieler.Kreuz ||
+            SpielfeldBelegung[k].state == Spieler.Kreis
+        ) {
+            AnzahlDerBelegtenFelder = AnzahlDerBelegtenFelder + 1;
+        }
+    }
+
+    //waagerecht für kreis
+    if (
+        SpielfeldBelegung[0].state == Spieler.Kreis &&
+        SpielfeldBelegung[1].state == Spieler.Kreis &&
+        SpielfeldBelegung[2].state == Spieler.Kreis
+    ) {
+        winner = Spieler.Kreis;
+        changeColorToGreen(0, 1, 2);
+    }
+    if (
+        SpielfeldBelegung[3].state == Spieler.Kreis &&
+        SpielfeldBelegung[4].state == Spieler.Kreis &&
+        SpielfeldBelegung[5].state == Spieler.Kreis
+    ) {
+        winner = Spieler.Kreis;
+        changeColorToGreen(3, 4, 5);
+    }
+    if (
+        SpielfeldBelegung[6].state == Spieler.Kreis &&
+        SpielfeldBelegung[7].state == Spieler.Kreis &&
+        SpielfeldBelegung[8].state == Spieler.Kreis
+    ) {
+        winner = Spieler.Kreis;
+        changeColorToGreen(6, 7, 8);
+    }
+
+    //waagerecht für kreuz
+    if (
+        SpielfeldBelegung[0].state == Spieler.Kreuz &&
+        SpielfeldBelegung[1].state == Spieler.Kreuz &&
+        SpielfeldBelegung[2].state == Spieler.Kreuz
+    ) {
+        winner = Spieler.Kreuz;
+        changeColorToGreen(0, 1, 2);
+    }
+    if (
+        SpielfeldBelegung[3].state == Spieler.Kreuz &&
+        SpielfeldBelegung[4].state == Spieler.Kreuz &&
+        SpielfeldBelegung[5].state == Spieler.Kreuz
+    ) {
+        winner = Spieler.Kreuz;
+        changeColorToGreen(3, 4, 5);
+    }
+    if (
+        SpielfeldBelegung[6].state == Spieler.Kreuz &&
+        SpielfeldBelegung[7].state == Spieler.Kreuz &&
+        SpielfeldBelegung[8].state == Spieler.Kreuz
+    ) {
+        winner = Spieler.Kreuz;
+        changeColorToGreen(6, 7, 8);
+    }
+
+    //senkrecht für kreis
+    if (
+        SpielfeldBelegung[0].state == Spieler.Kreis &&
+        SpielfeldBelegung[3].state == Spieler.Kreis &&
+        SpielfeldBelegung[6].state == Spieler.Kreis
+    ) {
+        winner = Spieler.Kreis;
+        changeColorToGreen(0, 3, 6);
+    }
+    if (
+        SpielfeldBelegung[1].state == Spieler.Kreis &&
+        SpielfeldBelegung[4].state == Spieler.Kreis &&
+        SpielfeldBelegung[7].state == Spieler.Kreis
+    ) {
+        winner = Spieler.Kreis;
+        changeColorToGreen(1, 4, 7);
+    }
+    if (
+        SpielfeldBelegung[2].state == Spieler.Kreis &&
+        SpielfeldBelegung[5].state == Spieler.Kreis &&
+        SpielfeldBelegung[8].state == Spieler.Kreis
+    ) {
+        winner = Spieler.Kreis;
+        changeColorToGreen(2, 5, 8);
+    }
+    //senkrecht für kreuz
+    if (
+        SpielfeldBelegung[0].state == Spieler.Kreuz &&
+        SpielfeldBelegung[3].state == Spieler.Kreuz &&
+        SpielfeldBelegung[6].state == Spieler.Kreuz
+    ) {
+        winner = Spieler.Kreuz;
+        changeColorToGreen(0, 3, 6);
+    }
+    if (
+        SpielfeldBelegung[1].state == Spieler.Kreuz &&
+        SpielfeldBelegung[4].state == Spieler.Kreuz &&
+        SpielfeldBelegung[7].state == Spieler.Kreuz
+    ) {
+        winner = Spieler.Kreuz;
+        changeColorToGreen(1, 4, 7);
+    }
+    if (
+        SpielfeldBelegung[2].state == Spieler.Kreuz &&
+        SpielfeldBelegung[5].state == Spieler.Kreuz &&
+        SpielfeldBelegung[8].state == Spieler.Kreuz
+    ) {
+        winner = Spieler.Kreuz;
+        changeColorToGreen(2, 5, 8);
+    }
+    //diagonal für kreis
+    if (
+        SpielfeldBelegung[0].state == Spieler.Kreis &&
+        SpielfeldBelegung[4].state == Spieler.Kreis &&
+        SpielfeldBelegung[8].state == Spieler.Kreis
+    ) {
+        winner = Spieler.Kreis;
+        changeColorToGreen(0, 4, 8);
+    }
+    if (
+        SpielfeldBelegung[2].state == Spieler.Kreis &&
+        SpielfeldBelegung[4].state == Spieler.Kreis &&
+        SpielfeldBelegung[6].state == Spieler.Kreis
+    ) {
+        winner = Spieler.Kreis;
+        changeColorToGreen(2, 4, 6);
+    }
+    //diagonal für kreuz
+    if (
+        SpielfeldBelegung[0].state == Spieler.Kreuz &&
+        SpielfeldBelegung[4].state == Spieler.Kreuz &&
+        SpielfeldBelegung[8].state == Spieler.Kreuz
+    ) {
+        winner = Spieler.Kreuz;
+        changeColorToGreen(0, 4, 8);
+    }
+    if (
+        SpielfeldBelegung[2].state == Spieler.Kreuz &&
+        SpielfeldBelegung[4].state == Spieler.Kreuz &&
+        SpielfeldBelegung[6].state == Spieler.Kreuz
+    ) {
+        winner = Spieler.Kreuz;
+        changeColorToGreen(2, 4, 6);
+    }
+
+    if (AnzahlDerBelegtenFelder == 8 && winner == Spieler.null) {
+        for (let i: number = 0; i < 9; i++) {
+            if (SpielfeldBelegung[i].state === Spieler.null) {
+                SpielfeldBelegung[i].state = aktuellerSpieler;
+                checkResult();
+            }
+        }
+    }
+
+    //falls niemand gewonnen hat
+    if (AnzahlDerBelegtenFelder == 9 && winner == Spieler.null) {
+        winner = Spieler.null;
+    }
+}
+
+function drawSpielfeld() {
+    background(backgroundColor);
+    stroke(strokeColor);
+    noFill();
+    textSize(20);
+    strokeWeight(1);
+
+    //text("[Debug]: " + frameCount, halfWidth - 180, halfHeight + 320);
+    if (!winner) {
+        text("Current Player: " + aktuellerSpieler, 10, height - 30);
+    }
+    text("Player Rounds: " + bereitsGespielteSpiele, 10, height - 10);
+    text("Press any key to change theme", 10, 20);
+
+    strokeWeight(5);
+
+    line(halfWidth - 270, halfHeight - 90, halfWidth + 270, halfHeight - 90);
+    line(halfWidth - 270, halfHeight + 90, halfWidth + 270, halfHeight + 90);
+    line(halfWidth - 90, halfHeight - 270, halfWidth - 90, halfHeight + 270);
+    line(halfWidth + 90, halfHeight - 270, halfWidth + 90, halfHeight + 270);
+
+    if (SpielfeldBelegung[0].state == Spieler.Kreuz) {
+        stroke(
+            SpielfeldBelegung[0].r,
+            SpielfeldBelegung[0].g,
+            SpielfeldBelegung[0].b,
+        );
+        line(halfWidth - 100, halfHeight - 100, halfWidth - 260, halfHeight - 260);
+        line(halfWidth - 260, halfHeight - 100, halfWidth - 100, halfHeight - 260);
+    }
+    if (SpielfeldBelegung[0].state == Spieler.Kreis) {
+        stroke(
+            SpielfeldBelegung[0].r,
+            SpielfeldBelegung[0].g,
+            SpielfeldBelegung[0].b,
+        );
+        ellipse(halfWidth - 180, halfHeight - 180, 150);
+    }
+    if (SpielfeldBelegung[1].state == Spieler.Kreuz) {
+        stroke(
+            SpielfeldBelegung[1].r,
+            SpielfeldBelegung[1].g,
+            SpielfeldBelegung[1].b,
+        );
+        line(halfWidth - 80, halfHeight - 100, halfWidth + 80, halfHeight - 260);
+        line(halfWidth + 80, halfHeight - 100, halfWidth - 80, halfHeight - 260);
+    }
+    if (SpielfeldBelegung[1].state == Spieler.Kreis) {
+        stroke(
+            SpielfeldBelegung[1].r,
+            SpielfeldBelegung[1].g,
+            SpielfeldBelegung[1].b,
+        );
+        ellipse(halfWidth, halfHeight - 180, 150);
+    }
+    if (SpielfeldBelegung[2].state == Spieler.Kreuz) {
+        stroke(
+            SpielfeldBelegung[2].r,
+            SpielfeldBelegung[2].g,
+            SpielfeldBelegung[2].b,
+        );
+        line(halfWidth + 100, halfHeight - 100, halfWidth + 260, halfHeight - 260);
+        line(halfWidth + 100, halfHeight - 260, halfWidth + 260, halfHeight - 100);
+    }
+    if (SpielfeldBelegung[2].state == Spieler.Kreis) {
+        stroke(
+            SpielfeldBelegung[2].r,
+            SpielfeldBelegung[2].g,
+            SpielfeldBelegung[2].b,
+        );
+        ellipse(halfWidth + 180, halfHeight - 180, 150);
+    }
+    if (SpielfeldBelegung[3].state == Spieler.Kreuz) {
+        stroke(
+            SpielfeldBelegung[3].r,
+            SpielfeldBelegung[3].g,
+            SpielfeldBelegung[3].b,
+        );
+        line(halfWidth - 100, halfHeight + 80, halfWidth - 260, halfHeight - 80);
+        line(halfWidth - 100, halfHeight - 80, halfWidth - 260, halfHeight + 80);
+    }
+    if (SpielfeldBelegung[3].state == Spieler.Kreis) {
+        stroke(
+            SpielfeldBelegung[3].r,
+            SpielfeldBelegung[3].g,
+            SpielfeldBelegung[3].b,
+        );
+        ellipse(halfWidth - 180, halfHeight, 150);
+    }
+    if (SpielfeldBelegung[4].state == Spieler.Kreuz) {
+        stroke(
+            SpielfeldBelegung[4].r,
+            SpielfeldBelegung[4].g,
+            SpielfeldBelegung[4].b,
+        );
+        line(halfWidth + 80, halfHeight + 80, halfWidth - 80, halfHeight - 80);
+        line(halfWidth - 80, halfHeight + 80, halfWidth + 80, halfHeight - 80);
+    }
+    if (SpielfeldBelegung[4].state == Spieler.Kreis) {
+        stroke(
+            SpielfeldBelegung[4].r,
+            SpielfeldBelegung[4].g,
+            SpielfeldBelegung[4].b,
+        );
+        ellipse(halfWidth, halfHeight, 150);
+    }
+    if (SpielfeldBelegung[5].state == Spieler.Kreuz) {
+        stroke(
+            SpielfeldBelegung[5].r,
+            SpielfeldBelegung[5].g,
+            SpielfeldBelegung[5].b,
+        );
+        line(halfWidth + 260, halfHeight + 80, halfWidth + 100, halfHeight - 80);
+        line(halfWidth + 100, halfHeight + 80, halfWidth + 260, halfHeight - 80);
+    }
+    if (SpielfeldBelegung[5].state == Spieler.Kreis) {
+        stroke(
+            SpielfeldBelegung[5].r,
+            SpielfeldBelegung[5].g,
+            SpielfeldBelegung[5].b,
+        );
+        ellipse(halfWidth + 180, halfHeight, 150);
+    }
+    if (SpielfeldBelegung[6].state == Spieler.Kreuz) {
+        stroke(
+            SpielfeldBelegung[6].r,
+            SpielfeldBelegung[6].g,
+            SpielfeldBelegung[6].b,
+        );
+        line(halfWidth - 100, halfHeight + 260, halfWidth - 260, halfHeight + 100);
+        line(halfWidth - 260, halfHeight + 260, halfWidth - 100, halfHeight + 100);
+    }
+    if (SpielfeldBelegung[6].state == Spieler.Kreis) {
+        stroke(
+            SpielfeldBelegung[6].r,
+            SpielfeldBelegung[6].g,
+            SpielfeldBelegung[6].b,
+        );
+        ellipse(halfWidth - 180, halfHeight + 180, 150);
+    }
+    if (SpielfeldBelegung[7].state == Spieler.Kreuz) {
+        stroke(
+            SpielfeldBelegung[7].r,
+            SpielfeldBelegung[7].g,
+            SpielfeldBelegung[7].b,
+        );
+        line(halfWidth + 80, halfHeight + 260, halfWidth - 80, halfHeight + 100);
+        line(halfWidth - 80, halfHeight + 260, halfWidth + 80, halfHeight + 100);
+    }
+    if (SpielfeldBelegung[7].state == Spieler.Kreis) {
+        stroke(
+            SpielfeldBelegung[7].r,
+            SpielfeldBelegung[7].g,
+            SpielfeldBelegung[7].b,
+        );
+        ellipse(halfWidth, halfHeight + 180, 150);
+    }
+    if (SpielfeldBelegung[8].state == Spieler.Kreuz) {
+        stroke(
+            SpielfeldBelegung[8].r,
+            SpielfeldBelegung[8].g,
+            SpielfeldBelegung[8].b,
+        );
+        line(halfWidth + 260, halfHeight + 260, halfWidth + 100, halfHeight + 100);
+        line(halfWidth + 100, halfHeight + 260, halfWidth + 260, halfHeight + 100);
+    }
+    if (SpielfeldBelegung[8].state == Spieler.Kreis) {
+        stroke(
+            SpielfeldBelegung[8].r,
+            SpielfeldBelegung[8].g,
+            SpielfeldBelegung[8].b,
+        );
+        ellipse(halfWidth + 180, halfHeight + 180, 150);
+    }
+}
+
+function drawEndScreen() {
+    noStroke();
+    stroke(strokeColor);
+    strokeWeight(1);
+    textSize(35);
+    text(winner + " has won", halfWidth - 100, height / 12);
+    textSize(20);
+    text("CLICK to start a new round", halfWidth - 120, height / 6);
+}
+
+function resetColors() {
+    if (theme == 0) {
+        for (var i = 0; i < 9; i++) {
+            SpielfeldBelegung[i].r = 255;
+            SpielfeldBelegung[i].g = 255;
+            SpielfeldBelegung[i].b = 255;
+        }
+    }
+    if (theme == 1) {
+        for (var j = 0; j < 9; j++) {
+            SpielfeldBelegung[j].r = 0;
+            SpielfeldBelegung[j].g = 0;
+            SpielfeldBelegung[j].b = 0;
+        }
+    }
+}
+
+function changeTheme() {
+    if (theme == 0) {
+        theme = 1;
+        backgroundColor = 255;
+        strokeColor = 0;
+        for (var i = 0; i < 9; i++) {
+            if (SpielfeldBelegung[i].r == 255) {
+                SpielfeldBelegung[i].r = 0;
+                SpielfeldBelegung[i].g = 0;
+                SpielfeldBelegung[i].b = 0;
+            }
+        }
+    } else if (theme == 1) {
+        theme = 0;
+        backgroundColor = 0;
+        strokeColor = 255;
+        for (var j = 0; j < 9; j++) {
+            if (SpielfeldBelegung[j].r == 0) {
+                SpielfeldBelegung[j].r = 255;
+                SpielfeldBelegung[j].g = 255;
+                SpielfeldBelegung[j].b = 255;
+            }
+        }
+    }
+
+    //window.localStorage.setItem("theme", theme);
+}
+
+function resetGame() {
+    winner = Spieler.null;
+
+    if (bereitsGespielteSpiele % 2 == 0) {
+        aktuellerSpieler = Spieler.Kreuz;
     } else {
-        linienL = windowHeight * relLinienL;
+        aktuellerSpieler = Spieler.Kreis;
     }
-    dL = linienL / 3;
-    kD = dL * 0.7;
+    bereitsGespielteSpiele++;
+
+    for (var i = 0; i <= 8; i++) {
+        SpielfeldBelegung[i].state = Spieler.null;
+    }
+    resetColors();
 }
 
-function spielfeldBauen() {
-    vL1X = windowWidth / 2 - dL / 2;
-    vL1Y = windowHeight / 2 - 3 * dL / 2;
-    vL2X = windowWidth / 2 + dL / 2;
-    vL2Y = vL1Y;
-    hL1X = windowWidth / 2 - 3 * dL / 2;
-    hL1Y = windowHeight / 2 - dL / 2;
-    hL2X = hL1X;
-    hL2Y = windowHeight / 2 + dL / 2;
-    stroke(r, g, b);
-    strokeWeight(20);
-    push();
-    translate(vL1X, vL1Y);
-    line(0, 0, 0, linienL);
-    pop();
-    push();
-    translate(vL2X, vL2Y);
-    line(0, 0, 0, linienL);
-    pop();
-    push();
-    translate(hL1X, hL1Y);
-    line(0, 0, linienL, 0);
-    pop();
-    push();
-    translate(hL2X, hL2Y);
-    line(0, 0, linienL, 0);
-    pop();
-}
+function changeColorToGreen(x: number, y: number, z: number) {
+    SpielfeldBelegung[x].r = 39;
+    SpielfeldBelegung[x].g = 174;
+    SpielfeldBelegung[x].b = 96;
 
-function gewinnen() {
-    //kreuz
-    if (sFBelegung[0] == 1 && sFBelegung[1] == 1 && sFBelegung[2] == 1) {
-        kreuz = 1;
-    }
-    if (sFBelegung[3] == 1 && sFBelegung[4] == 1 && sFBelegung[5] == 1) {
-        kreuz = 1;
-    }
-    if (sFBelegung[6] == 1 && sFBelegung[7] == 1 && sFBelegung[8] == 1) {
-        kreuz = 1;
-    }
-    if (sFBelegung[0] == 1 && sFBelegung[4] == 1 && sFBelegung[8] == 1) {
-        kreuz = 1;
-    }
-    if (sFBelegung[2] == 1 && sFBelegung[4] == 1 && sFBelegung[6] == 1) {
-        kreuz = 1;
-    }
-    if (sFBelegung[0] == 1 && sFBelegung[3] == 1 && sFBelegung[6] == 1) {
-        kreuz = 1;
-    }
-    if (sFBelegung[1] == 1 && sFBelegung[4] == 1 && sFBelegung[7] == 1) {
-        kreuz = 1;
-    }
-    if (sFBelegung[2] == 1 && sFBelegung[5] == 1 && sFBelegung[8] == 1) {
-        kreuz = 1;
-    }
+    SpielfeldBelegung[y].r = 39;
+    SpielfeldBelegung[y].g = 174;
+    SpielfeldBelegung[y].b = 96;
 
-    //kreis
-    if (sFBelegung[0] == 2 && sFBelegung[1] == 2 && sFBelegung[2] == 2) {
-        kreis = 1;
-    }
-    if (sFBelegung[3] == 2 && sFBelegung[4] == 2 && sFBelegung[5] == 2) {
-        kreis = 1;
-    }
-    if (sFBelegung[6] == 2 && sFBelegung[7] == 2 && sFBelegung[8] == 2) {
-        kreis = 1;
-    }
-    if (sFBelegung[0] == 2 && sFBelegung[4] == 2 && sFBelegung[8] == 2) {
-        kreis = 1;
-    }
-    if (sFBelegung[2] == 2 && sFBelegung[4] == 2 && sFBelegung[6] == 2) {
-        kreis = 1;
-    }
-    if (sFBelegung[0] == 2 && sFBelegung[3] == 2 && sFBelegung[6] == 2) {
-        kreis = 1;
-    }
-    if (sFBelegung[1] == 2 && sFBelegung[4] == 2 && sFBelegung[7] == 2) {
-        kreis = 1;
-    }
-    if (sFBelegung[2] == 2 && sFBelegung[5] == 2 && sFBelegung[8] == 2) {
-        kreis = 1;
-    }
-}
+    SpielfeldBelegung[z].r = 39;
+    SpielfeldBelegung[z].g = 174;
+    SpielfeldBelegung[z].b = 96;
 
-function zeichneSymbol(xKoord: number, yKoord: number, symbolTyp: number) {
-    if (symbolTyp == 1) {
-        push();
-        translate(xKoord, yKoord);
-        stroke(kreuzr, kreuzg, kreuzb);
-        line(-kD / 2, -kD / 2, kD / 2, kD / 2);
-        line(-kD / 2, kD / 2, kD / 2, -kD / 2);
-        pop();
-    }
-    if (symbolTyp == 2) {
-        noFill();
-        stroke(kreisr, kreisg, kreisb);
-        ellipse(xKoord, yKoord, kD, kD);
-    }
+    // 39, 174, 96
 }
