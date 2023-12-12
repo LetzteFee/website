@@ -9,10 +9,10 @@ declare function resizeCanvas(w: number, h: number): void;
 declare function createCanvas(n1: number, n2: number): void;
 declare function frameRate(fps: number): void;
 declare function background(
-    r: number,
-    g?: number,
-    b?: number,
-    alpha?: number,
+  r: number,
+  g?: number,
+  b?: number,
+  alpha?: number,
 ): void;
 declare function noStroke(): void;
 declare function stroke(n: number, n1?: number, n2?: number, n3?: number): void;
@@ -21,7 +21,12 @@ declare function pop(): void;
 declare function push(): void;
 declare function translate(x: number, y?: number): void;
 declare function ellipse(x: number, y: number, d: number, d1?: number): void;
-declare function rect(x: number, y: number, width: number, height?: number): void;
+declare function rect(
+  x: number,
+  y: number,
+  width: number,
+  height?: number,
+): void;
 declare function noFill(): void;
 declare function fill(r: number, b?: number, g?: number, alpha?: number): void;
 declare function point(x: number, y: number): void;
