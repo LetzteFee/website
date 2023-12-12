@@ -8,6 +8,9 @@ class TictactoeTheme {
     public static setStroke(): void {
         stroke(TictactoeTheme.strokeColor);
     }
+    public static setGreenStroke(): void {
+        stroke(39, 174, 96);
+    }
     public static switch(): void {
         this.theme = this.theme == 0 ? 1 : 0;
     }
@@ -38,24 +41,26 @@ enum TictactoeSpieler {
     Unentschieden,
 }
 class TictactoeSpielfeld {
+    private x: number;
+    private y: number;
     public state: TictactoeSpieler = null;
     private isGreen: boolean = false;
+    constructor(x: number, y: number) {
+        this.x = x;
+        this.y = y;
+    }
     public isFree(): boolean {
         return this.state == null;
     }
-    public draw(x: number, y: number): void {
-        if (this.isGreen) {
-            stroke(39, 174, 96);
-        } else {
-            TictactoeTheme.setStroke();
-        }
+    public draw(): void {
+        this.isGreen ? TictactoeTheme.setGreenStroke() : TictactoeTheme.setStroke();
         switch (this.state) {
             case TictactoeSpieler.Kreuz:
-                line(x + 80, y + 80, x - 80, y - 80);
-                line(x + 80, y - 80, x - 80, y + 80);
+                line(this.x + 80, this.y + 80, this.x - 80, this.y - 80);
+                line(this.x + 80, this.y - 80, this.x - 80, this.y + 80);
                 break;
             case TictactoeSpieler.Kreis:
-                ellipse(x, y, 150);
+                ellipse(this.x, this.y, 150);
                 break;
         }
     }
@@ -70,19 +75,22 @@ class TictactoeSpielfeld {
 class Tictactoe {
     private static winner: TictactoeSpieler = null;
     private static SpielfeldBelegung: TictactoeSpielfeld[] = [];
-
-    private static halfWidth: number;
-    private static halfHeight: number;
-
+    private static centerX: number;
+    private static centerY: number;
     private static aktuellerSpieler = TictactoeSpieler.Kreis;
     private static bereitsGespielteSpiele = 0;
     public static setup(): void {
-        for (let i: number = 0; i < 9; i++) {
-            Tictactoe.SpielfeldBelegung.push(new TictactoeSpielfeld());
-        }
+        Tictactoe.centerX = width / 2;
+        Tictactoe.centerY = height / 2;
 
-        Tictactoe.halfWidth = width / 2;
-        Tictactoe.halfHeight = height / 2;
+        for (let i: number = 0; i < 3; i++) {
+            for (let j: number = 0; j < 3; j++) {
+                Tictactoe.SpielfeldBelegung[i * 3 + j] = new TictactoeSpielfeld(
+                    Tictactoe.centerX - 180 + j * 180,
+                    Tictactoe.centerY - 180 + i * 180,
+                );
+            }
+        }
     }
     public static run(): void {
         Tictactoe.drawSpielfeld();
@@ -108,11 +116,11 @@ class Tictactoe {
         textSize(35);
         text(
             Tictactoe.getPlayerName(Tictactoe.winner) + " has won",
-            Tictactoe.halfWidth - 100,
+            Tictactoe.centerX - 100,
             height / 12,
         );
         textSize(20);
-        text("CLICK to start a new round", Tictactoe.halfWidth - 120, height / 6);
+        text("CLICK to start a new round", Tictactoe.centerX - 120, height / 6);
     }
     private static drawSpielfeld(): void {
         TictactoeTheme.setBackground();
@@ -135,68 +143,32 @@ class Tictactoe {
         strokeWeight(5);
 
         line(
-            Tictactoe.halfWidth - 270,
-            Tictactoe.halfHeight - 90,
-            Tictactoe.halfWidth + 270,
-            Tictactoe.halfHeight - 90,
+            Tictactoe.centerX - 270,
+            Tictactoe.centerY - 90,
+            Tictactoe.centerX + 270,
+            Tictactoe.centerY - 90,
         );
         line(
-            Tictactoe.halfWidth - 270,
-            Tictactoe.halfHeight + 90,
-            Tictactoe.halfWidth + 270,
-            Tictactoe.halfHeight + 90,
+            Tictactoe.centerX - 270,
+            Tictactoe.centerY + 90,
+            Tictactoe.centerX + 270,
+            Tictactoe.centerY + 90,
         );
         line(
-            Tictactoe.halfWidth - 90,
-            Tictactoe.halfHeight - 270,
-            Tictactoe.halfWidth - 90,
-            Tictactoe.halfHeight + 270,
+            Tictactoe.centerX - 90,
+            Tictactoe.centerY - 270,
+            Tictactoe.centerX - 90,
+            Tictactoe.centerY + 270,
         );
         line(
-            Tictactoe.halfWidth + 90,
-            Tictactoe.halfHeight - 270,
-            Tictactoe.halfWidth + 90,
-            Tictactoe.halfHeight + 270,
+            Tictactoe.centerX + 90,
+            Tictactoe.centerY - 270,
+            Tictactoe.centerX + 90,
+            Tictactoe.centerY + 270,
         );
-
-        Tictactoe.SpielfeldBelegung[0].draw(
-            Tictactoe.halfWidth - 180,
-            Tictactoe.halfHeight - 180,
-        );
-        Tictactoe.SpielfeldBelegung[1].draw(
-            Tictactoe.halfWidth,
-            Tictactoe.halfHeight - 180,
-        );
-        Tictactoe.SpielfeldBelegung[2].draw(
-            Tictactoe.halfWidth + 180,
-            Tictactoe.halfHeight - 180,
-        );
-
-        Tictactoe.SpielfeldBelegung[3].draw(
-            Tictactoe.halfWidth - 180,
-            Tictactoe.halfHeight,
-        );
-        Tictactoe.SpielfeldBelegung[4].draw(
-            Tictactoe.halfWidth,
-            Tictactoe.halfHeight,
-        );
-        Tictactoe.SpielfeldBelegung[5].draw(
-            Tictactoe.halfWidth + 180,
-            Tictactoe.halfHeight,
-        );
-
-        Tictactoe.SpielfeldBelegung[6].draw(
-            Tictactoe.halfWidth - 180,
-            Tictactoe.halfHeight + 180,
-        );
-        Tictactoe.SpielfeldBelegung[7].draw(
-            Tictactoe.halfWidth,
-            Tictactoe.halfHeight + 180,
-        );
-        Tictactoe.SpielfeldBelegung[8].draw(
-            Tictactoe.halfWidth + 180,
-            Tictactoe.halfHeight + 180,
-        );
+        for (let i: number = 0; i < 9; i++) {
+            Tictactoe.SpielfeldBelegung[i].draw();
+        }
     }
     public static checkMouse(): void {
         if (Tictactoe.winner != null) {
@@ -212,134 +184,67 @@ class Tictactoe {
         Tictactoe.checkResult();
     }
     private static getMouseLocation(): number {
-        if (
-            mouseX > Tictactoe.halfWidth - 270 && mouseX < Tictactoe.halfWidth - 90 &&
-            mouseY > Tictactoe.halfHeight - 270 && mouseY < Tictactoe.halfHeight - 90
-        ) {
-            return 0;
-        }
-        if (
-            mouseX > Tictactoe.halfWidth - 90 && mouseX < Tictactoe.halfWidth + 90 &&
-            mouseY > Tictactoe.halfHeight - 270 && mouseY < Tictactoe.halfHeight - 90
-        ) {
-            return 1;
-        }
-        if (
-            mouseX > Tictactoe.halfWidth + 90 && mouseX < Tictactoe.halfWidth + 270 &&
-            mouseY > Tictactoe.halfHeight - 270 && mouseY < Tictactoe.halfHeight - 90
-        ) {
-            return 2;
-        }
-        if (
-            mouseX > Tictactoe.halfWidth - 270 && mouseX < Tictactoe.halfWidth - 90 &&
-            mouseY > Tictactoe.halfHeight - 90 && mouseY < Tictactoe.halfHeight + 90
-        ) {
-            return 3;
-        }
-        if (
-            mouseX > Tictactoe.halfWidth - 90 && mouseX < Tictactoe.halfWidth + 90 &&
-            mouseY > Tictactoe.halfHeight - 90 && mouseY < Tictactoe.halfHeight + 90
-        ) {
-            return 4;
-        }
-        if (
-            mouseX > Tictactoe.halfWidth + 90 && mouseX < Tictactoe.halfWidth + 270 &&
-            mouseY > Tictactoe.halfHeight - 90 && mouseY < Tictactoe.halfHeight + 90
-        ) {
-            return 5;
-        }
-        if (
-            mouseX > Tictactoe.halfWidth - 270 && mouseX < Tictactoe.halfWidth - 90 &&
-            mouseY > Tictactoe.halfHeight + 90 && mouseY < Tictactoe.halfHeight + 270
-        ) {
-            return 6;
-        }
-        if (
-            mouseX > Tictactoe.halfWidth - 90 && mouseX < Tictactoe.halfWidth + 90 &&
-            mouseY > Tictactoe.halfHeight + 90 && mouseY < Tictactoe.halfHeight + 270
-        ) {
-            return 7;
-        }
-        if (
-            mouseX > Tictactoe.halfWidth + 90 && mouseX < Tictactoe.halfWidth + 270 &&
-            mouseY > Tictactoe.halfHeight + 90 && mouseY < Tictactoe.halfHeight + 270
-        ) {
-            return 8;
+        for (let i: number = 0; i < 3; i++) {
+            let topLimit: number = Tictactoe.centerY - 270 + 180 * i;
+            let bottomLimit: number = Tictactoe.centerY - 90 + 180 * i;
+            for (let j: number = 0; j < 3; j++) {
+                let leftLimit: number = Tictactoe.centerX - 270 + 180 * j;
+                let rightLimit: number = Tictactoe.centerX - 90 + 180 * j;
+                if (
+                    mouseX > leftLimit && mouseX < rightLimit &&
+                    mouseY < bottomLimit && mouseY > topLimit
+                ) {
+                    return 3 * i + j;
+                }
+            }
         }
         return null;
+    }
+    private static checkSpecificPlayerOwnsConfiguration(
+        a: number,
+        b: number,
+        c: number,
+        player: TictactoeSpieler,
+    ): boolean {
+        return Tictactoe.SpielfeldBelegung[a].state == player &&
+            Tictactoe.SpielfeldBelegung[b].state == player &&
+            Tictactoe.SpielfeldBelegung[c].state == player;
     }
     private static checkSpecificPlayer(player: TictactoeSpieler): boolean {
         let isWinner = false;
 
         //waagerecht
-        if (
-            Tictactoe.SpielfeldBelegung[0].state == player &&
-            Tictactoe.SpielfeldBelegung[1].state == player &&
-            Tictactoe.SpielfeldBelegung[2].state == player
-        ) {
-            Tictactoe.changeToGreen(0, 1, 2);
-            isWinner = true;
-        }
-        if (
-            Tictactoe.SpielfeldBelegung[3].state == player &&
-            Tictactoe.SpielfeldBelegung[4].state == player &&
-            Tictactoe.SpielfeldBelegung[5].state == player
-        ) {
-            Tictactoe.changeToGreen(3, 4, 5);
-            isWinner = true;
-        }
-        if (
-            Tictactoe.SpielfeldBelegung[6].state == player &&
-            Tictactoe.SpielfeldBelegung[7].state == player &&
-            Tictactoe.SpielfeldBelegung[8].state == player
-        ) {
-            Tictactoe.changeToGreen(6, 7, 8);
-            isWinner = true;
+        for (let i: number = 0; i < 3; i++) {
+            let a: number = 0 + 3 * i;
+            let b: number = 1 + 3 * i;
+            let c: number = 2 + 3 * i;
+            if (Tictactoe.checkSpecificPlayerOwnsConfiguration(a, b, c, player)) {
+                Tictactoe.changeToGreen(a, b, c);
+                isWinner = true;
+            }
         }
 
         //senkrecht
-        if (
-            Tictactoe.SpielfeldBelegung[0].state == player &&
-            Tictactoe.SpielfeldBelegung[3].state == player &&
-            Tictactoe.SpielfeldBelegung[6].state == player
-        ) {
-            isWinner = true;
-            Tictactoe.changeToGreen(0, 3, 6);
-        }
-        if (
-            Tictactoe.SpielfeldBelegung[1].state == player &&
-            Tictactoe.SpielfeldBelegung[4].state == player &&
-            Tictactoe.SpielfeldBelegung[7].state == player
-        ) {
-            isWinner = true;
-            Tictactoe.changeToGreen(1, 4, 7);
-        }
-        if (
-            Tictactoe.SpielfeldBelegung[2].state == player &&
-            Tictactoe.SpielfeldBelegung[5].state == player &&
-            Tictactoe.SpielfeldBelegung[8].state == player
-        ) {
-            isWinner = true;
-            Tictactoe.changeToGreen(2, 5, 8);
+        for (let i: number = 0; i < 3; i++) {
+            let a: number = 0 + i;
+            let b: number = 3 + i;
+            let c: number = 6 + i;
+            if (Tictactoe.checkSpecificPlayerOwnsConfiguration(a, b, c, player)) {
+                Tictactoe.changeToGreen(a, b, c);
+                isWinner = true;
+            }
         }
 
         //diagonal
-        if (
-            Tictactoe.SpielfeldBelegung[0].state == player &&
-            Tictactoe.SpielfeldBelegung[4].state == player &&
-            Tictactoe.SpielfeldBelegung[8].state == player
-        ) {
+        if (Tictactoe.checkSpecificPlayerOwnsConfiguration(0, 4, 8, player)) {
             isWinner = true;
             Tictactoe.changeToGreen(0, 4, 8);
         }
-        if (
-            Tictactoe.SpielfeldBelegung[2].state == player &&
-            Tictactoe.SpielfeldBelegung[4].state == player &&
-            Tictactoe.SpielfeldBelegung[6].state == player
-        ) {
+        if (Tictactoe.checkSpecificPlayerOwnsConfiguration(2, 4, 6, player)) {
             isWinner = true;
             Tictactoe.changeToGreen(2, 4, 6);
         }
+
         return isWinner;
     }
     private static checkResult(): void {
