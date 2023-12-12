@@ -41,8 +41,8 @@ enum TictactoeSpieler {
     Unentschieden,
 }
 class TictactoeSpielfeld {
-    private x: number;
-    private y: number;
+    private readonly x: number;
+    private readonly y: number;
     public state: TictactoeSpieler = null;
     private isGreen: boolean = false;
     constructor(x: number, y: number) {
@@ -283,9 +283,9 @@ class Tictactoe {
         Tictactoe.SpielfeldBelegung[y].changeColorToGreen();
         Tictactoe.SpielfeldBelegung[z].changeColorToGreen();
     }
-    private static resetGame() {
+    private static resetGame(): void {
         Tictactoe.winner = null;
-        Tictactoe.aktuellerSpieler = (Tictactoe.bereitsGespielteSpiele % 2 == 0)
+        Tictactoe.aktuellerSpieler = Tictactoe.bereitsGespielteSpiele % 2 == 0
             ? TictactoeSpieler.Kreuz
             : TictactoeSpieler.Kreis;
         Tictactoe.bereitsGespielteSpiele++;
@@ -296,27 +296,20 @@ class Tictactoe {
     }
     private static changePlayer(): void {
         Tictactoe.aktuellerSpieler =
-            (Tictactoe.aktuellerSpieler == TictactoeSpieler.Kreis)
+            Tictactoe.aktuellerSpieler == TictactoeSpieler.Kreis
                 ? TictactoeSpieler.Kreuz
                 : TictactoeSpieler.Kreis;
     }
 }
 
-var setup = function () {
+var setup = function (): void {
     createCanvas(Math.max(700, windowWidth), Math.max(700, windowHeight));
     noFill();
     Tictactoe.setup();
 };
-
 var draw = function () {
     Tictactoe.run();
     TictactoeTheme.update();
 };
-
-var mousePressed = function (): void {
-    Tictactoe.checkMouse();
-};
-
-var keyReleased = function (): void {
-    TictactoeTheme.switch();
-};
+var mousePressed = () => Tictactoe.checkMouse();
+var keyReleased = () => TictactoeTheme.switch();
