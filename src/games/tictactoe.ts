@@ -26,7 +26,6 @@ class TictactoeTheme {
             if (TictactoeTheme.backgroundColor < 255) {
                 TictactoeTheme.backgroundColor += 25.5;
             }
-
             if (TictactoeTheme.strokeColor > 0) {
                 TictactoeTheme.strokeColor -= 25.5;
             }
@@ -302,12 +301,12 @@ class Tictactoe {
     }
 }
 
-var setup = function (): void {
+var setup = () => {
     createCanvas(Math.max(700, windowWidth), Math.max(700, windowHeight));
     noFill();
     Tictactoe.setup();
 };
-var draw = function () {
+var draw = () => {
     Tictactoe.run();
     TictactoeTheme.update();
 };
